@@ -52,11 +52,35 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bot.cs" />
+    <Compile Include="EventHandlers\CustomMessageHandlers\OpenRaGitHubIssueNumberMessageHandler.cs" />
+    <Compile Include="EventHandlers\CustomMessageHandlers\OpenRaWebGitHubIssueNumberMessageHandler.cs" />
+    <Compile Include="EventHandlers\CustomMessageHandlers\ICustomMessageHandler.cs" />
+    <Compile Include="EventHandlers\LogHandler.cs" />
+    <Compile Include="EventHandlers\CustomMessageHandlers\BaseGitHubIssueNumberMessageHandler.cs" />
+    <Compile Include="EventHandlers\MessageReceivedHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Discord.Net">
+      <Version>2.0.1</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
