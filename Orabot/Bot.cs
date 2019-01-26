@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
@@ -9,7 +10,7 @@ namespace Orabot
 {
 	public class Bot : IDisposable
 	{
-		private static readonly string discordBotToken = "";
+		private static readonly string DiscordBotToken = ConfigurationManager.AppSettings["BotToken"];
 
 		private readonly CommandService _commands;
 		private readonly DiscordSocketClient _client;
@@ -24,7 +25,7 @@ namespace Orabot
 
 		public async Task RunAsync()
 		{
-			await _client.LoginAsync(TokenType.Bot, discordBotToken);
+			await _client.LoginAsync(TokenType.Bot, DiscordBotToken);
 			await _client.StartAsync();
 
 			Console.ReadLine();
