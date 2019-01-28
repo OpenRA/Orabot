@@ -72,7 +72,7 @@ namespace Orabot.EventHandlers.CustomMessageHandlers
 					{
 						Name = "Labels:",
 						Value = labels,
-						IsInline = false
+						IsInline = true
 					});
 				}
 
