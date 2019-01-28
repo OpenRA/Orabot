@@ -14,6 +14,8 @@ namespace Orabot.EventHandlers.CustomMessageHandlers
 
 		protected abstract string RegexMatchPattern { get; }
 
+		protected abstract bool RegexMatchCase { get; }
+
 		protected abstract string RepositoryOwner { get; }
 
 		protected abstract string RepositoryName { get; }
@@ -38,12 +40,12 @@ namespace Orabot.EventHandlers.CustomMessageHandlers
 
 		public bool CanHandle(SocketUserMessage message)
 		{
-			return Regex.IsMatch(message.Content, RegexMatchPattern);
+			return Regex.IsMatch(message.Content, RegexMatchPattern, RegexMatchCase ? RegexOptions.Compiled : RegexOptions.Compiled | RegexOptions.IgnoreCase);
 		}
 
 		public void Invoke(SocketUserMessage message)
 		{
-			var matches = Regex.Matches(message.Content, RegexMatchPattern, RegexOptions.Compiled);
+			var matches = Regex.Matches(message.Content, RegexMatchPattern, RegexMatchCase ? RegexOptions.Compiled : RegexOptions.Compiled | RegexOptions.IgnoreCase);
 			foreach (Match match in matches)
 			{
 				var number = match.Value.Substring(IssueNumberStartPosition);
@@ -87,6 +89,13 @@ namespace Orabot.EventHandlers.CustomMessageHandlers
 					var pull = pullResponse.Data;
 					if (pull != null)
 					{
+						embedFields.Add(new EmbedFieldBuilder
+						{
+							Name = "Status:",
+							Value = pull.mergeable_state,
+							IsInline = true
+						});
+
 						status = pull.merged ? "merged" : issue.state;
 						if (pull.merged)
 						{
