@@ -31,7 +31,7 @@ namespace Orabot.EventHandlers.CustomMessageHandlers
 		private const string ApiPullRequestTemplate = "repos/{RepositoryOwner}/{RepositoryName}/pulls/{number}";
 
 		private readonly RestClient _restClient = new RestClient(BaseApiUrl);
-		private readonly Dictionary<string, Color> ColorPerStatus = new Dictionary<string, Color>
+		private readonly Dictionary<string, Color> _colorPerStatus = new Dictionary<string, Color>
 		{
 			{ "open", Color.Green },
 			{ "closed", Color.Red },
@@ -127,7 +127,7 @@ namespace Orabot.EventHandlers.CustomMessageHandlers
 						Text = $"Created at {issue.CreatedAt}"
 					},
 					Timestamp = issue.UpdatedAt,
-					Color = ColorPerStatus[status]
+					Color = _colorPerStatus[status]
 				};
 
 				message.Channel.SendMessageAsync("", embed: embed.Build());
