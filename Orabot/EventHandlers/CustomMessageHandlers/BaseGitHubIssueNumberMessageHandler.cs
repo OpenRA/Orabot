@@ -57,14 +57,14 @@ namespace Orabot.EventHandlers.CustomMessageHandlers
 
 				var response = _restClient.Execute<GitHubIssueResponse>(request);
 				var issue = response.Data;
-				if (issue?.html_url == null)
+				if (issue?.HtmlUrl == null)
 				{
 					return;
 				}
 
-				var isIssue = issue.pull_request == null;
+				var isIssue = issue.PullRequest == null;
 				var type = isIssue ? "Issue" : "Pull request";
-				var labels = string.Join(", ", issue.labels?.Select(x => x.name) ?? Enumerable.Empty<string>());
+				var labels = string.Join(", ", issue.Labels?.Select(x => x.Name) ?? Enumerable.Empty<string>());
 				var embedFields = new List<EmbedFieldBuilder>();
 				if (!string.IsNullOrEmpty(labels))
 				{
@@ -76,7 +76,7 @@ namespace Orabot.EventHandlers.CustomMessageHandlers
 					});
 				}
 
-				var status = issue.state;
+				var status = issue.State;
 
 				if (!isIssue && status == "closed")
 				{
@@ -92,17 +92,17 @@ namespace Orabot.EventHandlers.CustomMessageHandlers
 						embedFields.Add(new EmbedFieldBuilder
 						{
 							Name = "Status:",
-							Value = pull.mergeable_state,
+							Value = pull.MergeableState,
 							IsInline = true
 						});
 
-						status = pull.merged ? "merged" : issue.state;
-						if (pull.merged)
+						status = pull.IsMerged ? "merged" : issue.State;
+						if (pull.IsMerged)
 						{
 							embedFields.Add(new EmbedFieldBuilder
 							{
 								Name = "Merged by:",
-								Value = pull.merged_by?.login,
+								Value = pull.MergedBy?.LoginName,
 								IsInline = true
 							});
 						}
@@ -111,22 +111,22 @@ namespace Orabot.EventHandlers.CustomMessageHandlers
 
 				var embed = new EmbedBuilder
 				{
-					Title = issue.title,
-					ThumbnailUrl = issue.user?.avatar_url,
-					Url = issue.html_url,
-					Description = issue.body.Length > 250 ? issue.body.Substring(0, 250) + "..." : issue.body,
+					Title = issue.Title,
+					ThumbnailUrl = issue.User?.AvatarUrl,
+					Url = issue.HtmlUrl,
+					Description = issue.Body.Length > 250 ? issue.Body.Substring(0, 250) + "..." : issue.Body,
 					Author = new EmbedAuthorBuilder
 					{
-						Name = $"{type} #{number} by {issue.user?.login}  ({status})",
-						IconUrl = issue.user?.avatar_url,
-						Url = issue.html_url
+						Name = $"{type} #{number} by {issue.User?.LoginName}  ({status})",
+						IconUrl = issue.User?.AvatarUrl,
+						Url = issue.HtmlUrl
 					},
 					Fields = embedFields,
 					Footer = new EmbedFooterBuilder
 					{
-						Text = $"Created at {issue.created_at}"
+						Text = $"Created at {issue.CreatedAt}"
 					},
-					Timestamp = issue.updated_at,
+					Timestamp = issue.UpdatedAt,
 					Color = ColorPerStatus[status]
 				};
 

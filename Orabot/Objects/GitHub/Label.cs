@@ -1,7 +1,10 @@
-﻿namespace Orabot.Objects.GitHub
+﻿using RestSharp.Deserializers;
+
+namespace Orabot.Objects.GitHub
 {
 	internal class Label
 	{
-		public string name { get; set; }
+		[DeserializeAs(Name = "name")]
+		public string Name { get; set; }
 	}
 }

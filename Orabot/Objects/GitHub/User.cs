@@ -1,11 +1,13 @@
-﻿namespace Orabot.Objects.GitHub
+﻿using RestSharp.Deserializers;
+
+namespace Orabot.Objects.GitHub
 {
 	internal class User
 	{
-		public string login { get; set; }
+		[DeserializeAs(Name = "login")]
+		public string LoginName { get; set; }
 
-		public string avatar_url { get; set; }
-
-		public string html_url { get; set; }
+		[DeserializeAs(Name = "avatar_url")]
+		public string AvatarUrl { get; set; }
 	}
 }
