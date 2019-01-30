@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Discord;
@@ -10,6 +11,8 @@ namespace Orabot.EventHandlers.CustomMessageHandlers
 {
 	internal abstract class BaseGitHubIssueNumberMessageHandler : ICustomMessageHandler
 	{
+		private static readonly string IssueIconBaseUrl = ConfigurationManager.AppSettings["GitHubIconsBaseUrl"];
+
 		protected abstract int IssueNumberStartPosition { get; }
 
 		protected abstract string RegexMatchPattern { get; }
@@ -118,7 +121,7 @@ namespace Orabot.EventHandlers.CustomMessageHandlers
 					Author = new EmbedAuthorBuilder
 					{
 						Name = $"{type} #{number} by {issue.User?.LoginName}  ({status})",
-						IconUrl = issue.User?.AvatarUrl,
+						IconUrl = GetIssueIconUrl(isIssue, status),
 						Url = issue.HtmlUrl
 					},
 					Fields = embedFields,
@@ -132,6 +135,11 @@ namespace Orabot.EventHandlers.CustomMessageHandlers
 
 				message.Channel.SendMessageAsync("", embed: embed.Build());
 			}
+		}
+
+		private static string GetIssueIconUrl(bool isIssue, string status)
+		{
+			return $"{IssueIconBaseUrl}/{(isIssue ? "issue" : "pr")}-{status}.png";
 		}
 	}
 }
