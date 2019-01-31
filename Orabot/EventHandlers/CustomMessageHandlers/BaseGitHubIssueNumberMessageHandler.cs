@@ -11,7 +11,11 @@ namespace Orabot.EventHandlers.CustomMessageHandlers
 {
 	internal abstract class BaseGitHubIssueNumberMessageHandler : ICustomMessageHandler
 	{
-		private static readonly string IssueIconBaseUrl = ConfigurationManager.AppSettings["GitHubIconsBaseUrl"];
+		private const string BaseApiUrl = "https://api.github.com";
+
+		private const string ApiIssueRequestTemplate = "repos/{RepositoryOwner}/{RepositoryName}/issues/{number}";
+
+		private const string ApiPullRequestTemplate = "repos/{RepositoryOwner}/{RepositoryName}/pulls/{number}";
 
 		protected abstract int IssueNumberStartPosition { get; }
 
@@ -23,11 +27,7 @@ namespace Orabot.EventHandlers.CustomMessageHandlers
 
 		protected abstract string RepositoryName { get; }
 
-		private const string BaseApiUrl = "https://api.github.com";
-
-		private const string ApiIssueRequestTemplate = "repos/{RepositoryOwner}/{RepositoryName}/issues/{number}";
-
-		private const string ApiPullRequestTemplate = "repos/{RepositoryOwner}/{RepositoryName}/pulls/{number}";
+		private static readonly string IssueIconBaseUrl = ConfigurationManager.AppSettings["GitHubIconsBaseUrl"];
 
 		private readonly RestClient _restClient = new RestClient(BaseApiUrl);
 		private readonly Dictionary<string, Color> _colorPerStatus = new Dictionary<string, Color>
