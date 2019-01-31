@@ -23,10 +23,6 @@ namespace Orabot.EventHandlers.CustomMessageHandlers
 
 		protected abstract string RepositoryName { get; }
 
-		public string HandlingCategory { get; } = nameof(BaseGitHubIssueNumberMessageHandler);
-
-		public abstract int HandlingPriority { get; }
-
 		private const string BaseApiUrl = "https://api.github.com";
 
 		private const string ApiIssueRequestTemplate = "repos/{RepositoryOwner}/{RepositoryName}/issues/{number}";

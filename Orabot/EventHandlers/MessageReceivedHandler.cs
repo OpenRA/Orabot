@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
@@ -11,7 +10,7 @@ namespace Orabot.EventHandlers
 {
 	internal static class MessageReceivedHandler
 	{
-		private static readonly IReadOnlyDictionary<string, ReadOnlyCollection<ICustomMessageHandler>> CustomMessageHandlersPerCategory = LoadMessageHandlers();
+		private static readonly IEnumerable<ICustomMessageHandler> CustomMessageHandlers = LoadMessageHandlers();
 
 		public static Task HandleMessageReceivedAsync(SocketMessage messageParam)
 		{
@@ -26,30 +25,23 @@ namespace Orabot.EventHandlers
 				return Task.CompletedTask;
 			}
 
-			Parallel.ForEach(CustomMessageHandlersPerCategory, customMessageHandlerCategory =>
+			Parallel.ForEach(CustomMessageHandlers, customMessageHandler =>
 			{
-				foreach (var customMessageHandler in customMessageHandlerCategory.Value)
+				if (customMessageHandler.CanHandle(message))
 				{
-					if (customMessageHandler.CanHandle(message))
-					{
-						customMessageHandler.Invoke(message);
-						break;
-					}
+					customMessageHandler.Invoke(message);
 				}
 			});
 
 			return Task.CompletedTask;
 		}
 
-		private static IReadOnlyDictionary<string, ReadOnlyCollection<ICustomMessageHandler>> LoadMessageHandlers()
+		private static IEnumerable<ICustomMessageHandler> LoadMessageHandlers()
 		{
-			return new ReadOnlyDictionary<string, ReadOnlyCollection<ICustomMessageHandler>>(
-				AppDomain.CurrentDomain
+			return AppDomain.CurrentDomain
 					.GetAssemblies()
 					.SelectMany(x => x.GetTypes().Where(y => !y.IsAbstract && y.GetInterfaces().Contains(typeof(ICustomMessageHandler))))
-					.Select(x => (ICustomMessageHandler)Activator.CreateInstance(x))
-					.GroupBy(x => x.HandlingCategory, y => y)
-					.ToDictionary(x => x.Key, y => y.OrderBy(z => z.HandlingPriority).ToList().AsReadOnly()));
+					.Select(x => (ICustomMessageHandler)Activator.CreateInstance(x));
 		}
 	}
 }

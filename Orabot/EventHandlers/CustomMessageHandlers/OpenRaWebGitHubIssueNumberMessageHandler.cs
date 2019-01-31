@@ -11,7 +11,5 @@
 		protected override string RepositoryOwner { get; } = "OpenRA";
 
 		protected override string RepositoryName { get; } = "OpenRAWeb";
-
-		public override int HandlingPriority { get; } = 10;
 	}
 }
