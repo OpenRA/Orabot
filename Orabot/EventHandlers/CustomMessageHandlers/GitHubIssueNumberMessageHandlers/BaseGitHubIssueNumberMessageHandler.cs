@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -7,7 +8,7 @@ using Discord.WebSocket;
 using Orabot.Objects.GitHub;
 using RestSharp;
 
-namespace Orabot.EventHandlers.CustomMessageHandlers
+namespace Orabot.EventHandlers.CustomMessageHandlers.GitHubIssueNumberMessageHandlers
 {
 	internal abstract class BaseGitHubIssueNumberMessageHandler : ICustomMessageHandler
 	{
@@ -40,7 +41,7 @@ namespace Orabot.EventHandlers.CustomMessageHandlers
 		private readonly RegexOptions _regexOptions;
 		private readonly string[] _regexMatchPatterns;
 
-		protected BaseGitHubIssueNumberMessageHandler()
+		internal BaseGitHubIssueNumberMessageHandler(IServiceProvider serviceProvider)
 		{
 			_regexOptions = RegexMatchCase ? RegexOptions.Compiled : RegexOptions.Compiled | RegexOptions.IgnoreCase;
 			_regexMatchPatterns = RegexMatchPatternKeywords.Select(x => RegexMatchPattern.Replace("{keyword}", x)).ToArray();

@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Microsoft.Extensions.DependencyInjection;
 using Orabot.EventHandlers;
+using Orabot.Modules;
 
 namespace Orabot
 {
@@ -12,15 +14,24 @@ namespace Orabot
 	{
 		private static readonly string DiscordBotToken = ConfigurationManager.AppSettings["BotToken"];
 
-		private readonly CommandService _commands;
 		private readonly DiscordSocketClient _client;
+		private readonly CommandService _commands;
+		private readonly IServiceProvider _serviceProvider;
+		private readonly MessageReceivedHandler _messageReceivedHandler;
 
 		public Bot()
 		{
 			_client = new DiscordSocketClient();
 			_commands = new CommandService();
+			_serviceProvider = new ServiceCollection()
+				.AddSingleton(_client)
+				.AddSingleton(_commands)
+				.BuildServiceProvider();
+
+			_messageReceivedHandler = new MessageReceivedHandler(_serviceProvider);
 
 			AttachEventHandlers();
+			RegisterCommandModules();
 		}
 
 		public async Task RunAsync()
@@ -48,7 +59,12 @@ namespace Orabot
 		private void AttachEventHandlers()
 		{
 			_client.Log += LogHandler.Log;
-			_client.MessageReceived += MessageReceivedHandler.HandleMessageReceivedAsync;
+			_client.MessageReceived += _messageReceivedHandler.HandleMessageReceivedAsync;
+		}
+
+		private void RegisterCommandModules()
+		{
+			_commands.AddModuleAsync<GeneralModule>(_serviceProvider);
 		}
 
 		#endregion
