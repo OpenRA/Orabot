@@ -1,4 +1,4 @@
-﻿namespace Orabot.EventHandlers.CustomMessageHandlers
+﻿namespace Orabot.EventHandlers.CustomMessageHandlers.GitHubIssueNumberMessageHandlers
 {
 	internal class OpenRaGitHubIssueNumberMessageHandler : BaseGitHubIssueNumberMessageHandler
 	{

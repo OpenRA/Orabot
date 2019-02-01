@@ -7,7 +7,7 @@ using Discord.WebSocket;
 using Orabot.Objects.GitHub;
 using RestSharp;
 
-namespace Orabot.EventHandlers.CustomMessageHandlers
+namespace Orabot.EventHandlers.CustomMessageHandlers.GitHubIssueNumberMessageHandlers
 {
 	internal abstract class BaseGitHubIssueNumberMessageHandler : ICustomMessageHandler
 	{
