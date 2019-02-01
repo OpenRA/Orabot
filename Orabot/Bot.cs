@@ -20,7 +20,7 @@ namespace Orabot
 		private readonly IServiceProvider _serviceProvider;
 
 		private readonly ILogEventHandler _logEventHandler;
-		private readonly MessageReceivedHandler _messageReceivedHandler;
+		private readonly MessageEventHandler _messageEventHandler;
 
 		public Bot()
 		{
@@ -32,7 +32,7 @@ namespace Orabot
 				.BuildServiceProvider();
 
 			_logEventHandler = new LogEventHandler();
-			_messageReceivedHandler = new MessageReceivedHandler(_serviceProvider);
+			_messageEventHandler = new MessageEventHandler(_serviceProvider);
 
 			AttachEventHandlers();
 			RegisterCommandModules();
@@ -63,7 +63,7 @@ namespace Orabot
 		private void AttachEventHandlers()
 		{
 			_client.Log += _logEventHandler.Log;
-			_client.MessageReceived += _messageReceivedHandler.HandleMessageReceivedAsync;
+			_client.MessageReceived += _messageEventHandler.HandleMessageReceivedAsync;
 		}
 
 		private void RegisterCommandModules()
