@@ -5,9 +5,7 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
-using Orabot.EventHandlers;
 using Orabot.EventHandlers.Abstraction;
-using Orabot.Modules;
 
 namespace Orabot
 {
@@ -15,21 +13,17 @@ namespace Orabot
 	{
 		private static readonly string DiscordBotToken = ConfigurationManager.AppSettings["BotToken"];
 
+		private readonly IServiceProvider _serviceProvider;
+
 		private readonly DiscordSocketClient _client;
 		private readonly CommandService _commands;
-		private readonly IServiceProvider _serviceProvider;
 
 		private readonly ILogEventHandler _logEventHandler;
 		private readonly IMessageEventHandler _messageEventHandler;
 
-		public Bot()
+		public Bot(IServiceProvider serviceProvider)
 		{
-			_serviceProvider = new ServiceCollection()
-				.AddSingleton<DiscordSocketClient>()
-				.AddSingleton<CommandService>()
-				.AddSingleton<ILogEventHandler, LogEventHandler>()
-				.AddSingleton<IMessageEventHandler, MessageEventHandler>()
-				.BuildServiceProvider();
+			_serviceProvider = serviceProvider;
 
 			_client = _serviceProvider.GetService<DiscordSocketClient>();
 			_commands = _serviceProvider.GetService<CommandService>();
@@ -70,7 +64,11 @@ namespace Orabot
 
 		private void RegisterCommandModules()
 		{
-			_commands.AddModuleAsync<GeneralModule>(_serviceProvider);
+			var modules = _serviceProvider.GetServices(typeof(ModuleBase<SocketCommandContext>));
+			foreach (var module in modules)
+			{
+				_commands.AddModuleAsync(module.GetType(), _serviceProvider).Wait();
+			}
 		}
 
 		#endregion
