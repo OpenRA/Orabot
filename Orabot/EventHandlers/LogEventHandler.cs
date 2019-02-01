@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Discord;
+using Orabot.EventHandlers.Abstraction;
 
 namespace Orabot.EventHandlers
 {
-	internal static class LogHandler
+	internal class LogEventHandler : ILogEventHandler
 	{
-		public static Task Log(LogMessage msg)
+		public Task Log(LogMessage msg)
 		{
 			Console.WriteLine(msg.ToString());
 			return Task.CompletedTask;

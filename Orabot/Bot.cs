@@ -6,6 +6,7 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using Orabot.EventHandlers;
+using Orabot.EventHandlers.Abstraction;
 using Orabot.Modules;
 
 namespace Orabot
@@ -17,6 +18,8 @@ namespace Orabot
 		private readonly DiscordSocketClient _client;
 		private readonly CommandService _commands;
 		private readonly IServiceProvider _serviceProvider;
+
+		private readonly ILogEventHandler _logEventHandler;
 		private readonly MessageReceivedHandler _messageReceivedHandler;
 
 		public Bot()
@@ -28,6 +31,7 @@ namespace Orabot
 				.AddSingleton(_commands)
 				.BuildServiceProvider();
 
+			_logEventHandler = new LogEventHandler();
 			_messageReceivedHandler = new MessageReceivedHandler(_serviceProvider);
 
 			AttachEventHandlers();
@@ -58,7 +62,7 @@ namespace Orabot
 
 		private void AttachEventHandlers()
 		{
-			_client.Log += LogHandler.Log;
+			_client.Log += _logEventHandler.Log;
 			_client.MessageReceived += _messageReceivedHandler.HandleMessageReceivedAsync;
 		}
 
