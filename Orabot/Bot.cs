@@ -24,15 +24,17 @@ namespace Orabot
 
 		public Bot()
 		{
-			_client = new DiscordSocketClient();
-			_commands = new CommandService();
 			_serviceProvider = new ServiceCollection()
-				.AddSingleton(_client)
-				.AddSingleton(_commands)
+				.AddSingleton<DiscordSocketClient>()
+				.AddSingleton<CommandService>()
+				.AddSingleton<ILogEventHandler, LogEventHandler>()
+				.AddSingleton<IMessageEventHandler, MessageEventHandler>()
 				.BuildServiceProvider();
 
-			_logEventHandler = new LogEventHandler();
-			_messageEventHandler = new MessageEventHandler(_serviceProvider);
+			_client = _serviceProvider.GetService<DiscordSocketClient>();
+			_commands = _serviceProvider.GetService<CommandService>();
+			_logEventHandler = _serviceProvider.GetService<ILogEventHandler>();
+			_messageEventHandler = _serviceProvider.GetService<IMessageEventHandler>();
 
 			AttachEventHandlers();
 			RegisterCommandModules();

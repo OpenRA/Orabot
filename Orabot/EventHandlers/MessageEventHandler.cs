@@ -14,7 +14,7 @@ namespace Orabot.EventHandlers
 		private readonly IServiceProvider _serviceProvider;
 		private readonly IEnumerable<ICustomMessageHandler> _customMessageHandlers;
 
-		internal MessageEventHandler(IServiceProvider serviceProvider)
+		public MessageEventHandler(IServiceProvider serviceProvider)
 		{
 			_serviceProvider = serviceProvider;
 			_customMessageHandlers = LoadMessageHandlers();
