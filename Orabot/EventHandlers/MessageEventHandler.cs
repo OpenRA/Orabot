@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
+using Microsoft.Extensions.DependencyInjection;
 using Orabot.EventHandlers.Abstraction;
 using Orabot.EventHandlers.CustomMessageHandlers;
 
@@ -11,13 +11,11 @@ namespace Orabot.EventHandlers
 {
 	internal class MessageEventHandler : IMessageEventHandler
 	{
-		private readonly IServiceProvider _serviceProvider;
 		private readonly IEnumerable<ICustomMessageHandler> _customMessageHandlers;
 
 		public MessageEventHandler(IServiceProvider serviceProvider)
 		{
-			_serviceProvider = serviceProvider;
-			_customMessageHandlers = LoadMessageHandlers();
+			_customMessageHandlers = serviceProvider.GetServices<ICustomMessageHandler>();
 		}
 
 		public async Task HandleMessageReceivedAsync(SocketMessage messageParam)
@@ -35,14 +33,6 @@ namespace Orabot.EventHandlers
 					customMessageHandler.Invoke(message);
 				}
 			});
-		}
-
-		private IEnumerable<ICustomMessageHandler> LoadMessageHandlers()
-		{
-			return AppDomain.CurrentDomain
-					.GetAssemblies()
-					.SelectMany(x => x.GetTypes().Where(y => !y.IsAbstract && y.GetInterfaces().Contains(typeof(ICustomMessageHandler))))
-					.Select(x => (ICustomMessageHandler)Activator.CreateInstance(x, _serviceProvider));
 		}
 	}
 }
