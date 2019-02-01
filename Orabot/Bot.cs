@@ -20,7 +20,7 @@ namespace Orabot
 		private readonly IServiceProvider _serviceProvider;
 
 		private readonly ILogEventHandler _logEventHandler;
-		private readonly MessageEventHandler _messageEventHandler;
+		private readonly IMessageEventHandler _messageEventHandler;
 
 		public Bot()
 		{

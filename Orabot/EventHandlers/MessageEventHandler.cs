@@ -4,11 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
+using Orabot.EventHandlers.Abstraction;
 using Orabot.EventHandlers.CustomMessageHandlers;
 
 namespace Orabot.EventHandlers
 {
-	internal class MessageEventHandler
+	internal class MessageEventHandler : IMessageEventHandler
 	{
 		private readonly IServiceProvider _serviceProvider;
 		private readonly IEnumerable<ICustomMessageHandler> _customMessageHandlers;
