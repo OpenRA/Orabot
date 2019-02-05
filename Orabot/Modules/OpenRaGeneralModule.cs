@@ -6,6 +6,7 @@ namespace Orabot.Modules
 	public class OpenRaGeneralModule : ModuleBase<SocketCommandContext>
 	{
 		[Command("supportdir", true)]
+		[Summary("Gives information about the game's support directory with default paths on each supported OS.")]
 		public async Task SupportDir()
 		{
 			await ReplyAsync("```" +
