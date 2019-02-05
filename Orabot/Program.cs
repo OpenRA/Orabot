@@ -7,6 +7,7 @@ using Orabot.EventHandlers.CustomMessageHandlers;
 using Orabot.EventHandlers.CustomMessageHandlers.CommandMessageHandlers;
 using Orabot.EventHandlers.CustomMessageHandlers.GitHubIssueNumberMessageHandlers;
 using Orabot.Modules;
+using RestSharp;
 
 namespace Orabot
 {
@@ -23,6 +24,7 @@ namespace Orabot
 				.AddSingleton<ICustomMessageHandler, OpenRaWebGitHubIssueNumberMessageHandler>()
 				.AddSingleton<ICustomMessageHandler, BaseCommandMessageHandler>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, GeneralModule>()
+				.AddTransient<IRestClient, RestClient>()
 				.BuildServiceProvider();
 
 			using (var bot = new Bot(serviceProvider))

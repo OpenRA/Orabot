@@ -30,7 +30,7 @@ namespace Orabot.EventHandlers.CustomMessageHandlers.GitHubIssueNumberMessageHan
 
 		private static readonly string IssueIconBaseUrl = ConfigurationManager.AppSettings["GitHubIconsBaseUrl"];
 
-		private readonly RestClient _restClient = new RestClient(BaseApiUrl);
+		private readonly IRestClient _restClient;
 		private readonly Dictionary<string, Color> _colorPerStatus = new Dictionary<string, Color>
 		{
 			{ "open", Color.Green },
@@ -41,8 +41,11 @@ namespace Orabot.EventHandlers.CustomMessageHandlers.GitHubIssueNumberMessageHan
 		private readonly RegexOptions _regexOptions;
 		private readonly string[] _regexMatchPatterns;
 
-		internal BaseGitHubIssueNumberMessageHandler(IServiceProvider serviceProvider)
+		internal BaseGitHubIssueNumberMessageHandler(IRestClient restClient)
 		{
+			_restClient = restClient;
+			restClient.BaseUrl = new Uri(BaseApiUrl);
+
 			_regexOptions = RegexMatchCase ? RegexOptions.Compiled : RegexOptions.Compiled | RegexOptions.IgnoreCase;
 			_regexMatchPatterns = RegexMatchPatternKeywords.Select(x => RegexMatchPattern.Replace("{keyword}", x)).ToArray();
 		}
