@@ -1,6 +1,6 @@
 ﻿using RestSharp;
 
-namespace Orabot.EventHandlers.CustomMessageHandlers.GitHubIssueNumberMessageHandlers
+namespace Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers.GitHubIssueNumberMessageHandlers
 {
 	internal class OpenRaGitHubIssueNumberMessageHandler : BaseGitHubIssueNumberMessageHandler
 	{
