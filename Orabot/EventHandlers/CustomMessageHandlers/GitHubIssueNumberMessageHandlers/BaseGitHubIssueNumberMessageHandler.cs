@@ -148,7 +148,7 @@ namespace Orabot.EventHandlers.CustomMessageHandlers.GitHubIssueNumberMessageHan
 
 		private static string GetIssueIconUrl(bool isIssue, string status)
 		{
-			return $"{IssueIconBaseUrl}/{(isIssue ? "issue" : "pr")}-{status}.png";
+			return $"{IssueIconBaseUrl}/github-{(isIssue ? "issue" : "pr")}-{status}.png";
 		}
 	}
 }
