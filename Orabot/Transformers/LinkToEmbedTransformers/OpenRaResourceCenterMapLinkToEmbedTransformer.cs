@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 using Discord;
 using HtmlAgilityPack;
 using RestSharp;
@@ -33,22 +34,27 @@ namespace Orabot.Transformers.LinkToEmbedTransformers
 
 			var players = GetPlayerCount(doc);
 			var size = GetMapSize(doc);
+			var description = GetDescription(doc);
+			var publishDate = GetPublishedDate(doc);
 			var color = GetColor(doc, targetModIdentifier);
+
+			var url = $"{BaseUrl}/maps/{number}";
+			var authorUrl = Uri.EscapeUriString($"{BaseUrl}/maps/author/{author}/");
 
 			var embed = new EmbedBuilder
 			{
 				Title = $"{title}  ({targetModName}, {players} players, {size})",
 				ThumbnailUrl = imageUrl,
-				Url = $"{BaseUrl}/maps/{number}",
-				Description = GetDescription(doc),
+				Url = url,
+				Description = description,
 				Author = new EmbedAuthorBuilder
 				{
 					Name = author,
-					Url = $"{BaseUrl}/maps/author/{author}/"
+					Url = authorUrl
 				},
 				Footer = new EmbedFooterBuilder
 				{
-					Text = $"Published at {GetPublishedDate(doc)}"
+					Text = $"Published on {publishDate}"
 				},
 				Color = color
 			};
@@ -72,7 +78,7 @@ namespace Orabot.Transformers.LinkToEmbedTransformers
 				return false;
 			}
 
-			author = author.Replace("by ", string.Empty);
+			author = HttpUtility.HtmlDecode(author.Replace("by ", string.Empty));
 			return true;
 		}
 
