@@ -1,11 +1,14 @@
-﻿using System.Linq;
+﻿using System.Configuration;
+using System.Linq;
 using System.Threading.Tasks;
 using Discord.Commands;
+using Discord.WebSocket;
 
 namespace Orabot.Modules
 {
 	public class GeneralModule : ModuleBase<SocketCommandContext>
 	{
+		private readonly string[] TrustedRoles = ConfigurationManager.AppSettings["TrustedRoles"].Split(';');
 		private readonly CommandService _commands;
 
 		public GeneralModule(CommandService commands)
@@ -31,7 +34,15 @@ namespace Orabot.Modules
 		[Summary("Repeats what you say.")]
 		public async Task Say([Remainder]string message)
 		{
-			await ReplyAsync(message);
+			var userRoles = (Context.User as SocketGuildUser)?.Roles;
+			if (userRoles != null && userRoles.Select(x => x.Name).Intersect(TrustedRoles).Any())
+			{
+				await ReplyAsync(message);
+			}
+			else
+			{
+				await ReplyAsync("No rights!");
+			}
 		}
 	}
 }
