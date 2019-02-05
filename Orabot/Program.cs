@@ -24,6 +24,7 @@ namespace Orabot
 				.AddSingleton<ICustomMessageHandler, OpenRaWebGitHubIssueNumberMessageHandler>()
 				.AddSingleton<ICustomMessageHandler, BaseCommandMessageHandler>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, GeneralModule>()
+				.AddSingleton<ModuleBase<SocketCommandContext>, OpenRaTraitsModule>()
 				.AddTransient<IRestClient, RestClient>()
 				.BuildServiceProvider();
 
