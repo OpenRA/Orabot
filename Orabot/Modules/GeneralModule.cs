@@ -1,19 +1,37 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Discord.Commands;
 
 namespace Orabot.Modules
 {
 	public class GeneralModule : ModuleBase<SocketCommandContext>
 	{
-		[Command("supportdir", true)]
-		public async Task SupportDir()
+		private readonly CommandService _commands;
+
+		public GeneralModule(CommandService commands)
 		{
-			await ReplyAsync("```" +
-							 "The support directory is where the game keeps the saved settings, maps, replays, logs and mod assets.  The default location is as follows, but one can choose to move it to an arbitrary location by passing an Engine.SupportDir argument to the Game.exe\n\n" +
-			                 "Windows:    \\Users\\<Username>\\My Documents\\OpenRA\\\n" +
-			                 "OS X:        /Users/<username>/Library/Application Support/OpenRA/\n" +
-			                 "GNU/Linux:    /home/<username>/.openra/\n" +
-			                 "```");
+			_commands = commands;
+		}
+
+		[Command("help", true)]
+		[Summary("Lists all available commands.")]
+		public async Task Help()
+		{
+			await ReplyAsync($"```\n{string.Join("\n", _commands.Commands.Select(x => $"{x.Name} - {x.Summary}"))}\n```");
+		}
+
+		[Command("hi")]
+		[Summary("Says hi.")]
+		public async Task Hi()
+		{
+			await ReplyAsync($"Hi, {Context.User.Mention} !");
+		}
+
+		[Command("say")]
+		[Summary("Repeats what you say.")]
+		public async Task Say([Remainder]string message)
+		{
+			await ReplyAsync(message);
 		}
 	}
 }
