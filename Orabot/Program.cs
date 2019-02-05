@@ -5,6 +5,7 @@ using Orabot.EventHandlers;
 using Orabot.EventHandlers.Abstraction;
 using Orabot.EventHandlers.CustomMessageHandlers;
 using Orabot.EventHandlers.CustomMessageHandlers.CommandMessageHandlers;
+using Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers;
 using Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers.GitHubIssueNumberMessageHandlers;
 using Orabot.Modules;
 using RestSharp;
@@ -22,6 +23,7 @@ namespace Orabot
 				.AddSingleton<IMessageEventHandler, MessageEventHandler>()
 				.AddSingleton<ICustomMessageHandler, OpenRaGitHubIssueNumberMessageHandler>()
 				.AddSingleton<ICustomMessageHandler, OpenRaWebGitHubIssueNumberMessageHandler>()
+				.AddSingleton<ICustomMessageHandler, OpenRaResourceCenterMapNumberMessageHandler>()
 				.AddSingleton<ICustomMessageHandler, BaseCommandMessageHandler>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, GeneralModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, OpenRaGeneralModule>()
