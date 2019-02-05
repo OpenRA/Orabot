@@ -5,7 +5,7 @@ using Orabot.EventHandlers;
 using Orabot.EventHandlers.Abstraction;
 using Orabot.EventHandlers.CustomMessageHandlers;
 using Orabot.EventHandlers.CustomMessageHandlers.CommandMessageHandlers;
-using Orabot.EventHandlers.CustomMessageHandlers.GitHubIssueNumberMessageHandlers;
+using Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers.GitHubIssueNumberMessageHandlers;
 using Orabot.Modules;
 using RestSharp;
 
