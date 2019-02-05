@@ -1,4 +1,4 @@
-﻿using System;
+﻿using RestSharp;
 
 namespace Orabot.EventHandlers.CustomMessageHandlers.GitHubIssueNumberMessageHandlers
 {
@@ -10,6 +10,6 @@ namespace Orabot.EventHandlers.CustomMessageHandlers.GitHubIssueNumberMessageHan
 
 		protected override string[] RegexMatchPatternKeywords { get; } = { string.Empty };
 
-		public OpenRaGitHubIssueNumberMessageHandler(IServiceProvider serviceProvider) : base(serviceProvider) { }
+		public OpenRaGitHubIssueNumberMessageHandler(IRestClient restClient) : base(restClient) { }
 	}
 }
