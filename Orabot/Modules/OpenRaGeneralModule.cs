@@ -3,7 +3,7 @@ using Discord.Commands;
 
 namespace Orabot.Modules
 {
-	public class GeneralModule : ModuleBase<SocketCommandContext>
+	public class OpenRaGeneralModule : ModuleBase<SocketCommandContext>
 	{
 		[Command("supportdir", true)]
 		public async Task SupportDir()
