@@ -7,9 +7,11 @@ namespace Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandler
 {
 	internal abstract class BaseNumberParsingMessageHandler : ICustomMessageHandler
 	{
-		protected abstract string[] RegexMatchPatternKeywords { get; }
+		protected abstract Dictionary<string, int> MinimumHandledNumberPerKeyword { get; }
 
-		protected virtual string RegexMatchPattern { get; } = "(^|[^a-zA-Z0-9]){keyword}#[0-9]+";
+		protected virtual string[] RegexMatchPatternKeywords => MinimumHandledNumberPerKeyword.Keys.ToArray();
+
+		protected virtual string RegexMatchPattern { get; } = "(^|[^a-zA-Z0-9])({keyword}#[0-9]+)";
 
 		protected virtual bool RegexMatchCase { get; } = false;
 
@@ -24,7 +26,20 @@ namespace Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandler
 
 		public bool CanHandle(SocketUserMessage message)
 		{
-			return _regexMatchPatterns.Any(regexMatchPattern => Regex.IsMatch(message.Content, regexMatchPattern, _regexOptions));
+			var canHandle = false;
+			var matches = _regexMatchPatterns.SelectMany(regexMatchPattern => Regex.Matches(message.Content, regexMatchPattern, _regexOptions));
+			foreach (var match in matches)
+			{
+				var split = match.Groups.Last().Value.Split('#');
+				var keyword = split[0];
+				var number = int.Parse(split[1]);
+				if (MinimumHandledNumberPerKeyword[keyword] <= number)
+				{
+					canHandle = true;
+				}
+			}
+
+			return canHandle;
 		}
 
 		public abstract void Invoke(SocketUserMessage message);
@@ -36,7 +51,7 @@ namespace Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandler
 				var matches = Regex.Matches(message, regexMatchPattern, _regexOptions);
 				foreach (Match match in matches)
 				{
-					yield return match.Value.Substring(match.Value.LastIndexOf('#') + 1);
+					yield return match.Groups.Last().Value.Split('#')[1];
 				}
 			}
 		}

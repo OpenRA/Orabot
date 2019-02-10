@@ -1,11 +1,15 @@
-﻿using Discord.WebSocket;
+﻿using System.Collections.Generic;
+using Discord.WebSocket;
 using Orabot.Transformers.LinkToEmbedTransformers;
 
 namespace Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers
 {
 	internal class OpenRaResourceCenterMapNumberMessageHandler : BaseNumberParsingMessageHandler
 	{
-		protected override string[] RegexMatchPatternKeywords { get; } = { "map" };
+		protected override Dictionary<string, int> MinimumHandledNumberPerKeyword { get; } = new Dictionary<string, int>
+		{
+			{ "map", 0 }
+		};
 
 		private readonly OpenRaResourceCenterMapLinkToEmbedTransformer _toEmbedTransformer;
 

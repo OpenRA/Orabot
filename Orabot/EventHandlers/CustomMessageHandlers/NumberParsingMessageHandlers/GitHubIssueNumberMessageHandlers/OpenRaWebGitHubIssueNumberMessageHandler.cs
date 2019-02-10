@@ -1,4 +1,5 @@
-﻿using RestSharp;
+﻿using System.Collections.Generic;
+using RestSharp;
 
 namespace Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers.GitHubIssueNumberMessageHandlers
 {
@@ -8,7 +9,10 @@ namespace Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandler
 
 		protected override string RepositoryName { get; } = "OpenRAWeb";
 
-		protected override string[] RegexMatchPatternKeywords { get; } = { "web" };
+		protected override Dictionary<string, int> MinimumHandledNumberPerKeyword { get; } = new Dictionary<string, int>
+		{
+			{ "web", 0 }
+		};
 
 		public OpenRaWebGitHubIssueNumberMessageHandler(IRestClient restClient) : base(restClient) { }
 	}

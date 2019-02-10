@@ -1,4 +1,6 @@
-﻿using RestSharp;
+﻿using System.Collections.Generic;
+using System.Linq;
+using RestSharp;
 
 namespace Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers.GitHubIssueNumberMessageHandlers
 {
@@ -8,7 +10,10 @@ namespace Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandler
 
 		protected override string RepositoryName { get; } = "OpenRAModSDK";
 
-		protected override string[] RegexMatchPatternKeywords { get; } = { "sdk" };
+		protected override Dictionary<string, int> MinimumHandledNumberPerKeyword { get; } = new Dictionary<string, int>
+		{
+			{ "sdk", 0 }
+		};
 
 		public OpenRaModSdkGitHubIssueNumberMessageHandler(IRestClient restClient) : base(restClient) { }
 	}
