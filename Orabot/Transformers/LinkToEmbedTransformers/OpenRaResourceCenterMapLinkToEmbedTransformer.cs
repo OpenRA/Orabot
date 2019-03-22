@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using Discord;
-using HtmlAgilityPack;
+using Orabot.Objects.OpenRaResourceCenter;
 using RestSharp;
 
 namespace Orabot.Transformers.LinkToEmbedTransformers
@@ -10,6 +10,7 @@ namespace Orabot.Transformers.LinkToEmbedTransformers
 	internal class OpenRaResourceCenterMapLinkToEmbedTransformer
 	{
 		private const string BaseUrl = "https://resource.openra.net";
+		private const string ApiIssueRequestTemplate = "map/id/{number}";
 
 		private readonly IRestClient _restClient;
 
@@ -21,40 +22,38 @@ namespace Orabot.Transformers.LinkToEmbedTransformers
 
 		internal Embed CreateEmbed(string number = null)
 		{
-			var web = new HtmlWeb();
-			var doc = web.Load($"{BaseUrl}/maps/{number}");
+			var request = new RestRequest(ApiIssueRequestTemplate, Method.GET);
+			request.AddUrlSegment("number", number);
 
-			if (!TryGetMapTitle(doc, out var title)
-				|| !TryGetAuthor(doc, out var author)
-			    || !TryGetMapPreviewUrl(doc, number, out var imageUrl)
-			    || !TryGetTargetMod(doc, out var targetModIdentifier, out var targetModName))
+			var response = _restClient.Execute<List<MapInfo>>(request);
+			var mapInfo = response.Data?.FirstOrDefault();
+			if (mapInfo?.Title == null || mapInfo.Author == null)
 			{
 				return null;
 			}
 
-			var players = GetPlayerCount(doc);
-			var size = GetMapSize(doc);
-			var description = GetDescription(doc);
-			var publishDate = GetPublishedDate(doc);
-			var color = GetColor(doc, targetModIdentifier);
+			var bounds = mapInfo.Bounds.Split(',').Select(int.Parse).ToArray();
+			var size = $"{bounds[2]}x{bounds[3]}";
+			var color = GetColor($"mod_{mapInfo.GameMod}");
 
 			var url = $"{BaseUrl}/maps/{number}";
-			var authorUrl = Uri.EscapeUriString($"{BaseUrl}/maps/author/{author}/");
+			var authorUrl = Uri.EscapeUriString($"{BaseUrl}/maps/author/{mapInfo.Author}/");
+			var minimapUrl = $"{BaseUrl}/maps/{number}/minimap";
 
 			var embed = new EmbedBuilder
 			{
-				Title = $"{title}  ({targetModName}, {players} players, {size})",
-				ThumbnailUrl = imageUrl,
+				Title = $"{mapInfo.Title}  ({mapInfo.GameMod.ToUpper()}, {mapInfo.Players} players, {size})",
+				ThumbnailUrl = minimapUrl,
 				Url = url,
-				Description = description,
+				Description = mapInfo.Info,
 				Author = new EmbedAuthorBuilder
 				{
-					Name = author,
+					Name = mapInfo.Author,
 					Url = authorUrl
 				},
 				Footer = new EmbedFooterBuilder
 				{
-					Text = $"Published on {publishDate}"
+					Text = $"Published on {mapInfo.PostedOn}"
 				},
 				Color = color
 			};
@@ -64,53 +63,9 @@ namespace Orabot.Transformers.LinkToEmbedTransformers
 
 		#region Private methods
 
-		private bool TryGetMapTitle(HtmlDocument document, out string title)
+		private Color? GetColor(string modIdentifier)
 		{
-			title = document.DocumentNode.SelectNodes("//div[contains(@class, \"title\")]").LastOrDefault()?.InnerText;
-			return !string.IsNullOrWhiteSpace(title);
-		}
-
-		private bool TryGetAuthor(HtmlDocument document, out string author)
-		{
-			author = document.DocumentNode.SelectNodes("//div[contains(@class, \"author\")]").FirstOrDefault()?.InnerText;
-			if (string.IsNullOrWhiteSpace(author))
-			{
-				return false;
-			}
-
-			author = HttpUtility.HtmlDecode(author.Replace("by ", string.Empty));
-			return true;
-		}
-
-		private bool TryGetMapPreviewUrl(HtmlDocument document, string number, out string imageUrl)
-		{
-			var imageUrlNode = document.DocumentNode.SelectNodes("//img[contains(@alt, \"minimap\")]").SingleOrDefault(x => x.Attributes["src"].Value == $"/maps/{number}/minimap");
-			imageUrl = imageUrlNode?.Attributes["src"]?.Value;
-			if (string.IsNullOrWhiteSpace(imageUrl))
-			{
-				return false;
-			}
-
-			imageUrl = $"{BaseUrl}{imageUrl}";
-			return true;
-		}
-
-		private bool TryGetTargetMod(HtmlDocument document, out string targetModIdentifier, out string targetModName)
-		{
-			var targetModNode = document.DocumentNode.Descendants().SingleOrDefault(n => n.NodeType == HtmlNodeType.Element && n.Name == "span" && n.GetAttributeValue("class", string.Empty).StartsWith("mod_"));
-			targetModIdentifier = targetModNode?.GetAttributeValue("class", null);
-			targetModName = targetModNode?.InnerText;
-			return !string.IsNullOrWhiteSpace(targetModIdentifier) && !string.IsNullOrWhiteSpace(targetModName);
-		}
-
-		private Color? GetColor(HtmlDocument document, string modIdentifier)
-		{
-			var stylesheetLinkNode = document.DocumentNode.SelectSingleNode("/html[1]/head[1]/link[1]");
-			var stylesheetLink = stylesheetLinkNode?.Attributes["href"]?.Value;
-			if (string.IsNullOrWhiteSpace(stylesheetLink))
-			{
-				return null;
-			}
+			var stylesheetLink = $"{BaseUrl}/static/style003.css";
 
 			var request = new RestRequest(stylesheetLink, Method.GET);
 			var response = _restClient.Execute(request);
@@ -129,45 +84,6 @@ namespace Orabot.Transformers.LinkToEmbedTransformers
 			var b = Convert.ToInt32(hexColor.Substring(4, 2), 16);
 
 			return new Color(r, g, b);
-		}
-
-		private string GetDescription(HtmlDocument document)
-		{
-			var descriptionNode = document.DocumentNode.Descendants().SingleOrDefault(n => n.NodeType == HtmlNodeType.Element && n.Name == "div" && n.GetAttributeValue("class", string.Empty).StartsWith("map_description"));
-			if (descriptionNode == null)
-			{
-				return null;
-			}
-
-			var description = document.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[3]/div[2]/div[1]/div[1]/div[6]/div[1]/p[1]/p[1]").InnerText;
-			return description.Length > 250 ? description.Substring(0, 250) + "..." : description;
-		}
-
-		private string GetPlayerCount(HtmlDocument document)
-		{
-			var playersNode = document.DocumentNode.Descendants()
-				.SingleOrDefault(n => n.NodeType == HtmlNodeType.Element && n.Name == "div"
-																		 && n.GetAttributeValue("class", string.Empty) == "map_data_label"
-																		 && n.InnerText == "Players:");
-			return playersNode?.NextSibling.InnerText;
-		}
-
-		private string GetMapSize(HtmlDocument document)
-		{
-			var sizeNode = document.DocumentNode.Descendants()
-				.SingleOrDefault(n => n.NodeType == HtmlNodeType.Element && n.Name == "div"
-																		 && n.GetAttributeValue("class", string.Empty) == "map_data_label"
-																		 && n.InnerText == "Size:");
-			return sizeNode?.NextSibling.InnerText;
-		}
-
-		private string GetPublishedDate(HtmlDocument document)
-		{
-			var publishedNode = document.DocumentNode.Descendants()
-				.SingleOrDefault(n => n.NodeType == HtmlNodeType.Element && n.Name == "div"
-																		 && n.GetAttributeValue("class", string.Empty) == "map_data_label"
-																		 && n.InnerText == "Published:");
-			return publishedNode?.NextSibling.InnerText;
 		}
 
 		#endregion
