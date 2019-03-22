@@ -3,17 +3,17 @@ using RestSharp;
 
 namespace Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers.GitHubIssueNumberMessageHandlers
 {
-	internal class OpenRaModSdkGitHubIssueNumberMessageHandler : BaseGitHubIssueNumberMessageHandler
+	internal class OrabotGitHubIssueNumberMessageHandler : BaseGitHubIssueNumberMessageHandler
 	{
 		protected override string RepositoryOwner { get; } = "OpenRA";
 
-		protected override string RepositoryName { get; } = "OpenRAModSDK";
+		protected override string RepositoryName { get; } = "Orabot";
 
 		protected override Dictionary<string, int> MinimumHandledNumberPerKeyword { get; } = new Dictionary<string, int>
 		{
-			{ "sdk", 0 }
+			{ "bot", 0 }
 		};
 
-		public OpenRaModSdkGitHubIssueNumberMessageHandler(IRestClient restClient) : base(restClient) { }
+		public OrabotGitHubIssueNumberMessageHandler(IRestClient restClient) : base(restClient) { }
 	}
 }
