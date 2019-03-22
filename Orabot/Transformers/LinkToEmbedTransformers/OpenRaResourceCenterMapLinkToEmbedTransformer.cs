@@ -42,7 +42,7 @@ namespace Orabot.Transformers.LinkToEmbedTransformers
 
 			var embed = new EmbedBuilder
 			{
-				Title = $"{mapInfo.Title}  ({mapInfo.GameMod.ToUpper()}, {mapInfo.Players} players, {size})",
+				Title = $"{mapInfo.Title}\n({mapInfo.GameMod.ToUpper()}, {mapInfo.Players} players, {size})",
 				ThumbnailUrl = minimapUrl,
 				Url = url,
 				Description = mapInfo.Info,
