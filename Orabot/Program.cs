@@ -24,6 +24,7 @@ namespace Orabot
 				.AddSingleton<ILogEventHandler, LogEventHandler>()
 				.AddSingleton<IMessageEventHandler, MessageEventHandler>()
 				.AddSingleton<ICustomMessageHandler, OpenRaGitHubIssueNumberMessageHandler>()
+				.AddSingleton<ICustomMessageHandler, OpenRaModSdkGitHubIssueNumberMessageHandler>()
 				.AddSingleton<ICustomMessageHandler, OpenRaWebGitHubIssueNumberMessageHandler>()
 				.AddSingleton<ICustomMessageHandler, OpenRaResourceCenterMapNumberMessageHandler>()
 				.AddSingleton<ICustomMessageHandler, OpenRaResourceCenterMapLinkMessageHandler>()
