@@ -37,6 +37,7 @@ namespace Orabot.Transformers.LinkToEmbedTransformers
 			var color = GetColor($"mod_{mapInfo.GameMod}");
 
 			var url = $"{BaseUrl}/maps/{number}";
+			var description = mapInfo.Info.Length > 250 ? mapInfo.Info.Substring(0, 250) + "..." : mapInfo.Info;
 			var authorUrl = Uri.EscapeUriString($"{BaseUrl}/maps/author/{mapInfo.Author}/");
 			var minimapUrl = $"{BaseUrl}/maps/{number}/minimap";
 
@@ -45,7 +46,7 @@ namespace Orabot.Transformers.LinkToEmbedTransformers
 				Title = $"{mapInfo.Title}\n({mapInfo.GameMod.ToUpper()}, {mapInfo.Players} players, {size})",
 				ThumbnailUrl = minimapUrl,
 				Url = url,
-				Description = mapInfo.Info,
+				Description = description,
 				Author = new EmbedAuthorBuilder
 				{
 					Name = mapInfo.Author,
