@@ -30,7 +30,7 @@ namespace Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandler
 			var matches = _regexMatchPatterns.SelectMany(regexMatchPattern => Regex.Matches(message.Content, regexMatchPattern, _regexOptions));
 			foreach (var match in matches)
 			{
-				var split = match.Groups.Last().Value.Split('#');
+				var split = match.Groups.Values.Last().Value.Split('#');
 				var keyword = split[0];
 				var number = int.Parse(split[1]);
 				if (MinimumHandledNumberPerKeyword[keyword] <= number)
@@ -51,7 +51,7 @@ namespace Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandler
 				var matches = Regex.Matches(message, regexMatchPattern, _regexOptions);
 				foreach (Match match in matches)
 				{
-					yield return match.Groups.Last().Value.Split('#')[1];
+					yield return match.Groups.Values.Last().Value.Split('#')[1];
 				}
 			}
 		}
