@@ -8,7 +8,7 @@ namespace Orabot.Modules
 {
 	public class GeneralModule : ModuleBase<SocketCommandContext>
 	{
-		private readonly string[] _trustedRoles = ConfigurationManager.AppSettings["TrustedRoles"].Split(';');
+		private readonly string[] _trustedRoles = ConfigurationManager.AppSettings["TrustedRoles"].Split(';').Select(x => x.Trim()).ToArray();
 		private readonly CommandService _commands;
 
 		public GeneralModule(CommandService commands)

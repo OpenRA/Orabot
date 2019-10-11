@@ -36,6 +36,7 @@ namespace Orabot
 				.AddSingleton<ModuleBase<SocketCommandContext>, OpenRaGeneralModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, OpenRaTraitsModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, OpenRaWeaponsModule>()
+				.AddSingleton<ModuleBase<SocketCommandContext>, RoleManagementModule>()
 				.AddSingleton<OpenRaResourceCenterMapLinkToEmbedTransformer>()
 				.AddTransient<IRestClient, RestClient>()
 				.BuildServiceProvider();
