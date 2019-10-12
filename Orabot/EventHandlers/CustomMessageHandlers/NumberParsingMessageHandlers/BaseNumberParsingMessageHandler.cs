@@ -32,8 +32,7 @@ namespace Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandler
 			{
 				var split = match.Groups.Values.Last().Value.Split('#');
 				var keyword = split[0];
-				var number = int.Parse(split[1]);
-				if (MinimumHandledNumberPerKeyword[keyword] <= number)
+				if (int.TryParse(split[1], out var number) && MinimumHandledNumberPerKeyword[keyword] <= number)
 				{
 					canHandle = true;
 				}
