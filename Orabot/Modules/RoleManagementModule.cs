@@ -13,8 +13,15 @@ namespace Orabot.Modules
 
 		[Command("role")]
 		[Summary("Adds or removes a specified role to the user.")]
-		public async Task Say([Remainder]string roleName)
+		public async Task Role([Remainder]string roleName = "")
 		{
+			if (string.IsNullOrWhiteSpace(roleName))
+			{
+				await ReplyAsync("Command usage: `]role <roleName>`, where `<roleName>` is one of the following: " +
+				                 $"{string.Join(',', _freelyAssignedRoles.Select(x => $"`{x}`"))}");
+				return;
+			}
+
 			var targetRole = Context.Guild.Roles.FirstOrDefault(x => x.Name == roleName);
 			if (targetRole == null)
 			{
