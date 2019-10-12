@@ -8,7 +8,7 @@ namespace Orabot.Modules
 {
 	public class GeneralModule : ModuleBase<SocketCommandContext>
 	{
-		private readonly string[] TrustedRoles = ConfigurationManager.AppSettings["TrustedRoles"].Split(';');
+		private readonly string[] _trustedRoles = ConfigurationManager.AppSettings["TrustedRoles"].Split(';').Select(x => x.Trim()).ToArray();
 		private readonly CommandService _commands;
 
 		public GeneralModule(CommandService commands)
@@ -35,7 +35,7 @@ namespace Orabot.Modules
 		public async Task Say([Remainder]string message)
 		{
 			var userRoles = (Context.User as SocketGuildUser)?.Roles;
-			if (userRoles != null && userRoles.Select(x => x.Name).Intersect(TrustedRoles).Any())
+			if (userRoles != null && userRoles.Select(x => x.Name).Intersect(_trustedRoles).Any())
 			{
 				await ReplyAsync(message);
 			}
