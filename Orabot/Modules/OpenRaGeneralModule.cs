@@ -72,5 +72,21 @@ namespace Orabot.Modules
 
 			await ReplyAsync(string.Empty, false, embedBuilder.Build());
 		}
+
+		[Command("utility")]
+		[Summary("Prints information about the OpenRA Utility.")]
+		public async Task Utility()
+		{
+			const string utilityWikiUrl = "https://github.com/OpenRA/OpenRA/wiki/Utility";
+
+			var embedBuilder = new EmbedBuilder
+			{
+				Description = $"The OpenRA [Utility]({utilityWikiUrl}) is an executable that ships with the engine.\n" +
+				              $"It is run through the command line to perform a wide range of operations like manipulating game assets " +
+				              $"and checking mod YAML files for errors."
+			};
+
+			await ReplyAsync(string.Empty, false, embedBuilder.Build());
+		}
 	}
 }
