@@ -10,6 +10,7 @@ namespace Orabot.Modules
 	public class OpenRaWeaponsModule : ModuleBase<SocketCommandContext>
 	{
 		private const string WeaponsPageUrl = "https://github.com/OpenRA/OpenRA/wiki/Weapons";
+		private const string WeaponsPlaytestPageUrl = "https://github.com/OpenRA/OpenRA/wiki/Weapons-(playtest)";
 
 		private static readonly string OpenRaIconUrl = ConfigurationManager.AppSettings["OpenRaFaviconUrl"];
 
@@ -26,6 +27,14 @@ namespace Orabot.Modules
 		public async Task Weapons(string weaponName = null)
 		{
 			var embed = BuildWeaponsPageEmbed(WeaponsPageUrl, weaponName);
+			await ReplyAsync("", false, embed);
+		}
+
+		[Command("weapons-pt")]
+		[Summary("Provides a link to the GitHub playtest Weapons Wiki page. Can be used with an optional weapon name to link directly.")]
+		public async Task WeaponsPt(string weaponName = null)
+		{
+			var embed = BuildWeaponsPageEmbed(WeaponsPlaytestPageUrl, weaponName);
 			await ReplyAsync("", false, embed);
 		}
 
