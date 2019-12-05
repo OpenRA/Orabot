@@ -12,6 +12,7 @@ using Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers.Gi
 using Orabot.Modules;
 using Orabot.Transformers.LinkToEmbedTransformers;
 using RestSharp;
+using SteakBot.Core.TypeReaders;
 
 namespace Orabot
 {
@@ -22,6 +23,7 @@ namespace Orabot
 			var serviceProvider = new ServiceCollection()
 				.AddSingleton<DiscordSocketClient>()
 				.AddSingleton<CommandService>()
+				.AddSingleton<BaseTypeReader, UriTypeReader>()
 				.AddSingleton<ILogEventHandler, LogEventHandler>()
 				.AddSingleton<IMessageEventHandler, MessageEventHandler>()
 				.AddSingleton<ICustomMessageHandler, OpenRaGitHubIssueNumberMessageHandler>()
