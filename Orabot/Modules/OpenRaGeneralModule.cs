@@ -8,7 +8,7 @@ namespace Orabot.Modules
 	public class OpenRaGeneralModule : ModuleBase<SocketCommandContext>
 	{
 		[Command("supportdir", true)]
-		[Summary("Gives information about the game's support directory with default paths on each supported OS.")]
+		[Summary("Prints information about the game's support directory with default paths on each supported OS.")]
 		public async Task SupportDir()
 		{
 			await ReplyAsync("```" +
@@ -54,6 +54,36 @@ namespace Orabot.Modules
 				Description = $"[The OpenRA book]({bookUrl}) aims to teach new players how to play and existing players how to get better.\n" +
 				              "It also covers creating new games on the OpenRA engine and how the engine works under-the-hood.\n" +
 				              $"You can find the official repository for the book [on GitHub]({bookRepoUrl})."
+			};
+
+			await ReplyAsync(string.Empty, false, embedBuilder.Build());
+		}
+
+		[Command("sdk")]
+		[Summary("Prints information about the OpenRA ModSDK.")]
+		public async Task Sdk()
+		{
+			const string sdkRepoUrl = "https://github.com/OpenRA/OpenRAModSDK";
+
+			var embedBuilder = new EmbedBuilder
+			{
+				Description = $"[The OpenRA ModSDK]({sdkRepoUrl}) helps you build your own games using the OpenRA engine."
+			};
+
+			await ReplyAsync(string.Empty, false, embedBuilder.Build());
+		}
+
+		[Command("utility")]
+		[Summary("Prints information about the OpenRA Utility.")]
+		public async Task Utility()
+		{
+			const string utilityWikiUrl = "https://github.com/OpenRA/OpenRA/wiki/Utility";
+
+			var embedBuilder = new EmbedBuilder
+			{
+				Description = $"The OpenRA [Utility]({utilityWikiUrl}) is an executable that ships with the engine.\n" +
+				              $"It is run through the command line to perform a wide range of operations like manipulating game assets " +
+				              $"and checking mod YAML files for errors."
 			};
 
 			await ReplyAsync(string.Empty, false, embedBuilder.Build());
