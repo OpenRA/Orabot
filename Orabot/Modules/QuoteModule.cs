@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
@@ -10,11 +11,21 @@ namespace Orabot.Modules
 {
 	public class QuoteModule : ModuleBase<SocketCommandContext>
 	{
+		private readonly string[] _trustedRoles = ConfigurationManager.AppSettings["TrustedRoles"].Split(';').Select(x => x.Trim()).ToArray();
+
+
 		[Command("quote")]
-		[Summary("Quotes an arbitrary message with optional author, source channel and timestamp.")]
+		[Summary("Quotes an arbitrary message with optional author, source channel and timestamp. Limited usage for some roles only.")]
 		[Remarks("Usage: `quote [#channel_name]\n[author][time]\n<text to quote>`")]
 		public async Task Quote([Remainder]string message)
 		{
+			var userRoles = (Context.User as SocketGuildUser)?.Roles;
+			if (userRoles == null || !userRoles.Select(x => x.Name).Intersect(_trustedRoles).Any())
+			{
+				await ReplyAsync("No rights!");
+				return;
+			}
+
 			await Context.Channel.DeleteMessageAsync(Context.Message);
 
 			var embed = CreateEmbed(message);
