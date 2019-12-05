@@ -6,6 +6,7 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using Orabot.EventHandlers.Abstraction;
+using SteakBot.Core.TypeReaders;
 
 namespace Orabot
 {
@@ -64,6 +65,12 @@ namespace Orabot
 
 		private void RegisterCommandModules()
 		{
+			var typeReaders = _serviceProvider.GetServices<BaseTypeReader>();
+			foreach (var typeReader in typeReaders)
+			{
+				_commands.AddTypeReader(typeReader.SupportedType, typeReader);
+			}
+
 			var modules = _serviceProvider.GetServices(typeof(ModuleBase<SocketCommandContext>));
 			foreach (var module in modules)
 			{
