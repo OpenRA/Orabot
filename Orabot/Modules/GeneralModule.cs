@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Discord.Commands;
 using Discord.WebSocket;
+using Orabot.Extensions;
 
 namespace Orabot.Modules
 {
@@ -20,7 +21,9 @@ namespace Orabot.Modules
 		[Summary("Lists all available commands.")]
 		public async Task Help()
 		{
-			await ReplyAsync($"```\n{string.Join("\n", _commands.Commands.Select(x => $"{x.Name} - {x.Summary}"))}\n```");
+			// This is set up to use a more streamlined look than previous versions and takes inspiration from the Markdown example at
+			// https://gist.github.com/Almeeida/41a664d8d5f3a8855591c2f1e0e07b19
+			await ReplyAsync($"```md\n{ string.Join("\n", _commands.Commands.Select(x => x.CustomToString())) }\n```");
 		}
 
 		[Command("hi")]
