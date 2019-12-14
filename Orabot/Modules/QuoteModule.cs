@@ -395,12 +395,13 @@ namespace Orabot.Modules
 			var authorName = (author as SocketGuildUser)?.Nickname ?? author.Username;
 			var referredChannel = message.Channel;
 			var timestamp = message.Timestamp.ToString();
+			var descriptionText = $"{message.Content}\n\n[Original message]({message.GetJumpUrl()})";
 
 			var embed = new EmbedBuilder
 			{
 				Color = Color.Blue,
 				Author = BuildAuthorEmbed(author, authorName),
-				Description = message.Content,
+				Description = descriptionText,
 				Footer = BuildFooterEmbed(referredChannel, timestamp)
 			};
 
@@ -414,12 +415,13 @@ namespace Orabot.Modules
 			var authorName = (author as SocketGuildUser)?.Nickname ?? author.Username;
 			var referredChannel = message.Channel;
 			var timestamp = message.Timestamp.ToString();
+			var descriptionText = $"{string.Join("\n", messages.Select(x => x.Content))}\n\n[Original message]({message.GetJumpUrl()})";
 
 			var embed = new EmbedBuilder
 			{
 				Color = Color.Blue,
 				Author = BuildAuthorEmbed(author, authorName),
-				Description = string.Join("\n", messages.Select(x => x.Content)),
+				Description = descriptionText,
 				Footer = BuildFooterEmbed(referredChannel, timestamp)
 			};
 
