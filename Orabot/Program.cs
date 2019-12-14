@@ -11,8 +11,8 @@ using Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers;
 using Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers.GitHubIssueNumberMessageHandlers;
 using Orabot.Modules;
 using Orabot.Transformers.LinkToEmbedTransformers;
+using Orabot.TypeReaders;
 using RestSharp;
-using SteakBot.Core.TypeReaders;
 
 namespace Orabot
 {

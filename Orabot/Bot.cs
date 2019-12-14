@@ -6,7 +6,7 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using Orabot.EventHandlers.Abstraction;
-using SteakBot.Core.TypeReaders;
+using Orabot.TypeReaders;
 
 namespace Orabot
 {

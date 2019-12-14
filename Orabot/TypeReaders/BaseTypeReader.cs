@@ -1,7 +1,7 @@
 ﻿using System;
 using Discord.Commands;
 
-namespace SteakBot.Core.TypeReaders
+namespace Orabot.TypeReaders
 {
     public abstract class BaseTypeReader : TypeReader
     {

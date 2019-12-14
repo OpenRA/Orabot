@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Discord.Commands;
 
-namespace SteakBot.Core.TypeReaders
+namespace Orabot.TypeReaders
 {
     public class UriTypeReader : BaseTypeReader
     {
