@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Orabot.Objects;
 
 namespace Orabot.Modules
 {
@@ -60,6 +61,52 @@ namespace Orabot.Modules
 			if (!messages.Any())
 			{
 				await ReplyAsync("No such messages found in the current channel.");
+				return;
+			}
+
+			await Context.Channel.DeleteMessageAsync(Context.Message, RequestOptions.Default);
+
+			var embed = CreateEmbed(messages);
+			await SendQuote(Context.User, embed);
+		}
+
+		[Command("quote")]
+		[Summary("Quotes a single message specified by Channel ID and Message ID.")]
+		[Remarks("Usage: `quote <message_identifier>`")]
+		public async Task Quote(DiscordMessageIdentifier messageIdentifier)
+		{
+			if (!TryGetChannel(Context.Guild, messageIdentifier.ChannelId, out var channel))
+			{
+				return;
+			}
+
+			var message = await channel.GetMessageAsync(messageIdentifier.MessageId);
+			if (message == null)
+			{
+				await ReplyAsync("No such message found in the specified channel.");
+				return;
+			}
+
+			await Context.Channel.DeleteMessageAsync(Context.Message, RequestOptions.Default);
+
+			var embed = CreateEmbed(message);
+			await SendQuote(Context.User, embed);
+		}
+
+		[Command("quote")]
+		[Summary("Quotes a single message specified by Channel ID and Message ID.")]
+		[Remarks("Usage: `quote <firstMessageIdentifier> <lastMessageIdentifier>`")]
+		public async Task Quote(DiscordMessageIdentifier firstMessageIdentifier, DiscordMessageIdentifier lastMessageIdentifier)
+		{
+			if (!TryGetChannel(Context.Guild, firstMessageIdentifier.ChannelId, out var channel))
+			{
+				return;
+			}
+
+			var messages = await GetMessageList(channel, firstMessageIdentifier.MessageId, lastMessageIdentifier.MessageId);
+			if (!messages.Any())
+			{
+				await ReplyAsync("No such messages found in the specified channel.");
 				return;
 			}
 
