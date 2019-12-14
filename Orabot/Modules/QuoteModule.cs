@@ -350,12 +350,17 @@ namespace Orabot.Modules
 
 			if (!string.IsNullOrEmpty(timestamp))
 			{
-				footerText = $"  -  {timestamp}";
+				footerText = timestamp;
 			}
 
 			if (referredChannel != null)
 			{
-				footerText += $", in #{referredChannel.Name}";
+				if (!string.IsNullOrEmpty(timestamp))
+				{
+					footerText += ", ";
+				}
+
+				footerText += $"in #{referredChannel.Name}";
 			}
 
 			return new EmbedFooterBuilder
@@ -394,7 +399,7 @@ namespace Orabot.Modules
 			var author = message.Author;
 			var authorName = (author as SocketGuildUser)?.Nickname ?? author.Username;
 			var referredChannel = message.Channel;
-			var timestamp = message.Timestamp.ToString();
+			var timestamp = message.Timestamp.ToString("s").Replace('T', ' ') + " UTC";
 			var descriptionText = $"{message.Content}\n\n[Original message]({message.GetJumpUrl()})";
 
 			var embed = new EmbedBuilder
@@ -414,7 +419,7 @@ namespace Orabot.Modules
 			var author = message.Author;
 			var authorName = (author as SocketGuildUser)?.Nickname ?? author.Username;
 			var referredChannel = message.Channel;
-			var timestamp = message.Timestamp.ToString();
+			var timestamp = message.Timestamp.ToString("s").Replace('T', ' ') + " UTC";
 			var descriptionText = $"{string.Join("\n", messages.Select(x => x.Content))}\n\n[Original message]({message.GetJumpUrl()})";
 
 			var embed = new EmbedBuilder
