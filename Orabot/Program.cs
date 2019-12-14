@@ -24,6 +24,7 @@ namespace Orabot
 				.AddSingleton<DiscordSocketClient>()
 				.AddSingleton<CommandService>()
 				.AddSingleton<BaseTypeReader, UriTypeReader>()
+				.AddSingleton<BaseTypeReader, DiscordMessageIdentifierTypeReader>()
 				.AddSingleton<ILogEventHandler, LogEventHandler>()
 				.AddSingleton<IMessageEventHandler, MessageEventHandler>()
 				.AddSingleton<ICustomMessageHandler, OpenRaGitHubIssueNumberMessageHandler>()
