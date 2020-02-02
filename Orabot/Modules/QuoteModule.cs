@@ -14,7 +14,6 @@ namespace Orabot.Modules
 	{
 		private readonly string[] _trustedRoles = ConfigurationManager.AppSettings["TrustedRoles"].Split(';').Select(x => x.Trim()).ToArray();
 
-
 		[Command("quote")]
 		[Summary("Quotes an arbitrary message with optional author, source channel and timestamp. Limited usage for some roles only.")]
 		[Remarks("Usage: `quote [#channel_name]\n[author][time]\n<text to quote>`")]
@@ -34,14 +33,13 @@ namespace Orabot.Modules
 		}
 
 		[Command("quote")]
-		[Summary("Quotes a single message from the current channel, specified by Message ID.")]
+		[Summary("Quotes a single message specified by Message ID.")]
 		[Remarks("Usage: `quote <messageId>`")]
 		public async Task Quote(ulong messageId)
 		{
-			var message = await Context.Channel.GetMessageAsync(messageId);
-			if (message == null)
+			if (!TryGetMessage(Context.Guild, messageId, out var message, Context.Channel as SocketTextChannel))
 			{
-				await ReplyAsync("No such message found in the current channel.");
+				await ReplyAsync("No such message found in this server.");
 				return;
 			}
 
@@ -53,14 +51,20 @@ namespace Orabot.Modules
 
 		[Command("quote")]
 		[Summary("Quotes a group of messages specified by Message ID of the first and last messages. " +
-		         "Only takes messages that belong to the author of the first one.")]
+				 "Only takes messages that belong to the author of the first one.")]
 		[Remarks("Usage: `quote <firstMessageId> <lastMessageId>`")]
 		public async Task Quote(ulong firstMessageId, ulong lastMessageId)
 		{
-			var messages = await GetMessageList(Context.Channel as SocketTextChannel, firstMessageId, lastMessageId);
+			if (!TryGetMessage(Context.Guild, firstMessageId, out var message, Context.Channel as SocketTextChannel))
+			{
+				await ReplyAsync("No such message found in this server.");
+				return;
+			}
+
+			var messages = await GetMessageList(message.Channel as SocketTextChannel, firstMessageId, lastMessageId);
 			if (!messages.Any())
 			{
-				await ReplyAsync("No such messages found in the current channel.");
+				await ReplyAsync("No such messages found in the target channel.");
 				return;
 			}
 
@@ -278,9 +282,39 @@ namespace Orabot.Modules
 			return false;
 		}
 
+		private bool TryGetMessage(SocketGuild guild, ulong messageId, out IMessage message, SocketTextChannel preferredChannel = null)
+		{
+			var channels = new List<SocketTextChannel>(guild.TextChannels);
+			if (preferredChannel != null)
+			{
+				channels.Insert(0, preferredChannel);
+			}
+
+			foreach (var channel in channels)
+			{
+				if (!channel.Users.Any(x => x.Username == Context.Client.CurrentUser.Username && x.DiscriminatorValue == Context.Client.CurrentUser.DiscriminatorValue))
+				{
+					continue;
+				}
+
+				message = channel.GetMessageAsync(messageId).Result;
+				if (message != null)
+				{
+					return true;
+				}
+			}
+
+			message = null;
+			return false;
+		}
+
 		private async Task<List<IMessage>> GetMessageList(SocketTextChannel channel, ulong firstMessageId, ulong lastMessageId)
 		{
 			var firstMessage = await channel.GetMessageAsync(firstMessageId);
+			if (firstMessage == null)
+			{
+				return new List<IMessage>();
+			}
 
 			var downloadedMessages = channel.GetMessagesAsync(firstMessageId, Direction.After, 25);
 			var firstPage = (await downloadedMessages.First()).ToArray();
