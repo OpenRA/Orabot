@@ -10,6 +10,7 @@ using Orabot.EventHandlers.CustomMessageHandlers.ModTimersMessageHandlers;
 using Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers;
 using Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers.GitHubIssueNumberMessageHandlers;
 using Orabot.Modules;
+using Orabot.Services;
 using Orabot.Transformers.LinkToEmbedTransformers;
 using Orabot.TypeReaders;
 using RestSharp;
@@ -41,6 +42,7 @@ namespace Orabot
 				.AddSingleton<ModuleBase<SocketCommandContext>, OpenRaWeaponsModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, QuoteModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, RoleManagementModule>()
+				.AddSingleton<QuotingService>()
 				.AddSingleton<OpenRaResourceCenterMapLinkToEmbedTransformer>()
 				.AddTransient<IRestClient, RestClient>()
 				.BuildServiceProvider();
