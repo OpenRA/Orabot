@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Orabot.EventHandlers;
 using Orabot.EventHandlers.Abstraction;
 using Orabot.EventHandlers.CustomMessageHandlers;
+using Orabot.EventHandlers.CustomMessageHandlers.AttachmentMessageHandlers;
 using Orabot.EventHandlers.CustomMessageHandlers.CommandMessageHandlers;
 using Orabot.EventHandlers.CustomMessageHandlers.LinkParsingMessageHandlers;
 using Orabot.EventHandlers.CustomMessageHandlers.ModTimersMessageHandlers;
@@ -12,6 +13,8 @@ using Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers.Gi
 using Orabot.Modules;
 using Orabot.Services;
 using Orabot.Transformers.LinkToEmbedTransformers;
+using Orabot.Transformers.Replays.ReplayDataToEmbedTransformers;
+using Orabot.Transformers.Replays.ReplayToReplayDataTransformers;
 using Orabot.TypeReaders;
 using RestSharp;
 
@@ -34,6 +37,7 @@ namespace Orabot
 				.AddSingleton<ICustomMessageHandler, OrabotGitHubIssueNumberMessageHandler>()
 				.AddSingleton<ICustomMessageHandler, OpenRaResourceCenterMapNumberMessageHandler>()
 				.AddSingleton<ICustomMessageHandler, OpenRaResourceCenterMapLinkMessageHandler>()
+				.AddSingleton<ICustomMessageHandler, ReplayFileAttachmentMessageHandler>()
 				.AddSingleton<ICustomMessageHandler, BaseCommandMessageHandler>()
 				.AddSingleton<ICustomMessageHandler, BaseModTimerMessageHandler>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, GeneralModule>()
@@ -44,7 +48,10 @@ namespace Orabot
 				.AddSingleton<ModuleBase<SocketCommandContext>, RoleManagementModule>()
 				.AddSingleton<QuotingService>()
 				.AddSingleton<OpenRaResourceCenterMapLinkToEmbedTransformer>()
+				.AddSingleton<AttachmentReplayToUtilityMetadataTransformer>()
+				.AddSingleton<UtilityReplayMetadataToEmbedTransformer>()
 				.AddTransient<IRestClient, RestClient>()
+				.AddTransient<YamlDotNet.Serialization.Deserializer>()
 				.BuildServiceProvider();
 
 			using (var bot = new Bot(serviceProvider))

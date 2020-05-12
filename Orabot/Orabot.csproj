@@ -9,6 +9,7 @@
     <PackageReference Include="Discord.Net" Version="2.1.1" />
     <PackageReference Include="RestSharp" Version="106.6.10" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.6.0" />
+    <PackageReference Include="YamlDotNet" Version="8.1.1" />
   </ItemGroup>
 
 </Project>
