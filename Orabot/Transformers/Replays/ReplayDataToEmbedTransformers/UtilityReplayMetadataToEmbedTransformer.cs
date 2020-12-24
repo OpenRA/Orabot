@@ -96,7 +96,7 @@ namespace Orabot.Transformers.Replays.ReplayDataToEmbedTransformers
 			var embed = new EmbedBuilder
 			{
 				Title = replayMetadata.FileName,
-				ThumbnailUrl = mapEmbed?.Thumbnail?.Url ?? null,
+				ThumbnailUrl = mapEmbed?.Thumbnail?.Url,
 				Url = replayLink,
 				Description = $"This is a {string.Join("vs", teamsCountStr)} game. || {winnerString} ||",
 				Footer = new EmbedFooterBuilder

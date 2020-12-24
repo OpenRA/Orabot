@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Runtime.InteropServices;
 using Orabot.Objects.OpenRaReplay;
 using YamlDotNet.Serialization;
 
@@ -17,7 +18,6 @@ namespace Orabot.Transformers.Replays.ReplayToReplayDataTransformers
 
 		public AttachmentReplayToUtilityMetadataTransformer(Deserializer yamlDeserializer)
 		{
-			
 			_yamlDeserializer = yamlDeserializer;
 		}
 
@@ -28,13 +28,18 @@ namespace Orabot.Transformers.Replays.ReplayToReplayDataTransformers
 			using var webClient = new WebClient();
 			webClient.DownloadFile(attachment.Url, filePath);
 
+			var output = GetUtilityOutput(filePath);
+
+			return _yamlDeserializer.Deserialize<ReplayMetadata>(output);
+		}
+
+		#region Private methods
+
+		private string GetUtilityOutput(string filePath)
+		{
 			using var process = new Process
 			{
-				StartInfo = new ProcessStartInfo(OpenRaUtilityPath, $"d2k --replay-metadata \"{filePath}\"")
-				{
-					UseShellExecute = false,
-					RedirectStandardOutput = true
-				}
+				StartInfo = GetProcessStartInfo(filePath)
 			};
 
 			process.Start();
@@ -49,7 +54,36 @@ namespace Orabot.Transformers.Replays.ReplayToReplayDataTransformers
 			output = output.Replace("\t", "  ");
 			output = output.Replace("{DEV_VERSION}", "DEV_VERSION");
 
-			return _yamlDeserializer.Deserialize<ReplayMetadata>(output);
+			return output;
 		}
+
+		private static ProcessStartInfo GetProcessStartInfo(string filePath)
+		{
+			string fileName;
+			string arguments;
+
+			// Workaround to mono problems inspired by https://github.com/mono/mono/issues/17204#issuecomment-697329095
+			// This will likely go away once OpenRA switches to .NET 5.
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+			{
+				fileName = OpenRaUtilityPath;
+				arguments = $"d2k --replay-metadata \"{filePath}\"";
+			}
+			else
+			{
+				fileName = "mono";
+				arguments = $"{OpenRaUtilityPath} d2k --replay-metadata \"{filePath}\"";
+			}
+
+			return new ProcessStartInfo
+			{
+				FileName = fileName,
+				Arguments = arguments,
+				UseShellExecute = false,
+				RedirectStandardOutput = true
+			};
+		}
+
+		#endregion
 	}
 }
