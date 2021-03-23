@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
@@ -134,13 +135,22 @@ namespace Orabot.Services
 			var referredChannel = message.Channel;
 			var timestamp = message.Timestamp.ToString("s").Replace('T', ' ') + " UTC";
 			var descriptionText = $"{message.Content}\n\n[Original message]({message.GetJumpUrl()})";
+			var imageUrl = message.Attachments.FirstOrDefault()?.Url;
+			if (imageUrl == null)
+			{
+				if (Uri.TryCreate(message.Content, UriKind.Absolute, out var url))
+				{
+					imageUrl = url.AbsoluteUri;
+				}
+			}
 
 			var embed = new EmbedBuilder
 			{
 				Color = Color.Blue,
 				Author = BuildAuthorEmbed(author, authorName),
 				Description = descriptionText,
-				Footer = BuildFooterEmbed(referredChannel, timestamp)
+				Footer = BuildFooterEmbed(referredChannel, timestamp),
+				ImageUrl = imageUrl
 			};
 
 			return embed.Build();
@@ -154,13 +164,22 @@ namespace Orabot.Services
 			var referredChannel = message.Channel;
 			var timestamp = message.Timestamp.ToString("s").Replace('T', ' ') + " UTC";
 			var descriptionText = $"{string.Join("\n", messages.Select(x => x.Content))}\n\n[Original message]({message.GetJumpUrl()})";
+			var imageUrl = message.Attachments.FirstOrDefault()?.Url;
+			if (imageUrl == null)
+			{
+				if (Uri.TryCreate(message.Content, UriKind.Absolute, out var url))
+				{
+					imageUrl = url.AbsoluteUri;
+				}
+			}
 
 			var embed = new EmbedBuilder
 			{
 				Color = Color.Blue,
 				Author = BuildAuthorEmbed(author, authorName),
 				Description = descriptionText,
-				Footer = BuildFooterEmbed(referredChannel, timestamp)
+				Footer = BuildFooterEmbed(referredChannel, timestamp),
+				ImageUrl = imageUrl
 			};
 
 			return embed.Build();
