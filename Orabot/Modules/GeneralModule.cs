@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord.Commands;
@@ -21,9 +22,10 @@ namespace Orabot.Modules
 		[Summary("Lists all available commands.")]
 		public async Task Help()
 		{
-			// This is set up to use a more streamlined look than previous versions and takes inspiration from the Markdown example at
-			// https://gist.github.com/Almeeida/41a664d8d5f3a8855591c2f1e0e07b19
-			await ReplyAsync($"```md\n{ string.Join("\n", _commands.Commands.Select(x => x.CustomToString())) }\n```");
+			foreach (var block in GenerateHelpBlocks())
+			{
+				await ReplyAsync(block);
+			}
 		}
 
 		[Command("hi")]
@@ -47,5 +49,17 @@ namespace Orabot.Modules
 				await ReplyAsync("No rights!");
 			}
 		}
+
+		#region Private methods
+
+		private IEnumerable<string> GenerateHelpBlocks()
+		{
+			// This is set up to use a more streamlined look than previous versions and takes inspiration from the Markdown example at
+			// https://gist.github.com/Almeeida/41a664d8d5f3a8855591c2f1e0e07b19
+			yield return $"```md\n{string.Join("\n", _commands.Commands.Where(x => x.Module.Name != nameof(QuoteModule)).Select(x => x.CustomToString()))}\n```";
+			yield return $"```md\n{string.Join("\n", _commands.Commands.Where(x => x.Module.Name == nameof(QuoteModule)).Select(x => x.CustomToString()))}\n```";
+		}
+
+		#endregion
 	}
 }
