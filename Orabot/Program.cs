@@ -10,9 +10,10 @@ using Orabot.EventHandlers.CustomMessageHandlers.ModTimersMessageHandlers;
 using Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers;
 using Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers.GitHubIssueNumberMessageHandlers;
 using Orabot.Modules;
+using Orabot.Services;
 using Orabot.Transformers.LinkToEmbedTransformers;
+using Orabot.TypeReaders;
 using RestSharp;
-using SteakBot.Core.TypeReaders;
 
 namespace Orabot
 {
@@ -24,6 +25,7 @@ namespace Orabot
 				.AddSingleton<DiscordSocketClient>()
 				.AddSingleton<CommandService>()
 				.AddSingleton<BaseTypeReader, UriTypeReader>()
+				.AddSingleton<BaseTypeReader, DiscordMessageIdentifierTypeReader>()
 				.AddSingleton<ILogEventHandler, LogEventHandler>()
 				.AddSingleton<IMessageEventHandler, MessageEventHandler>()
 				.AddSingleton<ICustomMessageHandler, OpenRaGitHubIssueNumberMessageHandler>()
@@ -40,6 +42,7 @@ namespace Orabot
 				.AddSingleton<ModuleBase<SocketCommandContext>, OpenRaWeaponsModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, QuoteModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, RoleManagementModule>()
+				.AddSingleton<QuotingService>()
 				.AddSingleton<OpenRaResourceCenterMapLinkToEmbedTransformer>()
 				.AddTransient<IRestClient, RestClient>()
 				.BuildServiceProvider();
