@@ -88,7 +88,7 @@ namespace Orabot.Services
 
 			for (var i = firstPage.Length - 1; i >= 0; i--)
 			{
-				if (firstPage[i].Author == firstMessage.Author)
+				if (firstPage[i].Author.Id == firstMessage.Author.Id)
 				{
 					messages.Add(firstPage[i]);
 				}
