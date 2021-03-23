@@ -18,7 +18,12 @@ namespace Orabot.EventHandlers.CustomMessageHandlers.LinkParsingMessageHandlers
 		{
 			foreach (var matchedLink in GetMatchedLinks(message.Content))
 			{
-				var number = matchedLink.Substring(matchedLink.LastIndexOf('/') + 1);
+				var numberStr = matchedLink.Substring(matchedLink.LastIndexOf('/') + 1);
+				if (!int.TryParse(numberStr, out var number))
+				{
+					continue;
+				}
+
 				var embed = _toEmbedTransformer.CreateEmbed(number);
 				if (embed != null)
 				{

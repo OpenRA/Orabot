@@ -20,8 +20,13 @@ namespace Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandler
 
 		public override void Invoke(SocketUserMessage message)
 		{
-			foreach (var number in GetMatchedNumbers(message.Content))
+			foreach (var numberStr in GetMatchedNumbers(message.Content))
 			{
+				if (!int.TryParse(numberStr, out var number))
+				{
+					continue;
+				}
+
 				var embed = _toEmbedTransformer.CreateEmbed(number);
 				if (embed != null)
 				{

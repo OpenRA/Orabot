@@ -10,7 +10,8 @@ namespace Orabot.Transformers.LinkToEmbedTransformers
 	internal class OpenRaResourceCenterMapLinkToEmbedTransformer
 	{
 		private const string BaseUrl = "https://resource.openra.net";
-		private const string ApiIssueRequestTemplate = "map/id/{number}";
+		private const string ApiMapInfoByUidTemplate = "map/hash/{uid}";
+		private const string ApiMapInfoByNumberTemplate = "map/id/{number}";
 
 		private readonly IRestClient _restClient;
 
@@ -20,9 +21,24 @@ namespace Orabot.Transformers.LinkToEmbedTransformers
 			restClient.BaseUrl = new Uri(BaseUrl);
 		}
 
-		internal Embed CreateEmbed(string number = null)
+		internal Embed CreateEmbed(string mapUid)
 		{
-			var request = new RestRequest(ApiIssueRequestTemplate, Method.GET);
+			var request = new RestRequest(ApiMapInfoByUidTemplate, Method.GET);
+			request.AddUrlSegment("uid", mapUid);
+
+			var response = _restClient.Execute<List<MapInfo>>(request);
+			var mapInfo = response.Data?.FirstOrDefault();
+			if (mapInfo?.Title == null || mapInfo.Author == null)
+			{
+				return null;
+			}
+
+			return CreateEmbedInner(mapInfo);
+		}
+
+		internal Embed CreateEmbed(int number)
+		{
+			var request = new RestRequest(ApiMapInfoByNumberTemplate, Method.GET);
 			request.AddUrlSegment("number", number);
 
 			var response = _restClient.Execute<List<MapInfo>>(request);
@@ -32,9 +48,17 @@ namespace Orabot.Transformers.LinkToEmbedTransformers
 				return null;
 			}
 
+			return CreateEmbedInner(mapInfo);
+		}
+
+		#region Private methods
+
+		private Embed CreateEmbedInner(MapInfo mapInfo)
+		{
 			var bounds = mapInfo.Bounds.Split(',').Select(int.Parse).ToArray();
 			var size = $"{bounds[2]}x{bounds[3]}";
 			var color = GetColor($"mod_{mapInfo.GameMod}");
+			var number = mapInfo.Id;
 
 			var url = $"{BaseUrl}/maps/{number}";
 			var description = mapInfo.Info.Length > 250 ? mapInfo.Info.Substring(0, 250) + "..." : mapInfo.Info;
@@ -61,8 +85,6 @@ namespace Orabot.Transformers.LinkToEmbedTransformers
 
 			return embed.Build();
 		}
-
-		#region Private methods
 
 		private Color? GetColor(string modIdentifier)
 		{
