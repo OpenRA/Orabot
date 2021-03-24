@@ -201,27 +201,39 @@ namespace Orabot.Modules
 		private async void HandleQuote(SocketGuild guild, string message)
 		{
 			var embed = _quotingService.CreateEmbed(guild, message);
-			await Context.Channel.DeleteMessageAsync(Context.Message, RequestOptions.Default);
+			TryDeleteQuoteCommand();
 			await SendQuote(Context.User, embed);
 		}
 
 		private async void HandleQuote(IMessage message)
 		{
 			var embed = _quotingService.CreateEmbed(message);
-			await Context.Channel.DeleteMessageAsync(Context.Message, RequestOptions.Default);
+			TryDeleteQuoteCommand();
 			await SendQuote(Context.User, embed);
 		}
 
 		private async void HandleQuote(IList<IMessage> messages)
 		{
 			var embed = _quotingService.CreateEmbed(messages);
-			await Context.Channel.DeleteMessageAsync(Context.Message, RequestOptions.Default);
+			TryDeleteQuoteCommand();
 			await SendQuote(Context.User, embed);
 		}
 
 		private async Task SendQuote(IUser user, Embed embed)
 		{
 			await ReplyAsync($"{user.Username}:", false, embed);
+		}
+
+		private async void TryDeleteQuoteCommand()
+		{
+			try
+			{
+				await Context.Channel.DeleteMessageAsync(Context.Message, new RequestOptions
+				{
+					AuditLogReason = "Quote command!"
+				});
+			}
+			catch (Exception) { }
 		}
 
 		#endregion
