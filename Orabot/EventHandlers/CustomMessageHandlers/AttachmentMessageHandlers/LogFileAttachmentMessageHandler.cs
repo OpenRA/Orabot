@@ -19,12 +19,15 @@ namespace Orabot.EventHandlers.CustomMessageHandlers.AttachmentMessageHandlers
 		{
 			var attachment = message.Attachments.First(x => x.Filename.EndsWith(FileExtension));
 			var rawMessage = _attachmentLogFileToMessageTransformer.CreateRawMessage(attachment, out var fullText);
-			message.Channel.SendMessageAsync(rawMessage);
+			if (string.IsNullOrWhiteSpace(rawMessage))
+				return;
 
 			if (_attachmentLogFileToMessageTransformer.TryCreateExceptionExplanationMessage(fullText, out var explanationMessage))
 			{
-				message.Channel.SendMessageAsync(explanationMessage);
+				rawMessage = $"{rawMessage}\r\n{explanationMessage}";
 			}
+
+			message.Channel.SendMessageAsync(rawMessage);
 		}
 	}
 }

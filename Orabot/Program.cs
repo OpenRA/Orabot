@@ -10,6 +10,7 @@ using Orabot.EventHandlers.CustomMessageHandlers.LinkParsingMessageHandlers;
 using Orabot.EventHandlers.CustomMessageHandlers.ModTimersMessageHandlers;
 using Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers;
 using Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers.GitHubIssueNumberMessageHandlers;
+using Orabot.EventHandlers.CustomMessageHandlers.SpecificTextMessageHandlers;
 using Orabot.Modules;
 using Orabot.Services;
 using Orabot.Transformers.AttachmentToMessageTransformers;
@@ -42,6 +43,7 @@ namespace Orabot
 				.AddSingleton<ICustomMessageHandler, ReplayFileAttachmentMessageHandler>()
 				.AddSingleton<ICustomMessageHandler, BaseCommandMessageHandler>()
 				.AddSingleton<ICustomMessageHandler, BaseModTimerMessageHandler>()
+				.AddSingleton<ICustomMessageHandler, StackTraceMessageHandler>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, GeneralModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, OpenRaGeneralModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, OpenRaTraitsModule>()
