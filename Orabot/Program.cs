@@ -10,8 +10,10 @@ using Orabot.EventHandlers.CustomMessageHandlers.LinkParsingMessageHandlers;
 using Orabot.EventHandlers.CustomMessageHandlers.ModTimersMessageHandlers;
 using Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers;
 using Orabot.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers.GitHubIssueNumberMessageHandlers;
+using Orabot.EventHandlers.CustomMessageHandlers.SpecificTextMessageHandlers;
 using Orabot.Modules;
 using Orabot.Services;
+using Orabot.Transformers.AttachmentToMessageTransformers;
 using Orabot.Transformers.LinkToEmbedTransformers;
 using Orabot.Transformers.Replays.ReplayDataToEmbedTransformers;
 using Orabot.Transformers.Replays.ReplayToReplayDataTransformers;
@@ -37,9 +39,11 @@ namespace Orabot
 				.AddSingleton<ICustomMessageHandler, OrabotGitHubIssueNumberMessageHandler>()
 				.AddSingleton<ICustomMessageHandler, OpenRaResourceCenterMapNumberMessageHandler>()
 				.AddSingleton<ICustomMessageHandler, OpenRaResourceCenterMapLinkMessageHandler>()
+				.AddSingleton<ICustomMessageHandler, LogFileAttachmentMessageHandler>()
 				.AddSingleton<ICustomMessageHandler, ReplayFileAttachmentMessageHandler>()
 				.AddSingleton<ICustomMessageHandler, BaseCommandMessageHandler>()
 				.AddSingleton<ICustomMessageHandler, BaseModTimerMessageHandler>()
+				.AddSingleton<ICustomMessageHandler, StackTraceMessageHandler>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, GeneralModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, OpenRaGeneralModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, OpenRaTraitsModule>()
@@ -47,6 +51,7 @@ namespace Orabot
 				.AddSingleton<ModuleBase<SocketCommandContext>, QuoteModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, RoleManagementModule>()
 				.AddSingleton<QuotingService>()
+				.AddSingleton<AttachmentLogFileToMessageTransformer>()
 				.AddSingleton<OpenRaResourceCenterMapLinkToEmbedTransformer>()
 				.AddSingleton<AttachmentReplayToUtilityMetadataTransformer>()
 				.AddSingleton<UtilityReplayMetadataToEmbedTransformer>()

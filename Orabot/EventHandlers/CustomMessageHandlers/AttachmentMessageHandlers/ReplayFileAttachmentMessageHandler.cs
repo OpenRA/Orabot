@@ -7,7 +7,7 @@ namespace Orabot.EventHandlers.CustomMessageHandlers.AttachmentMessageHandlers
 {
 	internal class ReplayFileAttachmentMessageHandler : BaseAttachmentMessageHandler
 	{
-		private const string ReplayFileExtension = ".orarep";
+		protected override string FileExtension => ".orarep";
 
 		private readonly AttachmentReplayToUtilityMetadataTransformer _toUtilityMetadataTransformer;
 		private readonly UtilityReplayMetadataToEmbedTransformer _toEmbedTransformer;
@@ -18,14 +18,9 @@ namespace Orabot.EventHandlers.CustomMessageHandlers.AttachmentMessageHandlers
 			_toEmbedTransformer = toEmbedTransformer;
 		}
 
-		public override bool CanHandle(SocketUserMessage message)
-		{
-			return message.Attachments.Count != 0 && message.Attachments.Any(x => x.Filename.EndsWith(ReplayFileExtension));
-		}
-
 		public override void Invoke(SocketUserMessage message)
 		{
-			var attachment = message.Attachments.First(x => x.Filename.EndsWith(ReplayFileExtension));
+			var attachment = message.Attachments.First(x => x.Filename.EndsWith(FileExtension));
 
 			var replayMetadata = _toUtilityMetadataTransformer.GetMetadata(attachment);
 			replayMetadata.FileName = attachment.Filename;
