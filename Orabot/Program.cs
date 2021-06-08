@@ -32,6 +32,7 @@ namespace Orabot
 				.AddSingleton<BaseTypeReader, UriTypeReader>()
 				.AddSingleton<BaseTypeReader, DiscordMessageIdentifierTypeReader>()
 				.AddSingleton<ILogEventHandler, LogEventHandler>()
+				.AddSingleton<IReactionEventHandler, RoleAssignmentReactionEventHandler>()
 				.AddSingleton<IMessageEventHandler, MessageEventHandler>()
 				.AddSingleton<ICustomMessageHandler, OpenRaGitHubIssueNumberMessageHandler>()
 				.AddSingleton<ICustomMessageHandler, OpenRaModSdkGitHubIssueNumberMessageHandler>()
