@@ -1,21 +1,22 @@
 ﻿using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord.Commands;
 using Discord.WebSocket;
+using Microsoft.Extensions.Configuration;
 using Orabot.Core.Extensions;
 
 namespace Orabot.Core.Modules
 {
 	public class GeneralModule : ModuleBase<SocketCommandContext>
 	{
-		private readonly string[] _trustedRoles = ConfigurationManager.AppSettings["TrustedRoles"].Split(';').Select(x => x.Trim()).ToArray();
+		private readonly string[] _trustedRoles;
 		private readonly CommandService _commands;
 
-		public GeneralModule(CommandService commands)
+		public GeneralModule(IConfiguration configuration, CommandService commands)
 		{
 			_commands = commands;
+			_trustedRoles = configuration["TrustedRoles"].Split(';').Select(x => x.Trim()).ToArray();
 		}
 
 		[Command("help", true)]

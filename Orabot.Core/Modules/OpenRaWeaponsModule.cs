@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Configuration;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
+using Microsoft.Extensions.Configuration;
 using RestSharp;
 
 namespace Orabot.Core.Modules
@@ -12,14 +12,14 @@ namespace Orabot.Core.Modules
 		private const string WeaponsPageUrl = "https://docs.openra.net/en/latest/release/weapons/";
 		private const string WeaponsPlaytestPageUrl = "https://docs.openra.net/en/latest/playtest/weapons/";
 
-		private static readonly string OpenRaIconUrl = ConfigurationManager.AppSettings["OpenRaFaviconUrl"];
-
 		private readonly IRestClient _restClient;
+		private readonly string _openRaIconUrl;
 
-		public OpenRaWeaponsModule(IRestClient restClient)
+		public OpenRaWeaponsModule(IRestClient restClient, IConfiguration configuration)
 		{
 			_restClient = restClient;
 			_restClient.BaseUrl = new Uri(WeaponsPageUrl);
+			_openRaIconUrl = configuration["OpenRaFaviconUrl"];
 		}
 
 		[Command("weapons")]
@@ -62,7 +62,7 @@ namespace Orabot.Core.Modules
 				{
 					Name = "OpenRA Weapons page" + (hasName ? $", weapon {weaponName}" : string.Empty),
 					Url = targetUrl,
-					IconUrl = OpenRaIconUrl
+					IconUrl = _openRaIconUrl
 				},
 				Title = targetUrl,
 				Url = targetUrl,

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 using RestSharp;
 
 namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers.GitHubIssueNumberMessageHandlers
@@ -14,6 +15,6 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHa
 			{ "ra2", 0 }
 		};
 
-		public OpenRaRa2GitHubIssueNumberMessageHandler(IRestClient restClient) : base(restClient) { }
+		public OpenRaRa2GitHubIssueNumberMessageHandler(IRestClient restClient, IConfiguration configuration) : base(restClient, configuration) { }
 	}
 }

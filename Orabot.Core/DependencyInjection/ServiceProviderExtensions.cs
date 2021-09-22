@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.IO;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Orabot.Core.Abstractions.EventHandlers;
 using Orabot.Core.EventHandlers;
 using Orabot.Core.EventHandlers.CustomMessageHandlers.AttachmentMessageHandlers;
@@ -17,6 +19,19 @@ namespace Orabot.Core.DependencyInjection
 {
     public static class ServiceProviderExtensions
 	{
+		public static IServiceCollection AddAppSettingsConfiguration(this IServiceCollection serviceCollection)
+		{
+			return serviceCollection
+				.AddSingleton<IConfiguration>(provider =>
+				{
+					var builder = new ConfigurationBuilder()
+						.SetBasePath(Directory.GetCurrentDirectory())
+						.AddJsonFile("appsettings.json");
+
+					return builder.Build();
+				});
+		}
+
 		public static IServiceCollection AddDefaultEventHandlerServices(this IServiceCollection serviceCollection)
 		{
 			return serviceCollection

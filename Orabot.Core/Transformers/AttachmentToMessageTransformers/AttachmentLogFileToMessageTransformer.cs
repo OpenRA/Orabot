@@ -1,18 +1,23 @@
 ﻿using System;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
+using Microsoft.Extensions.Configuration;
 
 namespace Orabot.Core.Transformers.AttachmentToMessageTransformers
 {
 	internal class AttachmentLogFileToMessageTransformer
 	{
-		private static readonly string LogStorageFolder = ConfigurationManager.AppSettings["LogStorageFolder"];
+		private readonly string _logStorageFolder;
+
+		public AttachmentLogFileToMessageTransformer(IConfiguration configuration)
+		{
+			_logStorageFolder = configuration["LogStorageFolder"];
+		}
 
 		internal string CreateRawMessage(Discord.Attachment attachment, out string fullText)
 		{
-			var filePath = Path.Combine(LogStorageFolder, $"{Guid.NewGuid()}_{attachment.Filename}");
+			var filePath = Path.Combine(_logStorageFolder, $"{Guid.NewGuid()}_{attachment.Filename}");
 
 			using var webClient = new WebClient();
 			webClient.DownloadFile(attachment.Url, filePath);

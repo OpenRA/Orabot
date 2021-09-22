@@ -1,15 +1,20 @@
-﻿using System.Configuration;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Microsoft.Extensions.Configuration;
 
 namespace Orabot.Core.Modules
 {
 	public class RoleManagementModule : ModuleBase<SocketCommandContext>
 	{
-		private readonly string[] _freelyAssignedRoles = ConfigurationManager.AppSettings["FreelyAssignedRoles"].Split(';').Select(x => x.Trim()).ToArray();
+		private readonly string[] _freelyAssignedRoles;
+
+		public RoleManagementModule(IConfiguration configuration)
+		{
+			_freelyAssignedRoles = configuration["FreelyAssignedRoles"].Split(';').Select(x => x.Trim()).ToArray();
+		}
 
 		[Command("role")]
 		[Summary("Adds or removes a specified role to the user.")]

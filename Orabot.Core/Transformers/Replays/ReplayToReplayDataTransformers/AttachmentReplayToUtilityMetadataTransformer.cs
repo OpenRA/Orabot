@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Runtime.InteropServices;
+using Microsoft.Extensions.Configuration;
 using Orabot.Core.Objects.OpenRaReplay;
 using YamlDotNet.Serialization;
 
@@ -11,19 +11,21 @@ namespace Orabot.Core.Transformers.Replays.ReplayToReplayDataTransformers
 {
 	internal class AttachmentReplayToUtilityMetadataTransformer
 	{
-		private static readonly string ReplayStorageFolder = ConfigurationManager.AppSettings["ReplayStorageFolder"];
-		private static readonly string OpenRaUtilityPath = ConfigurationManager.AppSettings["OpenRaUtilityPath"];
+		private readonly string _openRaUtilityPath;
+		private readonly string _replayStorageFolder;
 
 		private readonly Deserializer _yamlDeserializer;
 
-		public AttachmentReplayToUtilityMetadataTransformer(Deserializer yamlDeserializer)
+		public AttachmentReplayToUtilityMetadataTransformer(Deserializer yamlDeserializer, IConfiguration configuration)
 		{
 			_yamlDeserializer = yamlDeserializer;
+			_openRaUtilityPath = configuration["OpenRaUtilityPath"];
+			_replayStorageFolder = configuration["ReplayStorageFolder"];
 		}
 
 		internal ReplayMetadata GetMetadata(Discord.Attachment attachment)
 		{
-			var filePath = Path.Combine(ReplayStorageFolder, $"{Guid.NewGuid()}_{attachment.Filename}");
+			var filePath = Path.Combine(_replayStorageFolder, $"{Guid.NewGuid()}_{attachment.Filename}");
 
 			using var webClient = new WebClient();
 			webClient.DownloadFile(attachment.Url, filePath);
@@ -57,7 +59,7 @@ namespace Orabot.Core.Transformers.Replays.ReplayToReplayDataTransformers
 			return output;
 		}
 
-		private static ProcessStartInfo GetProcessStartInfo(string filePath)
+		private ProcessStartInfo GetProcessStartInfo(string filePath)
 		{
 			string fileName;
 			string arguments;
@@ -66,13 +68,13 @@ namespace Orabot.Core.Transformers.Replays.ReplayToReplayDataTransformers
 			// This will likely go away once OpenRA switches to .NET 5.
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 			{
-				fileName = OpenRaUtilityPath;
+				fileName = _openRaUtilityPath;
 				arguments = $"d2k --replay-metadata \"{filePath}\"";
 			}
 			else
 			{
 				fileName = "mono";
-				arguments = $"{OpenRaUtilityPath} d2k --replay-metadata \"{filePath}\"";
+				arguments = $"{_openRaUtilityPath} d2k --replay-metadata \"{filePath}\"";
 			}
 
 			return new ProcessStartInfo

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using Discord;
 using Discord.WebSocket;
+using Microsoft.Extensions.Configuration;
 using Orabot.Core.Objects.GitHub;
 using RestSharp;
 
@@ -21,7 +21,7 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHa
 
 		protected abstract string RepositoryName { get; }
 
-		private static readonly string IssueIconBaseUrl = ConfigurationManager.AppSettings["GitHubIconsBaseUrl"];
+		private readonly string _issueIconBaseUrl;
 
 		private readonly IRestClient _restClient;
 		private readonly Dictionary<string, Color> _colorPerStatus = new Dictionary<string, Color>
@@ -31,10 +31,11 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHa
 			{ "merged", Color.Purple }
 		};
 
-		internal BaseGitHubIssueNumberMessageHandler(IRestClient restClient)
+		internal BaseGitHubIssueNumberMessageHandler(IRestClient restClient, IConfiguration configuration)
 		{
 			_restClient = restClient;
 			restClient.BaseUrl = new Uri(BaseApiUrl);
+			_issueIconBaseUrl = configuration["GitHubIconsBaseUrl"];
 		}
 
 		public override void Invoke(SocketUserMessage message)
@@ -125,9 +126,9 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHa
 			}
 		}
 
-		private static string GetIssueIconUrl(bool isIssue, string status)
+		private string GetIssueIconUrl(bool isIssue, string status)
 		{
-			return $"{IssueIconBaseUrl}/github-{(isIssue ? "issue" : "pr")}-{status}.png";
+			return $"{_issueIconBaseUrl}/github-{(isIssue ? "issue" : "pr")}-{status}.png";
 		}
 	}
 }

@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Configuration;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
+using Microsoft.Extensions.Configuration;
 using RestSharp;
 
 namespace Orabot.Core.Modules
@@ -12,15 +12,15 @@ namespace Orabot.Core.Modules
 		private const string TraitsPageUrl = "https://docs.openra.net/en/latest/release/traits/";
 		private const string TraitsPlaytestPageUrl = "https://docs.openra.net/en/latest/playtest/traits/";
 
-		private static readonly string OpenRaIconUrl = ConfigurationManager.AppSettings["OpenRaFaviconUrl"];
-
 		private readonly IRestClient _restClient;
+		private readonly string _openRaIconUrl;
 
-		public OpenRaTraitsModule(IRestClient restClient)
+		public OpenRaTraitsModule(IRestClient restClient, IConfiguration configuration)
 		{
 			_restClient = restClient;
 			_restClient.BaseUrl = new Uri(TraitsPageUrl);
-		}
+			_openRaIconUrl = configuration["OpenRaFaviconUrl"];
+;		}
 
 		[Command("traits")]
 		[Summary("Provides a link to the OpenRA Traits documentation page. Can be used with an optional trait name to link directly.")]
@@ -62,7 +62,7 @@ namespace Orabot.Core.Modules
 				{
 					Name = "OpenRA Traits page" + (hasName ? $", trait {traitName}" : string.Empty),
 					Url = targetUrl,
-					IconUrl = OpenRaIconUrl
+					IconUrl = _openRaIconUrl
 				},
 				Title = targetUrl,
 				Url = targetUrl,

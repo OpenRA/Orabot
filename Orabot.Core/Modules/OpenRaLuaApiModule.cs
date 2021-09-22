@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Configuration;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
+using Microsoft.Extensions.Configuration;
 using RestSharp;
 
 namespace Orabot.Core.Modules
@@ -12,14 +12,14 @@ namespace Orabot.Core.Modules
 		private const string LuaPageUrl = "https://docs.openra.net/en/latest/release/lua/";
 		private const string LuaPlaytestPageUrl = "https://docs.openra.net/en/latest/playtest/lua/";
 
-		private static readonly string OpenRaIconUrl = ConfigurationManager.AppSettings["OpenRaFaviconUrl"];
-
 		private readonly IRestClient _restClient;
+		private readonly string _openRaIconUrl;
 
-		public OpenRaLuaApiModule(IRestClient restClient)
+		public OpenRaLuaApiModule(IConfiguration configuration, IRestClient restClient)
 		{
 			_restClient = restClient;
 			_restClient.BaseUrl = new Uri(LuaPageUrl);
+			_openRaIconUrl = configuration["OpenRaFaviconUrl"];
 		}
 
 		[Command("lua")]
@@ -62,7 +62,7 @@ namespace Orabot.Core.Modules
 				{
 					Name = "OpenRA Lua API page" + (hasName ? $", table {tableName}" : string.Empty),
 					Url = targetUrl,
-					IconUrl = OpenRaIconUrl
+					IconUrl = _openRaIconUrl
 				},
 				Title = targetUrl,
 				Url = targetUrl,

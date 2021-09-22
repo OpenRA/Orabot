@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
+using Microsoft.Extensions.Configuration;
 using Orabot.Core.Abstractions.EventHandlers;
 
 namespace Orabot.Core.EventHandlers
@@ -11,15 +11,19 @@ namespace Orabot.Core.EventHandlers
 
 	internal class RoleAssignmentReactionEventHandler : IReactionEventHandler
 	{
-		private readonly IReadOnlyDictionary<string, string> _freelyAssignedRoles = ConfigurationManager
-			.AppSettings["FreelyAssignedRolesByEmote"]
-			.Split(';')
-			.Select(x => x.Trim())
-			.Where(x => !string.IsNullOrWhiteSpace(x))
-			.Select(x => x.Split(':'))
-			.ToDictionary(x => x[0], y => y[1]);
+		private readonly ulong _roleAssignmentMessageId;
+		private readonly IReadOnlyDictionary<string, string> _freelyAssignedRoles;
 
-		private readonly ulong _roleAssignmentMessageId = ulong.Parse(ConfigurationManager.AppSettings["RoleAssignmentMessageId"]);
+		public RoleAssignmentReactionEventHandler(IConfiguration configuration)
+		{
+			_roleAssignmentMessageId = ulong.Parse(configuration["RoleAssignmentMessageId"]);
+			_freelyAssignedRoles = configuration["FreelyAssignedRolesByEmote"]
+				.Split(';')
+				.Select(x => x.Trim())
+				.Where(x => !string.IsNullOrWhiteSpace(x))
+				.Select(x => x.Split(':'))
+				.ToDictionary(x => x[0], y => y[1]);
+		}
 
 		public async Task HandleReactionAddedAsync(Cacheable<IUserMessage, ulong> messageGetter, ISocketMessageChannel channel, SocketReaction reaction)
 		{

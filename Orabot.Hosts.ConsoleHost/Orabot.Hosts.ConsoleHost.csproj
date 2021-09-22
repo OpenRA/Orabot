@@ -13,4 +13,10 @@
     <ProjectReference Include="..\Orabot.Core\Orabot.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Configuration;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Orabot.Core.Abstractions.EventHandlers;
 using Orabot.Core.TypeReaders;
@@ -12,9 +12,8 @@ namespace Orabot.Core
 {
 	public class Bot : IDisposable
 	{
-		private static readonly string DiscordBotToken = ConfigurationManager.AppSettings["BotToken"];
-
 		private readonly IServiceProvider _serviceProvider;
+		private readonly string _discordBotToken;
 
 		private readonly DiscordSocketClient _client;
 		private readonly CommandService _commands;
@@ -26,6 +25,7 @@ namespace Orabot.Core
 		public Bot(IServiceProvider serviceProvider)
 		{
 			_serviceProvider = serviceProvider;
+			_discordBotToken = _serviceProvider.GetService<IConfiguration>()["BotToken"];
 
 			_client = _serviceProvider.GetService<DiscordSocketClient>();
 			_commands = _serviceProvider.GetService<CommandService>();
@@ -39,7 +39,7 @@ namespace Orabot.Core
 
 		public async Task RunAsync()
 		{
-			await _client.LoginAsync(TokenType.Bot, DiscordBotToken);
+			await _client.LoginAsync(TokenType.Bot, _discordBotToken);
 			await _client.StartAsync();
 
 			Console.ReadLine();

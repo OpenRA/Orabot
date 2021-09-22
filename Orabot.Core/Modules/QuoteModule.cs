@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Microsoft.Extensions.Configuration;
 using Orabot.Core.Objects;
 using Orabot.Core.Services;
 
@@ -14,11 +14,12 @@ namespace Orabot.Core.Modules
 	public class QuoteModule : ModuleBase<SocketCommandContext>
 	{
 		private readonly QuotingService _quotingService;
-		private readonly string[] _trustedRoles = ConfigurationManager.AppSettings["TrustedRoles"].Split(';').Select(x => x.Trim()).ToArray();
+		private readonly string[] _trustedRoles;
 
-		public QuoteModule(QuotingService quotingService)
+		public QuoteModule(QuotingService quotingService, IConfiguration configuration)
 		{
 			_quotingService = quotingService;
+			_trustedRoles = configuration["TrustedRoles"].Split(';').Select(x => x.Trim()).ToArray();
 		}
 
 		[Command("quote")]

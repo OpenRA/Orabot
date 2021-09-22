@@ -15,6 +15,7 @@ namespace Orabot.Hosts.ConsoleHost
         static void Main(string[] args)
         {
 			var serviceProvider = new ServiceCollection()
+				.AddAppSettingsConfiguration()
 				.AddSingleton<DiscordSocketClient>()
 				.AddSingleton<CommandService>()
 				.AddSingleton<BaseTypeReader, UriTypeReader>()
