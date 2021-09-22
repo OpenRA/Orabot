@@ -23,7 +23,7 @@ namespace Orabot.Modules
 		}
 
 		[Command("traits")]
-		[Summary("Provides a link to the GitHub Traits Wiki page. Can be used with an optional trait name to link directly.")]
+		[Summary("Provides a link to the OpenRA Traits documentation page. Can be used with an optional trait name to link directly.")]
 		public async Task Traits(string traitName = null)
 		{
 			var embed = BuildTraitsPageEmbed(TraitsPageUrl, traitName);
@@ -31,7 +31,7 @@ namespace Orabot.Modules
 		}
 
 		[Command("traits-pt")]
-		[Summary("Provides a link to the GitHub playtest Traits Wiki page. Can be used with an optional trait name to link directly.")]
+		[Summary("Provides a link to the OpenRA playtest Traits documentation page. Can be used with an optional trait name to link directly.")]
 		public async Task TraitsPt(string traitName = null)
 		{
 			var embed = BuildTraitsPageEmbed(TraitsPlaytestPageUrl, traitName);
@@ -55,7 +55,7 @@ namespace Orabot.Modules
 				hasName = CheckTraitExists(traitName);
 			}
 
-			var targetUrl = pageUrl + (hasName ? $"#{traitName}" : string.Empty);
+			var targetUrl = pageUrl + (hasName ? $"#{traitName.ToLower()}" : string.Empty);
 			var embedBuilder = new EmbedBuilder
 			{
 				Author = new EmbedAuthorBuilder

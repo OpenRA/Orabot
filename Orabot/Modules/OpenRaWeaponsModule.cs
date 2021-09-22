@@ -9,8 +9,8 @@ namespace Orabot.Modules
 {
 	public class OpenRaWeaponsModule : ModuleBase<SocketCommandContext>
 	{
-		private const string WeaponsPageUrl = "https://github.com/OpenRA/OpenRA/wiki/Weapons";
-		private const string WeaponsPlaytestPageUrl = "https://github.com/OpenRA/OpenRA/wiki/Weapons-(playtest)";
+		private const string WeaponsPageUrl = "https://docs.openra.net/en/latest/release/weapons/";
+		private const string WeaponsPlaytestPageUrl = "https://docs.openra.net/en/latest/playtest/weapons/";
 
 		private static readonly string OpenRaIconUrl = ConfigurationManager.AppSettings["OpenRaFaviconUrl"];
 
@@ -23,7 +23,7 @@ namespace Orabot.Modules
 		}
 
 		[Command("weapons")]
-		[Summary("Provides a link to the GitHub Weapons Wiki page. Can be used with an optional weapon name to link directly.")]
+		[Summary("Provides a link to the OpenRA Weapons documentation page. Can be used with an optional weapon name to link directly.")]
 		public async Task Weapons(string weaponName = null)
 		{
 			var embed = BuildWeaponsPageEmbed(WeaponsPageUrl, weaponName);
@@ -31,7 +31,7 @@ namespace Orabot.Modules
 		}
 
 		[Command("weapons-pt")]
-		[Summary("Provides a link to the GitHub playtest Weapons Wiki page. Can be used with an optional weapon name to link directly.")]
+		[Summary("Provides a link to the OpenRA playtest Weapons documentation page. Can be used with an optional weapon name to link directly.")]
 		public async Task WeaponsPt(string weaponName = null)
 		{
 			var embed = BuildWeaponsPageEmbed(WeaponsPlaytestPageUrl, weaponName);
@@ -55,7 +55,7 @@ namespace Orabot.Modules
 				hasName = CheckWeaponExists(weaponName);
 			}
 
-			var targetUrl = pageUrl + (hasName ? $"#{weaponName}" : string.Empty);
+			var targetUrl = pageUrl + (hasName ? $"#{weaponName.ToLower()}" : string.Empty);
 			var embedBuilder = new EmbedBuilder
 			{
 				Author = new EmbedAuthorBuilder
