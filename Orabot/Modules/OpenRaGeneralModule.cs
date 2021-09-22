@@ -88,5 +88,19 @@ namespace Orabot.Modules
 
 			await ReplyAsync(string.Empty, false, embedBuilder.Build());
 		}
+
+		[Command("orabot")]
+		[Summary("Prints information about the OpenRA Utility.")]
+		public async Task Orabot()
+		{
+			const string orabotRepoUrl = "https://github.com/OpenRA/Orabot";
+
+			var embedBuilder = new EmbedBuilder
+			{
+				Description = $"[Orabot]({orabotRepoUrl}) is a modern successor to the famous OpenRA companion - the IRC orabot."
+			};
+
+			await ReplyAsync(string.Empty, false, embedBuilder.Build());
+		}
 	}
 }
