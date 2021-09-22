@@ -47,6 +47,7 @@ namespace Orabot
 				.AddSingleton<ICustomMessageHandler, StackTraceMessageHandler>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, GeneralModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, OpenRaGeneralModule>()
+				.AddSingleton<ModuleBase<SocketCommandContext>, OpenRaLuaApiModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, OpenRaTraitsModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, OpenRaWeaponsModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, QuoteModule>()
