@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Globalization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Orabot.Core.Abstractions.EventHandlers;
@@ -14,6 +16,8 @@ using Orabot.Core.Transformers.AttachmentToMessageTransformers;
 using Orabot.Core.Transformers.LinkToEmbedTransformers;
 using Orabot.Core.Transformers.Replays.ReplayDataToEmbedTransformers;
 using Orabot.Core.Transformers.Replays.ReplayToReplayDataTransformers;
+using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.Converters;
 
 namespace Orabot.Core.DependencyInjection
 {
@@ -56,13 +60,23 @@ namespace Orabot.Core.DependencyInjection
 		        .AddSingleton<ICustomMessageHandler, BaseModTimerMessageHandler>()
 		        .AddSingleton<ICustomMessageHandler, StackTraceMessageHandler>();
         }
+
 		public static IServiceCollection AddDefaultTransformers(this IServiceCollection serviceCollection)
 		{
 			return serviceCollection
 				.AddSingleton<AttachmentLogFileToMessageTransformer>()
 				.AddSingleton<OpenRaResourceCenterMapLinkToEmbedTransformer>()
-				.AddSingleton<AttachmentReplayToUtilityMetadataTransformer>()
+				.AddSingleton<AttachmentReplayMetadataTransformer>()
 				.AddSingleton<UtilityReplayMetadataToEmbedTransformer>();
+		}
+
+		public static IServiceCollection AddYamlDeserializer(this IServiceCollection serviceCollection)
+		{
+			return serviceCollection.AddSingleton(deserializer =>
+				new DeserializerBuilder()
+					.WithTypeConverter(new DateTimeConverter(DateTimeKind.Utc, CultureInfo.InvariantCulture, new[] { "yyyy-MM-dd HH-mm-ss" }))
+					.Build()
+			);
 		}
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Orabot.Core.Objects.OpenRaReplay
+﻿using System;
+
+namespace Orabot.Core.Objects.OpenRaReplay
 {
 	public class PlayerData
 	{
@@ -28,6 +30,8 @@
 
 		public string Outcome { get; set; }
 
-		public string OutcomeTimestampUtc { get; set; }
+		public DateTime OutcomeTimestampUtc { get; set; }
+
+		public int DisconnectFrame { get; set; }
 	}
 }

@@ -14,9 +14,9 @@ namespace Orabot.Core.Transformers.Replays.ReplayToReplayDataTransformers
 		private readonly string _openRaUtilityPath;
 		private readonly string _replayStorageFolder;
 
-		private readonly Deserializer _yamlDeserializer;
+		private readonly IDeserializer _yamlDeserializer;
 
-		public AttachmentReplayToUtilityMetadataTransformer(Deserializer yamlDeserializer, IConfiguration configuration)
+		public AttachmentReplayToUtilityMetadataTransformer(IDeserializer yamlDeserializer, IConfiguration configuration)
 		{
 			_yamlDeserializer = yamlDeserializer;
 			_openRaUtilityPath = configuration["OpenRaUtilityPath"];
