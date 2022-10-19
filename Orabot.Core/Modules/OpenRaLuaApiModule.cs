@@ -9,8 +9,8 @@ namespace Orabot.Core.Modules
 {
 	public class OpenRaLuaApiModule : ModuleBase<SocketCommandContext>
 	{
-		private const string LuaPageUrl = "https://docs.openra.net/en/latest/release/lua/";
-		private const string LuaPlaytestPageUrl = "https://docs.openra.net/en/latest/playtest/lua/";
+		private const string LuaPageUrl = "https://docs.openra.net/en/release/lua/";
+		private const string LuaPlaytestPageUrl = "https://docs.openra.net/en/playtest/lua/";
 
 		private readonly IRestClient _restClient;
 		private readonly string _openRaIconUrl;
