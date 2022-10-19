@@ -13,12 +13,12 @@ namespace Orabot.Core.Modules
 		{
 			await ReplyAsync("```" +
 							 "The support directory is where the game keeps the saved settings, maps, replays, logs and mod assets.  The default location is as follows, but one can choose to move it to an arbitrary location by passing an Engine.SupportDir argument to the Game.exe\n\n" +
-							 "Windows:      \\Users\\<Username>\\AppData\\Roaming\\OpenRA\\\n" +
-							 "macOS:        /Users/<username>/Library/Application Support/OpenRA/\n" +
-							 "GNU/Linux:    ~/.config/openra\n\n" +
+							 "Windows:      %APPDATA%\\OpenRA\\\n" +
+							 "macOS:        ~/Library/Application Support/OpenRA/\n" +
+							 "GNU/Linux:    $XDG_CONFIG_HOME/openra/openra\n\n" +
 							 "Older releases (before playtest-20190825) used different locations, which newer versions may continue to use in some circumstances:\n\n" +
-							 "Windows:      \\Users\\<Username>\\My Documents\\OpenRA\\\n" +
-			                 "GNU/Linux:    /home/<username>/.openra/\n" +
+							 "Windows:      %USERPROFILE%\\Documents\\OpenRA\\\n" +
+			                 "GNU/Linux:    ~/.openra/\n" +
 			                 "```");
 		}
 
