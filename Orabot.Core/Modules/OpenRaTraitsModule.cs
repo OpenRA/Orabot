@@ -9,8 +9,8 @@ namespace Orabot.Core.Modules
 {
 	public class OpenRaTraitsModule : ModuleBase<SocketCommandContext>
 	{
-		private const string TraitsPageUrl = "https://docs.openra.net/en/latest/release/traits/";
-		private const string TraitsPlaytestPageUrl = "https://docs.openra.net/en/latest/playtest/traits/";
+		private const string TraitsPageUrl = "https://docs.openra.net/en/release/traits/";
+		private const string TraitsPlaytestPageUrl = "https://docs.openra.net/en/playtest/traits/";
 
 		private readonly IRestClient _restClient;
 		private readonly string _openRaIconUrl;

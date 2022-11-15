@@ -9,8 +9,8 @@ namespace Orabot.Core.Modules
 {
 	public class OpenRaWeaponsModule : ModuleBase<SocketCommandContext>
 	{
-		private const string WeaponsPageUrl = "https://docs.openra.net/en/latest/release/weapons/";
-		private const string WeaponsPlaytestPageUrl = "https://docs.openra.net/en/latest/playtest/weapons/";
+		private const string WeaponsPageUrl = "https://docs.openra.net/en/release/weapons/";
+		private const string WeaponsPlaytestPageUrl = "https://docs.openra.net/en/playtest/weapons/";
 
 		private readonly IRestClient _restClient;
 		private readonly string _openRaIconUrl;
