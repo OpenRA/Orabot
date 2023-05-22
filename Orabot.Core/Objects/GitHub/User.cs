@@ -1,13 +1,13 @@
-﻿using RestSharp.Deserializers;
+﻿using System.Text.Json.Serialization;
 
 namespace Orabot.Core.Objects.GitHub
 {
 	internal class User
 	{
-		[DeserializeAs(Name = "login")]
+		[JsonPropertyName("login")]
 		public string LoginName { get; set; }
 
-		[DeserializeAs(Name = "avatar_url")]
+		[JsonPropertyName("avatar_url")]
 		public string AvatarUrl { get; set; }
 	}
 }

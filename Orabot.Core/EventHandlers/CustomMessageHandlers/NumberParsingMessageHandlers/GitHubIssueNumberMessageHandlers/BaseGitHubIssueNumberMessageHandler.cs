@@ -42,7 +42,7 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHa
 		{
 			foreach (var number in GetMatchedNumbers(message.Content))
 			{
-				var request = new RestRequest(ApiIssueRequestTemplate, Method.GET);
+				var request = new RestRequest(ApiIssueRequestTemplate, Method.Get);
 				request.AddUrlSegment("RepositoryOwner", RepositoryOwner);
 				request.AddUrlSegment("RepositoryName", RepositoryName);
 				request.AddUrlSegment("number", number);
@@ -72,7 +72,7 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHa
 
 				if (!isIssue && status == "closed")
 				{
-					var pullRequest = new RestRequest(ApiPullRequestTemplate, Method.GET);
+					var pullRequest = new RestRequest(ApiPullRequestTemplate, Method.Get);
 					pullRequest.AddUrlSegment("RepositoryOwner", RepositoryOwner);
 					pullRequest.AddUrlSegment("RepositoryName", RepositoryName);
 					pullRequest.AddUrlSegment("number", number);

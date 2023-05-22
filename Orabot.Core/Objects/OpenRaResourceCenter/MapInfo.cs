@@ -1,111 +1,111 @@
 ﻿using System;
 using System.Collections.Generic;
-using RestSharp.Deserializers;
+using System.Text.Json.Serialization;
 
 namespace Orabot.Core.Objects.OpenRaResourceCenter
 {
 	public class MapInfo
 	{
-		[DeserializeAs(Name = "categories")]
+		[JsonPropertyName("categories")]
 		public List<string> Categories { get; set; }
 
-		[DeserializeAs(Name = "width")]
+		[JsonPropertyName("width")]
 		public string Width { get; set; }
 
-		[DeserializeAs(Name = "revision")]
+		[JsonPropertyName("revision")]
 		public int Revision { get; set; }
 
-		[DeserializeAs(Name = "title")]
+		[JsonPropertyName("title")]
 		public string Title { get; set; }
 
-		[DeserializeAs(Name = "mapformat")]
+		[JsonPropertyName("mapformat")]
 		public int MapFormat { get; set; }
 
-		[DeserializeAs(Name = "rating")]
+		[JsonPropertyName("rating")]
 		public double Rating { get; set; }
 
-		[DeserializeAs(Name = "spawnpoints")]
+		[JsonPropertyName("spawnpoints")]
 		public string SpawnPoints { get; set; }
 
-		[DeserializeAs(Name = "lua")]
+		[JsonPropertyName("lua")]
 		public bool HasLua { get; set; }
 
-		[DeserializeAs(Name = "bounds")]
+		[JsonPropertyName("bounds")]
 		public string Bounds { get; set; }
 
-		[DeserializeAs(Name = "map_grid_type")]
+		[JsonPropertyName("map_grid_type")]
 		public string MapGridType { get; set; }
 
-		[DeserializeAs(Name = "height")]
+		[JsonPropertyName("height")]
 		public string Height { get; set; }
 
-		[DeserializeAs(Name = "reports")]
+		[JsonPropertyName("reports")]
 		public int Reports { get; set; }
 
-		[DeserializeAs(Name = "parser")]
+		[JsonPropertyName("parser")]
 		public string Parser { get; set; }
 
-		[DeserializeAs(Name = "author")]
+		[JsonPropertyName("author")]
 		public string Author { get; set; }
 
-		[DeserializeAs(Name = "players_block")]
+		[JsonPropertyName("players_block")]
 		public string PlayersBlock { get; set; }
 
-		[DeserializeAs(Name = "requires_upgrade")]
+		[JsonPropertyName("requires_upgrade")]
 		public bool RequiresUpgrade { get; set; }
 
-		[DeserializeAs(Name = "downloaded")]
+		[JsonPropertyName("downloaded")]
 		public int Downloaded { get; set; }
 
-		[DeserializeAs(Name = "id")]
+		[JsonPropertyName("id")]
 		public int Id { get; set; }
 
-		[DeserializeAs(Name = "downloading")]
+		[JsonPropertyName("downloading")]
 		public bool IsDownloadingEnabled { get; set; }
 
-		[DeserializeAs(Name = "url")]
+		[JsonPropertyName("url")]
 		public string Url { get; set; }
 
-		[DeserializeAs(Name = "last_revision")]
+		[JsonPropertyName("last_revision")]
 		public bool LastRevision { get; set; }
 
-		[DeserializeAs(Name = "viewed")]
+		[JsonPropertyName("viewed")]
 		public int Viewed { get; set; }
 
-		[DeserializeAs(Name = "players")]
+		[JsonPropertyName("players")]
 		public int Players { get; set; }
 
-		[DeserializeAs(Name = "rules")]
+		[JsonPropertyName("rules")]
 		public string Rules { get; set; }
 
-		[DeserializeAs(Name = "minimap")]
+		[JsonPropertyName("minimap")]
 		public string Minimap { get; set; }
 
-		[DeserializeAs(Name = "info")]
+		[JsonPropertyName("info")]
 		public string Info { get; set; }
 
-		[DeserializeAs(Name = "game_mod")]
+		[JsonPropertyName("game_mod")]
 		public string GameMod { get; set; }
 
-		[DeserializeAs(Name = "tileset")]
+		[JsonPropertyName("tileset")]
 		public string Tileset { get; set; }
 
-		[DeserializeAs(Name = "map_hash")]
+		[JsonPropertyName("map_hash")]
 		public string MapHash { get; set; }
 
-		[DeserializeAs(Name = "advanced_map")]
+		[JsonPropertyName("advanced_map")]
 		public bool IsAdvancedMap { get; set; }
 
-		[DeserializeAs(Name = "posted")]
+		[JsonPropertyName("posted")]
 		public DateTime PostedOn { get; set; }
 
-		[DeserializeAs(Name = "description")]
+		[JsonPropertyName("description")]
 		public string Description { get; set; }
 
-		[DeserializeAs(Name = "license")]
+		[JsonPropertyName("license")]
 		public string License { get; set; }
 
-		[DeserializeAs(Name = "map_type")]
+		[JsonPropertyName("map_type")]
 		public string MapType { get; set; }
 	}
 }

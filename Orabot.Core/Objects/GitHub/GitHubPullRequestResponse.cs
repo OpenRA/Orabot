@@ -1,16 +1,16 @@
-﻿using RestSharp.Deserializers;
+﻿using System.Text.Json.Serialization;
 
 namespace Orabot.Core.Objects.GitHub
 {
 	internal class GitHubPullRequestResponse
 	{
-		[DeserializeAs(Name = "merged")]
+		[JsonPropertyName("merged")]
 		public bool IsMerged { get; set; }
 
-		[DeserializeAs(Name = "merged_by")]
+		[JsonPropertyName("merged_by")]
 		public User MergedBy { get; set; }
 
-		[DeserializeAs(Name = "mergeable_state")]
+		[JsonPropertyName("mergeable_state")]
 		public string MergeableState { get; set; }
 	}
 }

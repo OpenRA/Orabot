@@ -42,7 +42,7 @@ namespace Orabot.Core.Modules
 
 		private bool CheckTraitExists(string traitName)
 		{
-			var request = new RestRequest(Method.GET);
+			var request = new RestRequest(Method.Get);
 			var response = _restClient.Execute(request);
 			return response.Content.Contains($"<a href=\"#{traitName.ToLower()}\"");
 		}
