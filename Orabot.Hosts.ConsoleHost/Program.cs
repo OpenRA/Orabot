@@ -1,4 +1,5 @@
-﻿using Discord.Commands;
+﻿using Discord;
+using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using Orabot.Core;
@@ -16,7 +17,10 @@ namespace Orabot.Hosts.ConsoleHost
         {
 			var serviceProvider = new ServiceCollection()
 				.AddAppSettingsConfiguration()
-				.AddSingleton<DiscordSocketClient>()
+				.AddSingleton(provider => new DiscordSocketClient(new DiscordSocketConfig
+				{
+					GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent
+				}))
 				.AddSingleton<CommandService>()
 				.AddSingleton<BaseTypeReader, UriTypeReader>()
 				.AddSingleton<BaseTypeReader, DiscordMessageIdentifierTypeReader>()

@@ -26,14 +26,10 @@ namespace Orabot.Core.DependencyInjection
 		public static IServiceCollection AddAppSettingsConfiguration(this IServiceCollection serviceCollection)
 		{
 			return serviceCollection
-				.AddSingleton<IConfiguration>(provider =>
-				{
-					var builder = new ConfigurationBuilder()
+				.AddSingleton<IConfiguration>(provider => new ConfigurationBuilder()
 						.SetBasePath(Directory.GetCurrentDirectory())
-						.AddJsonFile("appsettings.json");
-
-					return builder.Build();
-				});
+						.AddJsonFile("appsettings.json")
+						.Build());
 		}
 
 		public static IServiceCollection AddDefaultEventHandlerServices(this IServiceCollection serviceCollection)
@@ -75,7 +71,7 @@ namespace Orabot.Core.DependencyInjection
 			return serviceCollection.AddSingleton(deserializer =>
 				new DeserializerBuilder()
 					.IgnoreUnmatchedProperties()
-					.WithTypeConverter(new DateTimeConverter(DateTimeKind.Utc, CultureInfo.InvariantCulture, new[] { "yyyy-MM-dd HH-mm-ss" }))
+					.WithTypeConverter(new DateTimeConverter(DateTimeKind.Utc, CultureInfo.InvariantCulture, false, "yyyy-MM-dd HH-mm-ss"))
 					.Build()
 			);
 		}
