@@ -2,36 +2,61 @@
 
 namespace Orabot.Core.Objects.OpenRaReplay
 {
+	// Copied from OpenRA.Game.GameInformation.Player.
 	public class PlayerData
 	{
-		public int ClientIndex { get; set; }
+		#region Start-up information
 
-		public string Name { get; set; }
+		public int ClientIndex;
 
-		public bool IsHuman { get; set; }
+		/// <summary>The player name, not guaranteed to be unique.</summary>
+		public string Name;
+		public bool IsHuman;
+		public bool IsBot;
 
-		public bool IsBot { get; set; }
+		/// <summary>The faction's display name.</summary>
+		public string FactionName;
 
-		public string FactionName { get; set; }
+		/// <summary>The faction ID, a.k.a. the faction's internal name.</summary>
+		public string FactionId;
+		public string Color;
 
-		public string FactionId { get; set; }
+		/// <summary>The faction (including Random, etc.) that was selected in the lobby.</summary>
+		public string DisplayFactionName;
+		public string DisplayFactionId;
 
-		public string Color { get; set; }
+		/// <summary>The team ID on start-up, or 0 if the player is not part of a team.</summary>
+		public int Team;
+		public int SpawnPoint;
+		public int Handicap;
 
-		public int Team { get; set; }
+		/// <summary>True if the faction was chosen at random; otherwise, false.</summary>
+		public bool IsRandomFaction;
 
-		public int SpawnPoint { get; set; }
+		/// <summary>True if the spawn point was chosen at random; otherwise, false.</summary>
+		public bool IsRandomSpawnPoint;
 
-		public bool IsRandomFaction { get; set; }
+		/// <summary>Player authentication fingerprint for the OpenRA forum.</summary>
+		public string Fingerprint;
 
-		public bool IsRandomSpawnPoint { get; set; }
+		#endregion
 
-		public string Fingerprint { get; set; }
+		#region
 
-		public string Outcome { get; set; }
+		/// <summary>The game outcome for this player.</summary>
+		public string Outcome;
 
-		public DateTime OutcomeTimestampUtc { get; set; }
+		/// <summary>The time when this player won or lost the game.</summary>
+		public DateTime OutcomeTimestampUtc;
 
-		public int DisconnectFrame { get; set; }
+		/// <summary>The frame at which this player disconnected.</summary>
+		public int DisconnectFrame;
+
+		#endregion
+
+		public override string ToString()
+		{
+			return $"{Name} [{(FactionName == DisplayFactionName ? FactionName : $"{FactionName} (picked \"{DisplayFactionName}\")")}]";
+		}
 	}
 }

@@ -10,9 +10,9 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.AttachmentMessageHandl
 		protected override string FileExtension => ".orarep";
 
 		private readonly AttachmentReplayMetadataTransformer _metadataTransformer;
-		private readonly UtilityReplayMetadataToEmbedTransformer _toEmbedTransformer;
+		private readonly ReplayMetadataToEmbedTransformer _toEmbedTransformer;
 
-		public ReplayFileAttachmentMessageHandler(AttachmentReplayMetadataTransformer metadataTransformer, UtilityReplayMetadataToEmbedTransformer toEmbedTransformer)
+		public ReplayFileAttachmentMessageHandler(AttachmentReplayMetadataTransformer metadataTransformer, ReplayMetadataToEmbedTransformer toEmbedTransformer)
 		{
 			_metadataTransformer = metadataTransformer;
 			_toEmbedTransformer = toEmbedTransformer;

@@ -6,11 +6,11 @@ using Orabot.Core.Transformers.LinkToEmbedTransformers;
 
 namespace Orabot.Core.Transformers.Replays.ReplayDataToEmbedTransformers
 {
-	internal class UtilityReplayMetadataToEmbedTransformer
+	internal class ReplayMetadataToEmbedTransformer
 	{
 		private readonly OpenRaResourceCenterMapLinkToEmbedTransformer _mapToEmbedTransformer;
 
-		public UtilityReplayMetadataToEmbedTransformer(OpenRaResourceCenterMapLinkToEmbedTransformer mapToEmbedTransformer)
+		public ReplayMetadataToEmbedTransformer(OpenRaResourceCenterMapLinkToEmbedTransformer mapToEmbedTransformer)
 		{
 			_mapToEmbedTransformer = mapToEmbedTransformer;
 		}
@@ -59,7 +59,7 @@ namespace Orabot.Core.Transformers.Replays.ReplayDataToEmbedTransformers
 					{
 						IsInline = true,
 						Name = "No team:",
-						Value = string.Join("\n", kvp.Select(x => $"{x.Name} [{x.FactionName}]"))
+						Value = string.Join("\n", kvp.Select(x => x))
 					});
 				}
 				else
@@ -69,7 +69,7 @@ namespace Orabot.Core.Transformers.Replays.ReplayDataToEmbedTransformers
 					{
 						IsInline = true,
 						Name = $"Team {kvp.Key}",
-						Value = string.Join("\n", kvp.Select(x => $"{x.Name} [{x.FactionName}]"))
+						Value = string.Join("\n", kvp.Select(x => x))
 					});
 				}
 			}

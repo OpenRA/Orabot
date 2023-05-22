@@ -67,13 +67,14 @@ namespace Orabot.Core.DependencyInjection
 				.AddSingleton<AttachmentLogFileToMessageTransformer>()
 				.AddSingleton<OpenRaResourceCenterMapLinkToEmbedTransformer>()
 				.AddSingleton<AttachmentReplayMetadataTransformer>()
-				.AddSingleton<UtilityReplayMetadataToEmbedTransformer>();
+				.AddSingleton<ReplayMetadataToEmbedTransformer>();
 		}
 
 		public static IServiceCollection AddYamlDeserializer(this IServiceCollection serviceCollection)
 		{
 			return serviceCollection.AddSingleton(deserializer =>
 				new DeserializerBuilder()
+					.IgnoreUnmatchedProperties()
 					.WithTypeConverter(new DateTimeConverter(DateTimeKind.Utc, CultureInfo.InvariantCulture, new[] { "yyyy-MM-dd HH-mm-ss" }))
 					.Build()
 			);

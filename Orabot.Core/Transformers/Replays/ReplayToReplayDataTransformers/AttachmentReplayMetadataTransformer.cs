@@ -40,11 +40,10 @@ namespace Orabot.Core.Transformers.Replays.ReplayToReplayDataTransformers
 			var metadata = _yamlDeserializer.Deserialize<ReplayData>(rootYaml);
 			var players = new Dictionary<int, PlayerData>();
 
-			var p = 0;
 			foreach (var playerYaml in splitYaml.Skip(1))
 			{
 				var player = _yamlDeserializer.Deserialize<PlayerData>(playerYaml);
-				players.Add(p, player);
+				players.Add(player.ClientIndex, player);
 			}
 
 			var replayMetadata = new ReplayMetadata()
@@ -67,10 +66,10 @@ namespace Orabot.Core.Transformers.Replays.ReplayToReplayDataTransformers
 
 		private string ExtractYaml(string filePath)
 		{
-			var fileStream = new FileStream(filePath, FileMode.Open);
+			using var fileStream = new FileStream(filePath, FileMode.Open);
 			var miniYaml = ExtractMetaData(fileStream);
 			var yaml = Regex.Replace(miniYaml.Replace("\t", "  "), @"@\d+", "");
-			return yaml.Replace("{DEV_VERSION}", "development");
+			return yaml.Replace("{DEV_VERSION}", "DEV_VERSION");
 		}
 
 		private static string ExtractMetaData(FileStream fileStream)
