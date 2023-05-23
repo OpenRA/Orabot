@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Orabot.Core.Objects.OpenRaReplay
 {
-	public class ReplayMetadata
+	public class Root
 	{
-		public string FileName { get; set; }
-
 		public string Mod { get; set; }
 
 		public string Version { get; set; }
@@ -21,6 +18,6 @@ namespace Orabot.Core.Objects.OpenRaReplay
 
 		public DateTime EndTimeUtc { get; set; }
 
-		public IDictionary<int, PlayerData> Players { get; set; }
+		public string DisabledSpawnPoints { get; set; } // TODO: probably wrong
 	}
 }

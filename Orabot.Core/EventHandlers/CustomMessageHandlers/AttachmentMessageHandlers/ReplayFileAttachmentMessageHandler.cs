@@ -9,12 +9,12 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.AttachmentMessageHandl
 	{
 		protected override string FileExtension => ".orarep";
 
-		private readonly AttachmentReplayToUtilityMetadataTransformer _toUtilityMetadataTransformer;
-		private readonly UtilityReplayMetadataToEmbedTransformer _toEmbedTransformer;
+		private readonly AttachmentReplayMetadataTransformer _metadataTransformer;
+		private readonly ReplayMetadataToEmbedTransformer _toEmbedTransformer;
 
-		public ReplayFileAttachmentMessageHandler(AttachmentReplayToUtilityMetadataTransformer toUtilityMetadataTransformer, UtilityReplayMetadataToEmbedTransformer toEmbedTransformer)
+		public ReplayFileAttachmentMessageHandler(AttachmentReplayMetadataTransformer metadataTransformer, ReplayMetadataToEmbedTransformer toEmbedTransformer)
 		{
-			_toUtilityMetadataTransformer = toUtilityMetadataTransformer;
+			_metadataTransformer = metadataTransformer;
 			_toEmbedTransformer = toEmbedTransformer;
 		}
 
@@ -22,7 +22,7 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.AttachmentMessageHandl
 		{
 			var attachment = message.Attachments.First(x => x.Filename.EndsWith(FileExtension));
 
-			var replayMetadata = _toUtilityMetadataTransformer.GetMetadata(attachment);
+			var replayMetadata = _metadataTransformer.GetMetadata(attachment);
 			replayMetadata.FileName = attachment.Filename;
 			var embed = _toEmbedTransformer.CreateEmbed(replayMetadata, attachment.Url);
 			if (embed != null)

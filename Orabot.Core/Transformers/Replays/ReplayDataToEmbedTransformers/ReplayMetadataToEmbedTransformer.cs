@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Discord;
 using Orabot.Core.Objects.OpenRaReplay;
@@ -8,11 +6,11 @@ using Orabot.Core.Transformers.LinkToEmbedTransformers;
 
 namespace Orabot.Core.Transformers.Replays.ReplayDataToEmbedTransformers
 {
-	internal class UtilityReplayMetadataToEmbedTransformer
+	internal class ReplayMetadataToEmbedTransformer
 	{
 		private readonly OpenRaResourceCenterMapLinkToEmbedTransformer _mapToEmbedTransformer;
 
-		public UtilityReplayMetadataToEmbedTransformer(OpenRaResourceCenterMapLinkToEmbedTransformer mapToEmbedTransformer)
+		public ReplayMetadataToEmbedTransformer(OpenRaResourceCenterMapLinkToEmbedTransformer mapToEmbedTransformer)
 		{
 			_mapToEmbedTransformer = mapToEmbedTransformer;
 		}
@@ -20,8 +18,6 @@ namespace Orabot.Core.Transformers.Replays.ReplayDataToEmbedTransformers
 		internal Embed CreateEmbed(ReplayMetadata replayMetadata, string replayLink = null)
 		{
 			var mapEmbed = _mapToEmbedTransformer.CreateEmbed(replayMetadata.MapUid);
-			var startTime = DateTime.ParseExact(replayMetadata.StartTimeUtc, "yyyy-MM-dd HH-mm-ss", new NumberFormatInfo());
-			var endTime = DateTime.ParseExact(replayMetadata.EndTimeUtc, "yyyy-MM-dd HH-mm-ss", new NumberFormatInfo());
 
 			var fields = new List<EmbedFieldBuilder>
 			{
@@ -47,7 +43,7 @@ namespace Orabot.Core.Transformers.Replays.ReplayDataToEmbedTransformers
 				{
 					IsInline = false,
 					Name = "Duration:",
-					Value = $"||{endTime - startTime}||"
+					Value = $"||{replayMetadata.EndTimeUtc - replayMetadata.StartTimeUtc}||"
 				}
 			};
 
@@ -63,7 +59,7 @@ namespace Orabot.Core.Transformers.Replays.ReplayDataToEmbedTransformers
 					{
 						IsInline = true,
 						Name = "No team:",
-						Value = string.Join("\n", kvp.Select(x => $"{x.Name} [{x.FactionName}]"))
+						Value = string.Join("\n", kvp.Select(x => x))
 					});
 				}
 				else
@@ -73,7 +69,7 @@ namespace Orabot.Core.Transformers.Replays.ReplayDataToEmbedTransformers
 					{
 						IsInline = true,
 						Name = $"Team {kvp.Key}",
-						Value = string.Join("\n", kvp.Select(x => $"{x.Name} [{x.FactionName}]"))
+						Value = string.Join("\n", kvp.Select(x => x))
 					});
 				}
 			}

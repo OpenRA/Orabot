@@ -32,7 +32,7 @@ namespace Orabot.Hosts.ConsoleHost
 				.AddSingleton<QuotingService>()
 				.AddDefaultTransformers()
 				.AddTransient<IRestClient, RestClient>()
-				.AddTransient<YamlDotNet.Serialization.Deserializer>()
+				.AddYamlDeserializer()
 				.BuildServiceProvider();
 
 			using (var bot = new Bot(serviceProvider))
