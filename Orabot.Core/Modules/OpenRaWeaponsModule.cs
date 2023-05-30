@@ -45,7 +45,7 @@ namespace Orabot.Core.Modules
 		}
 
 		[Command("weapons-dev")]
-		[Summary("Provides a link to the OpenRA playtest Weapons documentation page. Can be used with an optional weapon name to link directly.")]
+		[Summary("Provides a link to the OpenRA development Weapons documentation page. Can be used with an optional weapon name to link directly.")]
 		public async Task WeaponsDev(string weaponName = null)
 		{
 			var embed = await BuildWeaponsPageEmbed(_weaponsDevelopmentPageUrl, weaponName);

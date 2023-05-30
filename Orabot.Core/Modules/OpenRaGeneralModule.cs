@@ -26,7 +26,8 @@ namespace Orabot.Core.Modules
 		[Summary("Prints information about the OpenRA Academy.")]
 		public async Task Academy()
 		{
-			const string messageLink = "https://discordapp.com/channels/153649279762694144/520193572256088084/520209549274120202";
+			const string discordServerInvite = "https://discord.gg/C2CadJT";
+			const string permalink = "http://academy.openra.net/";
 
 			if (!(Context.Guild.Channels.FirstOrDefault(x => x.Name == "navigation") is ITextChannel channel))
 			{
@@ -36,7 +37,7 @@ namespace Orabot.Core.Modules
 			var embedBuilder = new EmbedBuilder
 			{
 				Description = "The OpenRA Academy is a separate Discord server aimed at helping players get better at the game.\n" +
-				              $"Please refer to [the following message]({messageLink}) in {channel.Mention}, which contains a link with an invite to the server."
+				              $"Here is a [Discord invite]({discordServerInvite}), or you could use the permalink {permalink}."
 			};
 
 			await ReplyAsync(string.Empty, false, embedBuilder.Build());
@@ -90,7 +91,7 @@ namespace Orabot.Core.Modules
 		}
 
 		[Command("orabot")]
-		[Summary("Prints information about the OpenRA Utility.")]
+		[Summary("Prints information about Orabot.")]
 		public async Task Orabot()
 		{
 			const string orabotRepoUrl = "https://github.com/OpenRA/Orabot";

@@ -45,7 +45,7 @@ namespace Orabot.Core.Modules
 		}
 
 		[Command("lua-dev")]
-		[Summary("Provides a link to the OpenRA playtest Lua API documentation page. Can be used with an optional table name to link directly.")]
+		[Summary("Provides a link to the OpenRA development Lua API documentation page. Can be used with an optional table name to link directly.")]
 		public async Task LuaApiDev(string tableName = null)
 		{
 			var embed = await BuildLuaApiPageEmbed(_luaDevelopmentPageUrl, tableName);
