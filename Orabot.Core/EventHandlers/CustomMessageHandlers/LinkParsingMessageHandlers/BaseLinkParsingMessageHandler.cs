@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Discord.WebSocket;
 using Orabot.Core.Abstractions.EventHandlers;
 
@@ -24,7 +25,7 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.LinkParsingMessageHand
 			return RegexMatchPatterns.Any(regexMatchPattern => Regex.IsMatch(message.Content, regexMatchPattern, _regexOptions));
 		}
 
-		public abstract void Invoke(SocketUserMessage message);
+		public abstract Task InvokeAsync(SocketUserMessage message);
 
 		protected IEnumerable<string> GetMatchedLinks(string message)
 		{

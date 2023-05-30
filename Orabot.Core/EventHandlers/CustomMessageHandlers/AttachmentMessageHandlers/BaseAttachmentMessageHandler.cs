@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Discord.WebSocket;
 using Orabot.Core.Abstractions.EventHandlers;
 
@@ -13,6 +14,6 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.AttachmentMessageHandl
 			return message.Attachments.Count != 0 && message.Attachments.Any(x => x.Filename.EndsWith(FileExtension));
 		}
 
-		public abstract void Invoke(SocketUserMessage message);
+		public abstract Task InvokeAsync(SocketUserMessage message);
 	}
 }

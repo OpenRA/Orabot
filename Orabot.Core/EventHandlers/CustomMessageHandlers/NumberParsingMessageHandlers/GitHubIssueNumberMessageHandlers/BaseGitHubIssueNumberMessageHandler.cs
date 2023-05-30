@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
@@ -34,20 +34,20 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHa
 		internal BaseGitHubIssueNumberMessageHandler(IRestClient restClient, IConfiguration configuration)
 		{
 			_restClient = restClient;
-			restClient.BaseUrl = new Uri(BaseApiUrl);
+
 			_issueIconBaseUrl = configuration["GitHubIconsBaseUrl"];
 		}
 
-		public override void Invoke(SocketUserMessage message)
+		public override async Task InvokeAsync(SocketUserMessage message)
 		{
 			foreach (var number in GetMatchedNumbers(message.Content))
 			{
-				var request = new RestRequest(ApiIssueRequestTemplate, Method.Get);
+				var request = new RestRequest($"{BaseApiUrl}/{ApiIssueRequestTemplate}", Method.Get);
 				request.AddUrlSegment("RepositoryOwner", RepositoryOwner);
 				request.AddUrlSegment("RepositoryName", RepositoryName);
 				request.AddUrlSegment("number", number);
 
-				var response = _restClient.Execute<GitHubIssueResponse>(request);
+				var response = await _restClient.ExecuteAsync<GitHubIssueResponse>(request);
 				var issue = response.Data;
 				if (issue?.HtmlUrl == null)
 				{
@@ -72,12 +72,12 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHa
 
 				if (!isIssue && status == "closed")
 				{
-					var pullRequest = new RestRequest(ApiPullRequestTemplate, Method.Get);
+					var pullRequest = new RestRequest($"{BaseApiUrl}/{ApiPullRequestTemplate}", Method.Get);
 					pullRequest.AddUrlSegment("RepositoryOwner", RepositoryOwner);
 					pullRequest.AddUrlSegment("RepositoryName", RepositoryName);
 					pullRequest.AddUrlSegment("number", number);
 
-					var pullResponse = _restClient.Execute<GitHubPullRequestResponse>(pullRequest);
+					var pullResponse = await _restClient.ExecuteAsync<GitHubPullRequestResponse>(pullRequest);
 					var pull = pullResponse.Data;
 					if (pull != null)
 					{
@@ -122,7 +122,7 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHa
 					Color = _colorPerStatus[status]
 				};
 
-				message.Channel.SendMessageAsync("", embed: embed.Build());
+				await message.Channel.SendMessageAsync("", embed: embed.Build());
 			}
 		}
 

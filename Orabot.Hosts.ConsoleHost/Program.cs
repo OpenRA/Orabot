@@ -8,6 +8,8 @@ using Orabot.Core.Modules;
 using Orabot.Core.Services;
 using Orabot.Core.TypeReaders;
 using RestSharp;
+using RestSharp.Serializers.Json;
+using System.Text.Json;
 
 namespace Orabot.Hosts.ConsoleHost
 {
@@ -17,7 +19,7 @@ namespace Orabot.Hosts.ConsoleHost
         {
 			var serviceProvider = new ServiceCollection()
 				.AddAppSettingsConfiguration()
-				.AddSingleton(provider => new DiscordSocketClient(new DiscordSocketConfig
+				.AddSingleton(_ => new DiscordSocketClient(new DiscordSocketConfig
 				{
 					GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent
 				}))
@@ -35,14 +37,20 @@ namespace Orabot.Hosts.ConsoleHost
 				.AddSingleton<ModuleBase<SocketCommandContext>, RoleManagementModule>()
 				.AddSingleton<QuotingService>()
 				.AddDefaultTransformers()
-				.AddTransient<IRestClient, RestClient>()
+				.AddSingleton<IRestClient>(_ =>
+				{
+					var serializationOptions = new JsonSerializerOptions();
+					serializationOptions.Converters.Add(new CustomDateTimeConverter());
+
+					return new RestClient(
+					   new RestClientOptions(),
+					   configureSerialization: s => s.UseSystemTextJson(serializationOptions));
+				})
 				.AddYamlDeserializer()
 				.BuildServiceProvider();
 
-			using (var bot = new Bot(serviceProvider))
-			{
-				bot.RunAsync().Wait();
-			}
+			using var bot = new Bot(serviceProvider);
+			bot.RunAsync().Wait();
 		}
     }
 }

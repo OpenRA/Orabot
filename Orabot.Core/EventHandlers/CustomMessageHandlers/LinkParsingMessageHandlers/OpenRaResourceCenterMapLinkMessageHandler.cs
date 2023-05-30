@@ -1,5 +1,6 @@
 ﻿using Discord.WebSocket;
 using Orabot.Core.Transformers.LinkToEmbedTransformers;
+using System.Threading.Tasks;
 
 namespace Orabot.Core.EventHandlers.CustomMessageHandlers.LinkParsingMessageHandlers
 {
@@ -14,7 +15,7 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.LinkParsingMessageHand
 			_toEmbedTransformer = toEmbedTransformer;
 		}
 
-		public override void Invoke(SocketUserMessage message)
+		public override async Task InvokeAsync(SocketUserMessage message)
 		{
 			foreach (var matchedLink in GetMatchedLinks(message.Content))
 			{
@@ -24,11 +25,9 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.LinkParsingMessageHand
 					continue;
 				}
 
-				var embed = _toEmbedTransformer.CreateEmbed(number);
+				var embed = await _toEmbedTransformer.CreateEmbed(number);
 				if (embed != null)
-				{
-					message.Channel.SendMessageAsync("", embed: embed);
-				}
+					await message.Channel.SendMessageAsync("", embed: embed);
 			}
 		}
 	}

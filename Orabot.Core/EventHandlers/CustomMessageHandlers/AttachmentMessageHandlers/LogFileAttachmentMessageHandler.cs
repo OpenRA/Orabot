@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Discord.WebSocket;
 using Orabot.Core.Transformers.AttachmentToMessageTransformers;
 
@@ -15,7 +16,7 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.AttachmentMessageHandl
 			_attachmentLogFileToMessageTransformer = attachmentLogFileToMessageTransformer;
 		}
 
-		public override void Invoke(SocketUserMessage message)
+		public override async Task InvokeAsync(SocketUserMessage message)
 		{
 			var attachment = message.Attachments.First(x => x.Filename.EndsWith(FileExtension));
 			var rawMessage = _attachmentLogFileToMessageTransformer.CreateRawMessage(attachment, out var fullText);
@@ -27,7 +28,7 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.AttachmentMessageHandl
 				rawMessage = $"{rawMessage}\r\n{explanationMessage}";
 			}
 
-			message.Channel.SendMessageAsync(rawMessage);
+			await message.Channel.SendMessageAsync(rawMessage);
 		}
 	}
 }

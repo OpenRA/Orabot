@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Discord.WebSocket;
 using Orabot.Core.Transformers.LinkToEmbedTransformers;
 
@@ -18,7 +19,7 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHa
 			_toEmbedTransformer = toEmbedTransformer;
 		}
 
-		public override void Invoke(SocketUserMessage message)
+		public override async Task InvokeAsync(SocketUserMessage message)
 		{
 			foreach (var numberStr in GetMatchedNumbers(message.Content))
 			{
@@ -27,11 +28,9 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHa
 					continue;
 				}
 
-				var embed = _toEmbedTransformer.CreateEmbed(number);
+				var embed = await _toEmbedTransformer.CreateEmbed(number);
 				if (embed != null)
-				{
-					message.Channel.SendMessageAsync("", embed: embed);
-				}
+					await message.Channel.SendMessageAsync("", embed: embed);
 			}
 		}
 	}

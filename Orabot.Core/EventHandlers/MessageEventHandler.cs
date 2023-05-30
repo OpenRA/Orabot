@@ -19,6 +19,8 @@ namespace Orabot.Core.EventHandlers
 
 		public async Task HandleMessageReceivedAsync(SocketMessage messageParam)
 		{
+			await Task.Yield();
+			
 			// Don't process the command if it was a System Message or the sender is a bot.
 			if (!(messageParam is SocketUserMessage message) || message.Source == MessageSource.Bot)
 			{
@@ -29,7 +31,7 @@ namespace Orabot.Core.EventHandlers
 			{
 				if (customMessageHandler.CanHandle(message))
 				{
-					customMessageHandler.Invoke(message);
+					customMessageHandler.InvokeAsync(message);
 				}
 			});
 		}
