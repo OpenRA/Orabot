@@ -24,7 +24,7 @@ namespace Orabot.Core.Modules
 			_traitsReleasePageUrl = traitsPages["ReleasePageUrl"];
 			_traitsPlaytestPageUrl = traitsPages["PlaytestPageUrl"];
 			_traitsDevelopmentPageUrl = traitsPages["DevelopmentPageUrl"];
-;		}
+		}
 
 		[Command("traits")]
 		[Summary("Provides a link to the OpenRA Traits documentation page. Can be used with an optional trait name to link directly.")]
@@ -57,9 +57,9 @@ namespace Orabot.Core.Modules
 
 		private async Task<bool> CheckTraitExists(string pageUrl, string traitName)
 		{
-			var request = new RestRequest(pageUrl, Method.Get);
-			var response = await _restClient.ExecuteAsync(request);
-			return response.Content.Contains($"<a href=\"#{traitName.ToLower()}\"");
+			var request = new RestRequest(pageUrl);
+			var response = await _restClient.GetAsync(request);
+			return response.Content?.Contains($"<a href=\"#{traitName.ToLower()}\"") ?? false;
 		}
 
 		private async Task<Embed> BuildTraitsPageEmbed(string pageUrl, string traitName)

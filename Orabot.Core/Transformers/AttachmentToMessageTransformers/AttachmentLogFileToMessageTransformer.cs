@@ -23,10 +23,7 @@ namespace Orabot.Core.Transformers.AttachmentToMessageTransformers
 			webClient.DownloadFile(attachment.Url, filePath);
 
 			fullText = File.ReadAllText(filePath);
-			if (string.IsNullOrWhiteSpace(fullText))
-				return null;
-
-			return $"```{fullText.Substring(0, Math.Min(1000, fullText.Length))}```";
+			return string.IsNullOrWhiteSpace(fullText) ? null : $"```{fullText[..Math.Min(1000, fullText.Length)]}```";
 		}
 
 		internal bool TryCreateExceptionExplanationMessage(string text, out string explanationMessage)

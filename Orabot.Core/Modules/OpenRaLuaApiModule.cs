@@ -57,9 +57,9 @@ namespace Orabot.Core.Modules
 
 		private async Task<bool> CheckTableExists(string pageUrl, string tableName)
 		{
-			var request = new RestRequest(pageUrl, Method.Get);
-			var response = await _restClient.ExecuteAsync(request);
-			return response.Content.Contains($"<a href=\"#{tableName.ToLower()}\"");
+			var request = new RestRequest(pageUrl);
+			var response = await _restClient.GetAsync(request);
+			return response.Content?.Contains($"<a href=\"#{tableName.ToLower()}\"") ?? false;
 		}
 
 		private async Task<Embed> BuildLuaApiPageEmbed(string pageUrl, string tableName)

@@ -10,12 +10,13 @@ using Orabot.Core.TypeReaders;
 using RestSharp;
 using RestSharp.Serializers.Json;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Orabot.Hosts.ConsoleHost
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
 			var serviceProvider = new ServiceCollection()
 				.AddAppSettingsConfiguration()
@@ -50,7 +51,7 @@ namespace Orabot.Hosts.ConsoleHost
 				.BuildServiceProvider();
 
 			using var bot = new Bot(serviceProvider);
-			bot.RunAsync().Wait();
+			await bot.RunAsync();
 		}
     }
 }

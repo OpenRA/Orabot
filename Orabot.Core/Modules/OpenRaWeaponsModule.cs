@@ -57,9 +57,9 @@ namespace Orabot.Core.Modules
 
 		private async Task<bool> CheckWeaponExists(string pageUrl, string weaponName)
 		{
-			var request = new RestRequest(pageUrl, Method.Get);
-			var response = await _restClient.ExecuteAsync(request);
-			return response.Content.Contains($"<a href=\"#{weaponName.ToLower()}\"");
+			var request = new RestRequest(pageUrl);
+			var response = await _restClient.GetAsync(request);
+			return response.Content?.Contains($"<a href=\"#{weaponName.ToLower()}\"") ?? false;
 		}
 
 		private async Task<Embed> BuildWeaponsPageEmbed(string pageUrl, string weaponName)

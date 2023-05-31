@@ -25,7 +25,7 @@ namespace Orabot.Core.Objects.GitHub
 		public DateTime CreatedAt { get; set; }
 
 		[JsonPropertyName("updated_at")]
-		public DateTimeOffset? UpdatedAt { get; set; }
+		public DateTime? UpdatedAt { get; set; }
 
 		[JsonPropertyName("user")]
 		public User User { get; set; }

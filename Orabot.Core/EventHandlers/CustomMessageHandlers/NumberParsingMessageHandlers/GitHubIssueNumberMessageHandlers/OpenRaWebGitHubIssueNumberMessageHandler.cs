@@ -6,9 +6,9 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHa
 {
 	internal class OpenRaWebGitHubIssueNumberMessageHandler : BaseGitHubIssueNumberMessageHandler
 	{
-		protected override string RepositoryOwner { get; } = "OpenRA";
+		protected override string RepositoryOwner => "OpenRA";
 
-		protected override string RepositoryName { get; } = "OpenRAWeb";
+		protected override string RepositoryName => "OpenRAWebsiteV3";
 
 		protected override Dictionary<string, int> MinimumHandledNumberPerKeyword { get; } = new Dictionary<string, int>
 		{

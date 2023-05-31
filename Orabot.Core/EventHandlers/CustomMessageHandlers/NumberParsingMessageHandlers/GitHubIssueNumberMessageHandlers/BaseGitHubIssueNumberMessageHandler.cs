@@ -42,13 +42,12 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHa
 		{
 			foreach (var number in GetMatchedNumbers(message.Content))
 			{
-				var request = new RestRequest($"{BaseApiUrl}/{ApiIssueRequestTemplate}", Method.Get);
+				var request = new RestRequest($"{BaseApiUrl}/{ApiIssueRequestTemplate}");
 				request.AddUrlSegment("RepositoryOwner", RepositoryOwner);
 				request.AddUrlSegment("RepositoryName", RepositoryName);
 				request.AddUrlSegment("number", number);
 
-				var response = await _restClient.ExecuteAsync<GitHubIssueResponse>(request);
-				var issue = response.Data;
+				var issue = await _restClient.GetAsync<GitHubIssueResponse>(request);
 				if (issue?.HtmlUrl == null)
 				{
 					continue;
@@ -72,19 +71,18 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHa
 
 				if (!isIssue && status == "closed")
 				{
-					var pullRequest = new RestRequest($"{BaseApiUrl}/{ApiPullRequestTemplate}", Method.Get);
+					var pullRequest = new RestRequest($"{BaseApiUrl}/{ApiPullRequestTemplate}");
 					pullRequest.AddUrlSegment("RepositoryOwner", RepositoryOwner);
 					pullRequest.AddUrlSegment("RepositoryName", RepositoryName);
 					pullRequest.AddUrlSegment("number", number);
 
-					var pullResponse = await _restClient.ExecuteAsync<GitHubPullRequestResponse>(pullRequest);
-					var pull = pullResponse.Data;
+					var pull = await _restClient.GetAsync<GitHubPullRequestResponse>(pullRequest);
 					if (pull != null)
 					{
 						embedFields.Add(new EmbedFieldBuilder
 						{
 							Name = "Status:",
-							Value = pull.MergeableState,
+							Value = pull.IsMerged ? "merged" : pull.MergeableState,
 							IsInline = true
 						});
 
@@ -101,12 +99,13 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHa
 					}
 				}
 
+				var description = issue.Body.Length > 250 ? issue.Body[..250] + "..." : issue.Body;
 				var embed = new EmbedBuilder
 				{
 					Title = issue.Title,
 					ThumbnailUrl = issue.User?.AvatarUrl,
 					Url = issue.HtmlUrl,
-					Description = issue.Body.Length > 250 ? issue.Body.Substring(0, 250) + "..." : issue.Body,
+					Description = description,
 					Author = new EmbedAuthorBuilder
 					{
 						Name = $"{type} #{number} by {issue.User?.LoginName}  ({status})",

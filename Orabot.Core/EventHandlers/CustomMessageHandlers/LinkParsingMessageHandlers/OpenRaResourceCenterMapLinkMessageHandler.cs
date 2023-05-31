@@ -19,7 +19,7 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.LinkParsingMessageHand
 		{
 			foreach (var matchedLink in GetMatchedLinks(message.Content))
 			{
-				var numberStr = matchedLink.Substring(matchedLink.LastIndexOf('/') + 1);
+				var numberStr = matchedLink[(matchedLink.LastIndexOf('/') + 1)..];
 				if (!int.TryParse(numberStr, out var number))
 				{
 					continue;

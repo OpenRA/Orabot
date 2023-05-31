@@ -21,7 +21,7 @@ using YamlDotNet.Serialization.Converters;
 
 namespace Orabot.Core.DependencyInjection
 {
-    public static class ServiceProviderExtensions
+	public static class ServiceProviderExtensions
 	{
 		public static IServiceCollection AddAppSettingsConfiguration(this IServiceCollection serviceCollection)
 		{
@@ -41,21 +41,21 @@ namespace Orabot.Core.DependencyInjection
 		}
 
 		public static IServiceCollection AddDefaultCustomMessageHandlers(this IServiceCollection serviceCollection)
-        {
-	        return serviceCollection
-		        .AddSingleton<ICustomMessageHandler, OpenRaGitHubIssueNumberMessageHandler>()
-		        .AddSingleton<ICustomMessageHandler, OpenRaModSdkGitHubIssueNumberMessageHandler>()
-		        .AddSingleton<ICustomMessageHandler, OpenRaRa2GitHubIssueNumberMessageHandler>()
-		        .AddSingleton<ICustomMessageHandler, OpenRaWebGitHubIssueNumberMessageHandler>()
-		        .AddSingleton<ICustomMessageHandler, OrabotGitHubIssueNumberMessageHandler>()
-		        .AddSingleton<ICustomMessageHandler, OpenRaResourceCenterMapNumberMessageHandler>()
-		        .AddSingleton<ICustomMessageHandler, OpenRaResourceCenterMapLinkMessageHandler>()
-		        .AddSingleton<ICustomMessageHandler, LogFileAttachmentMessageHandler>()
-		        .AddSingleton<ICustomMessageHandler, ReplayFileAttachmentMessageHandler>()
-		        .AddSingleton<ICustomMessageHandler, BaseCommandMessageHandler>()
-		        .AddSingleton<ICustomMessageHandler, BaseModTimerMessageHandler>()
-		        .AddSingleton<ICustomMessageHandler, StackTraceMessageHandler>();
-        }
+		{
+			return serviceCollection
+				.AddSingleton<ICustomMessageHandler, OpenRaGitHubIssueNumberMessageHandler>()
+				.AddSingleton<ICustomMessageHandler, OpenRaModSdkGitHubIssueNumberMessageHandler>()
+				.AddSingleton<ICustomMessageHandler, OpenRaRa2GitHubIssueNumberMessageHandler>()
+				.AddSingleton<ICustomMessageHandler, OpenRaWebGitHubIssueNumberMessageHandler>()
+				.AddSingleton<ICustomMessageHandler, OrabotGitHubIssueNumberMessageHandler>()
+				.AddSingleton<ICustomMessageHandler, OpenRaResourceCenterMapNumberMessageHandler>()
+				.AddSingleton<ICustomMessageHandler, OpenRaResourceCenterMapLinkMessageHandler>()
+				.AddSingleton<ICustomMessageHandler, LogFileAttachmentMessageHandler>()
+				.AddSingleton<ICustomMessageHandler, ReplayFileAttachmentMessageHandler>()
+				.AddSingleton<ICustomMessageHandler, BaseCommandMessageHandler>()
+				.AddSingleton<ICustomMessageHandler, BaseModTimerMessageHandler>()
+				.AddSingleton<ICustomMessageHandler, StackTraceMessageHandler>();
+		}
 
 		public static IServiceCollection AddDefaultTransformers(this IServiceCollection serviceCollection)
 		{
@@ -75,5 +75,5 @@ namespace Orabot.Core.DependencyInjection
 					.Build()
 			);
 		}
-    }
+	}
 }

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 
@@ -28,11 +27,6 @@ namespace Orabot.Core.Modules
 		{
 			const string discordServerInvite = "https://discord.gg/C2CadJT";
 			const string permalink = "http://academy.openra.net/";
-
-			if (!(Context.Guild.Channels.FirstOrDefault(x => x.Name == "navigation") is ITextChannel channel))
-			{
-				return;
-			}
 
 			var embedBuilder = new EmbedBuilder
 			{

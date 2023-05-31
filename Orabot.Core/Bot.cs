@@ -25,20 +25,20 @@ namespace Orabot.Core
 		public Bot(IServiceProvider serviceProvider)
 		{
 			_serviceProvider = serviceProvider;
-			_discordBotToken = _serviceProvider.GetService<IConfiguration>()["BotToken"];
+			_discordBotToken = _serviceProvider.GetRequiredService<IConfiguration>()["BotToken"];
 
 			_client = _serviceProvider.GetService<DiscordSocketClient>();
 			_commands = _serviceProvider.GetService<CommandService>();
 			_logEventHandler = _serviceProvider.GetService<ILogEventHandler>();
 			_messageEventHandler = _serviceProvider.GetService<IMessageEventHandler>();
 			_reactionEventHandler = _serviceProvider.GetService<IReactionEventHandler>();
-
-			AttachEventHandlers();
-			RegisterCommandModules();
 		}
 
 		public async Task RunAsync()
 		{
+			AttachEventHandlers();
+			await RegisterCommandModules();
+
 			await _client.LoginAsync(TokenType.Bot, _discordBotToken);
 			await _client.StartAsync();
 
@@ -53,7 +53,7 @@ namespace Orabot.Core
 
 		public void Dispose()
 		{
-			((IDisposable) _commands)?.Dispose();
+			((IDisposable)_commands)?.Dispose();
 			_client?.Dispose();
 		}
 
@@ -67,7 +67,7 @@ namespace Orabot.Core
 			_client.MessageReceived += _messageEventHandler.HandleMessageReceivedAsync;
 		}
 
-		private void RegisterCommandModules()
+		private async Task RegisterCommandModules()
 		{
 			var typeReaders = _serviceProvider.GetServices<BaseTypeReader>();
 			foreach (var typeReader in typeReaders)
@@ -75,10 +75,10 @@ namespace Orabot.Core
 				_commands.AddTypeReader(typeReader.SupportedType, typeReader);
 			}
 
-			var modules = _serviceProvider.GetServices(typeof(ModuleBase<SocketCommandContext>));
+			var modules = _serviceProvider.GetServices<ModuleBase<SocketCommandContext>>();
 			foreach (var module in modules)
 			{
-				_commands.AddModuleAsync(module.GetType(), _serviceProvider).Wait();
+				await _commands.AddModuleAsync(module.GetType(), _serviceProvider);
 			}
 		}
 

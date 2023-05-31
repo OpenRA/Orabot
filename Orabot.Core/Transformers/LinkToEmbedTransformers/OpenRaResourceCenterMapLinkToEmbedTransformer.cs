@@ -23,11 +23,11 @@ namespace Orabot.Core.Transformers.LinkToEmbedTransformers
 
 		internal async Task<Embed> CreateEmbed(string mapUid)
 		{
-			var request = new RestRequest($"{BaseUrl}/{ApiMapInfoByUidTemplate}", Method.Get);
+			var request = new RestRequest($"{BaseUrl}/{ApiMapInfoByUidTemplate}");
 			request.AddUrlSegment("uid", mapUid);
 
-			var response = await _restClient.ExecuteAsync<List<MapInfo>>(request);
-			var mapInfo = response.Data?.FirstOrDefault();
+			var response = await _restClient.GetAsync<List<MapInfo>>(request);
+			var mapInfo = response?.FirstOrDefault();
 			if (mapInfo?.Title == null || mapInfo.Author == null)
 				return null;
 
@@ -36,11 +36,11 @@ namespace Orabot.Core.Transformers.LinkToEmbedTransformers
 
 		internal async Task<Embed> CreateEmbed(int number)
 		{
-			var request = new RestRequest($"{BaseUrl}/{ApiMapInfoByNumberTemplate}", Method.Get);
+			var request = new RestRequest($"{BaseUrl}/{ApiMapInfoByNumberTemplate}");
 			request.AddUrlSegment("number", number);
 
-			var response = await _restClient.ExecuteAsync<List<MapInfo>>(request);
-			var mapInfo = response.Data?.FirstOrDefault();
+			var response = await _restClient.GetAsync<List<MapInfo>>(request);
+			var mapInfo = response?.FirstOrDefault();
 			if (mapInfo?.Title == null || mapInfo.Author == null)
 				return null;
 
@@ -86,10 +86,10 @@ namespace Orabot.Core.Transformers.LinkToEmbedTransformers
 		{
 			var stylesheetLink = $"{BaseUrl}/static/style003.css";
 
-			var request = new RestRequest(stylesheetLink, Method.Get);
-			var response = await _restClient.ExecuteAsync(request);
+			var request = new RestRequest(stylesheetLink);
+			var response = await _restClient.GetAsync(request);
 
-			if (!response.Content.Contains(modIdentifier))
+			if (response.Content == null || !response.Content.Contains(modIdentifier))
 				return null;
 
 			var hexColor = response.Content.Substring(response.Content.IndexOf(modIdentifier, StringComparison.Ordinal));
