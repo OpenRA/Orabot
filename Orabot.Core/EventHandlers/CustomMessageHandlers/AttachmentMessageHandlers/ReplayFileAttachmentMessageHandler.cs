@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Discord.WebSocket;
 using Orabot.Core.Transformers.Replays.ReplayDataToEmbedTransformers;
 using Orabot.Core.Transformers.Replays.ReplayToReplayDataTransformers;
@@ -18,13 +19,13 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.AttachmentMessageHandl
 			_toEmbedTransformer = toEmbedTransformer;
 		}
 
-		public override void Invoke(SocketUserMessage message)
+		public override async Task InvokeAsync(SocketUserMessage message)
 		{
 			var attachment = message.Attachments.First(x => x.Filename.EndsWith(FileExtension));
 
 			var replayMetadata = _metadataTransformer.GetMetadata(attachment);
 			replayMetadata.FileName = attachment.Filename;
-			var embed = _toEmbedTransformer.CreateEmbed(replayMetadata, attachment.Url);
+			var embed = await _toEmbedTransformer.CreateEmbed(replayMetadata, attachment.Url);
 			if (embed != null)
 			{
 				var replyMessage = $"{message.Author.Mention} posted a replay";
@@ -37,7 +38,7 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.AttachmentMessageHandl
 					replyMessage += $" with commentary:\n{message.Content}";
 				}
 
-				message.Channel.SendMessageAsync(replyMessage, embed: embed);
+				await message.Channel.SendMessageAsync(replyMessage, embed: embed);
 			}
 		}
 	}

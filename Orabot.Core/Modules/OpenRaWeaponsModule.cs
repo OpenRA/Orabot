@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Microsoft.Extensions.Configuration;
@@ -9,51 +8,68 @@ namespace Orabot.Core.Modules
 {
 	public class OpenRaWeaponsModule : ModuleBase<SocketCommandContext>
 	{
-		private const string WeaponsPageUrl = "https://docs.openra.net/en/release/weapons/";
-		private const string WeaponsPlaytestPageUrl = "https://docs.openra.net/en/playtest/weapons/";
-
 		private readonly IRestClient _restClient;
 		private readonly string _openRaIconUrl;
+		private readonly string _weaponsReleasePageUrl;
+		private readonly string _weaponsPlaytestPageUrl;
+		private readonly string _weaponsDevelopmentPageUrl;
 
 		public OpenRaWeaponsModule(IRestClient restClient, IConfiguration configuration)
 		{
 			_restClient = restClient;
-			_restClient.BaseUrl = new Uri(WeaponsPageUrl);
+
 			_openRaIconUrl = configuration["OpenRaFaviconUrl"];
+
+			var traitsPages = configuration.GetRequiredSection("Weapons");
+			_weaponsReleasePageUrl = traitsPages["ReleasePageUrl"];
+			_weaponsPlaytestPageUrl = traitsPages["PlaytestPageUrl"];
+			_weaponsDevelopmentPageUrl = traitsPages["DevelopmentPageUrl"];
 		}
 
 		[Command("weapons")]
 		[Summary("Provides a link to the OpenRA Weapons documentation page. Can be used with an optional weapon name to link directly.")]
 		public async Task Weapons(string weaponName = null)
 		{
-			var embed = BuildWeaponsPageEmbed(WeaponsPageUrl, weaponName);
-			await ReplyAsync("", false, embed);
+			var embed = await BuildWeaponsPageEmbed(_weaponsReleasePageUrl, weaponName);
+			if (embed != null)
+				await ReplyAsync("", false, embed);
 		}
 
 		[Command("weapons-pt")]
 		[Summary("Provides a link to the OpenRA playtest Weapons documentation page. Can be used with an optional weapon name to link directly.")]
 		public async Task WeaponsPt(string weaponName = null)
 		{
-			var embed = BuildWeaponsPageEmbed(WeaponsPlaytestPageUrl, weaponName);
-			await ReplyAsync("", false, embed);
+			var embed = await BuildWeaponsPageEmbed(_weaponsPlaytestPageUrl, weaponName);
+			if (embed != null)
+				await ReplyAsync("", false, embed);
+		}
+
+		[Command("weapons-dev")]
+		[Summary("Provides a link to the OpenRA development Weapons documentation page. Can be used with an optional weapon name to link directly.")]
+		public async Task WeaponsDev(string weaponName = null)
+		{
+			var embed = await BuildWeaponsPageEmbed(_weaponsDevelopmentPageUrl, weaponName);
+			if (embed != null)
+				await ReplyAsync("", false, embed);
 		}
 
 		#region Private methods
 
-		private bool CheckWeaponExists(string weaponName)
+		private async Task<bool> CheckWeaponExists(string pageUrl, string weaponName)
 		{
-			var request = new RestRequest(Method.GET);
-			var response = _restClient.Execute(request);
-			return response.Content.Contains($"<a href=\"#{weaponName.ToLower()}\"");
+			var request = new RestRequest(pageUrl);
+			var response = await _restClient.GetAsync(request);
+			return response.Content?.Contains($"<a href=\"#{weaponName.ToLower()}\"") ?? false;
 		}
 
-		private Embed BuildWeaponsPageEmbed(string pageUrl, string weaponName)
+		private async Task<Embed> BuildWeaponsPageEmbed(string pageUrl, string weaponName)
 		{
+			if (string.IsNullOrWhiteSpace(pageUrl))
+				return null;
+
 			var hasName = !string.IsNullOrWhiteSpace(weaponName);
 			if (hasName)
-			{
-				hasName = CheckWeaponExists(weaponName);
-			}
+				hasName = await CheckWeaponExists(pageUrl, weaponName);
 
 			var targetUrl = pageUrl + (hasName ? $"#{weaponName.ToLower()}" : string.Empty);
 			var embedBuilder = new EmbedBuilder

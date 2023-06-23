@@ -89,14 +89,14 @@ namespace Orabot.Core.Transformers.Replays.ReplayToReplayDataTransformers
 					// Go back by (end marker + length storage + data + version + start marker) bytes
 					fileStream.Seek(-(4 + 4 + dataLength + 4 + 4), SeekOrigin.Current);
 
-					var unknown1 = fileStream.ReadInt32();
-					var unknown2 = fileStream.ReadInt32();
-					var unknown3 = fileStream.ReadInt32();
+					// Skip following bytes.
+					fileStream.ReadInt32();
+					fileStream.ReadInt32();
+					fileStream.ReadInt32();
 
 					using var streamReader = new StreamReader(fileStream, Encoding.UTF8);
 					var metadata = streamReader.ReadToEnd();
-					metadata = metadata.Remove(metadata.Length - 8);
-					return metadata;
+					return metadata.Remove(metadata.Length - 8);
 				}
 			}
 			catch (Exception e)

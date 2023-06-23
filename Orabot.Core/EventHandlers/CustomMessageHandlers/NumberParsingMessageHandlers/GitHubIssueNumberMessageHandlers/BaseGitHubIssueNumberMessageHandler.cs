@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
@@ -34,21 +34,20 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHa
 		internal BaseGitHubIssueNumberMessageHandler(IRestClient restClient, IConfiguration configuration)
 		{
 			_restClient = restClient;
-			restClient.BaseUrl = new Uri(BaseApiUrl);
+
 			_issueIconBaseUrl = configuration["GitHubIconsBaseUrl"];
 		}
 
-		public override void Invoke(SocketUserMessage message)
+		public override async Task InvokeAsync(SocketUserMessage message)
 		{
 			foreach (var number in GetMatchedNumbers(message.Content))
 			{
-				var request = new RestRequest(ApiIssueRequestTemplate, Method.GET);
+				var request = new RestRequest($"{BaseApiUrl}/{ApiIssueRequestTemplate}");
 				request.AddUrlSegment("RepositoryOwner", RepositoryOwner);
 				request.AddUrlSegment("RepositoryName", RepositoryName);
 				request.AddUrlSegment("number", number);
 
-				var response = _restClient.Execute<GitHubIssueResponse>(request);
-				var issue = response.Data;
+				var issue = await _restClient.GetAsync<GitHubIssueResponse>(request);
 				if (issue?.HtmlUrl == null)
 				{
 					continue;
@@ -72,19 +71,18 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHa
 
 				if (!isIssue && status == "closed")
 				{
-					var pullRequest = new RestRequest(ApiPullRequestTemplate, Method.GET);
+					var pullRequest = new RestRequest($"{BaseApiUrl}/{ApiPullRequestTemplate}");
 					pullRequest.AddUrlSegment("RepositoryOwner", RepositoryOwner);
 					pullRequest.AddUrlSegment("RepositoryName", RepositoryName);
 					pullRequest.AddUrlSegment("number", number);
 
-					var pullResponse = _restClient.Execute<GitHubPullRequestResponse>(pullRequest);
-					var pull = pullResponse.Data;
+					var pull = await _restClient.GetAsync<GitHubPullRequestResponse>(pullRequest);
 					if (pull != null)
 					{
 						embedFields.Add(new EmbedFieldBuilder
 						{
 							Name = "Status:",
-							Value = pull.MergeableState,
+							Value = pull.IsMerged ? "merged" : pull.MergeableState,
 							IsInline = true
 						});
 
@@ -101,12 +99,13 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHa
 					}
 				}
 
+				var description = issue.Body.Length > 250 ? issue.Body[..250] + "..." : issue.Body;
 				var embed = new EmbedBuilder
 				{
 					Title = issue.Title,
 					ThumbnailUrl = issue.User?.AvatarUrl,
 					Url = issue.HtmlUrl,
-					Description = issue.Body.Length > 250 ? issue.Body.Substring(0, 250) + "..." : issue.Body,
+					Description = description,
 					Author = new EmbedAuthorBuilder
 					{
 						Name = $"{type} #{number} by {issue.User?.LoginName}  ({status})",
@@ -122,7 +121,7 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHa
 					Color = _colorPerStatus[status]
 				};
 
-				message.Channel.SendMessageAsync("", embed: embed.Build());
+				await message.Channel.SendMessageAsync("", embed: embed.Build());
 			}
 		}
 

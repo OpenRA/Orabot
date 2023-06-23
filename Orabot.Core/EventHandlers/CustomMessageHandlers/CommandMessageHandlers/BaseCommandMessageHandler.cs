@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +28,7 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.CommandMessageHandlers
 			return message.HasCharPrefix(CommandChar, ref argumentPosition);
 		}
 
-		public void Invoke(SocketUserMessage message)
+		public async Task InvokeAsync(SocketUserMessage message)
 		{
 			var argumentPosition = 0;
 			message.HasCharPrefix(CommandChar, ref argumentPosition);
@@ -36,7 +37,7 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.CommandMessageHandlers
 			var result = _commands.ExecuteAsync(context, argumentPosition, _serviceProvider).Result;
 			if (!result.IsSuccess)
 			{
-				context.Channel.SendMessageAsync(result.ErrorReason);
+				await context.Channel.SendMessageAsync(result.ErrorReason);
 			}
 		}
 	}

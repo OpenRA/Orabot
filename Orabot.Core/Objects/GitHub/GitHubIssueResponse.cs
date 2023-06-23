@@ -1,36 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
-using RestSharp.Deserializers;
+using System.Text.Json.Serialization;
 
 namespace Orabot.Core.Objects.GitHub
 {
 	internal class GitHubIssueResponse
 	{
-		[DeserializeAs(Name = "html_url")]
+		[JsonPropertyName("html_url")]
 		public string HtmlUrl { get; set; }
 
-		[DeserializeAs(Name = "state")]
+		[JsonPropertyName("state")]
 		public string State { get; set; }
 
-		[DeserializeAs(Name = "title")]
+		[JsonPropertyName("title")]
 		public string Title { get; set; }
 
-		[DeserializeAs(Name = "body")]
+		[JsonPropertyName("body")]
 		public string Body { get; set; }
 
-		[DeserializeAs(Name = "pull_request")]
+		[JsonPropertyName("pull_request")]
 		public object PullRequest { get; set; }
 
-		[DeserializeAs(Name = "created_at")]
+		[JsonPropertyName("created_at")]
 		public DateTime CreatedAt { get; set; }
 
-		[DeserializeAs(Name = "updated_at")]
-		public DateTimeOffset? UpdatedAt { get; set; }
+		[JsonPropertyName("updated_at")]
+		public DateTime? UpdatedAt { get; set; }
 
-		[DeserializeAs(Name = "user")]
+		[JsonPropertyName("user")]
 		public User User { get; set; }
 
-		[DeserializeAs(Name = "labels")]
+		[JsonPropertyName("labels")]
 		public List<Label> Labels { get; set; }
 	}
 }

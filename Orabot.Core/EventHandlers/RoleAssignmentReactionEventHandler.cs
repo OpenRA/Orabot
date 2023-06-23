@@ -25,9 +25,10 @@ namespace Orabot.Core.EventHandlers
 				.ToDictionary(x => x[0], y => y[1]);
 		}
 
-		public async Task HandleReactionAddedAsync(Cacheable<IUserMessage, ulong> messageGetter, ISocketMessageChannel channel, SocketReaction reaction)
+		public async Task HandleReactionAddedAsync(Cacheable<IUserMessage, ulong> messageGetter, Cacheable<IMessageChannel, ulong> channelGetter, SocketReaction reaction)
 		{
 			var message = await messageGetter.GetOrDownloadAsync();
+			var channel = await channelGetter.GetOrDownloadAsync();
 			if (!CanHandle(channel, message, reaction, out var guildUser, out var targetRole))
 			{
 				return;
@@ -39,9 +40,10 @@ namespace Orabot.Core.EventHandlers
 			}
 		}
 
-		public async Task HandleReactionRemovedAsync(Cacheable<IUserMessage, ulong> messageGetter, ISocketMessageChannel channel, SocketReaction reaction)
+		public async Task HandleReactionRemovedAsync(Cacheable<IUserMessage, ulong> messageGetter, Cacheable<IMessageChannel, ulong> channelGetter, SocketReaction reaction)
 		{
 			var message = await messageGetter.GetOrDownloadAsync();
+			var channel = await channelGetter.GetOrDownloadAsync();
 			if (!CanHandle(channel, message, reaction, out var guildUser, out var targetRole))
 			{
 				return;

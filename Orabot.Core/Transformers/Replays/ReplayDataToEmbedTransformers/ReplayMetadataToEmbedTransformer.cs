@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Discord;
 using Orabot.Core.Objects.OpenRaReplay;
 using Orabot.Core.Transformers.LinkToEmbedTransformers;
@@ -15,9 +16,9 @@ namespace Orabot.Core.Transformers.Replays.ReplayDataToEmbedTransformers
 			_mapToEmbedTransformer = mapToEmbedTransformer;
 		}
 
-		internal Embed CreateEmbed(ReplayMetadata replayMetadata, string replayLink = null)
+		internal async Task<Embed> CreateEmbed(ReplayMetadata replayMetadata, string replayLink = null)
 		{
-			var mapEmbed = _mapToEmbedTransformer.CreateEmbed(replayMetadata.MapUid);
+			var mapEmbed = await _mapToEmbedTransformer.CreateEmbed(replayMetadata.MapUid);
 
 			var fields = new List<EmbedFieldBuilder>
 			{

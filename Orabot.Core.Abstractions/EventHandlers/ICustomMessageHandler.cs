@@ -1,4 +1,5 @@
 ﻿using Discord.WebSocket;
+using System.Threading.Tasks;
 
 namespace Orabot.Core.Abstractions.EventHandlers
 {
@@ -6,6 +7,6 @@ namespace Orabot.Core.Abstractions.EventHandlers
 	{
 		bool CanHandle(SocketUserMessage message);
 
-		void Invoke(SocketUserMessage message);
+		Task InvokeAsync(SocketUserMessage message);
 	}
 }

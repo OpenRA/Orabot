@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Discord.WebSocket;
 using Orabot.Core.Abstractions.EventHandlers;
 
@@ -12,9 +13,9 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHa
 
 		protected virtual string[] RegexMatchPatternKeywords => MinimumHandledNumberPerKeyword.Keys.ToArray();
 
-		protected virtual string RegexMatchPattern { get; } = "(^|[^a-zA-Z0-9])({keyword}#[0-9]+)";
+		protected virtual string RegexMatchPattern => "(^|[^a-zA-Z0-9])({keyword}#[0-9]+)";
 
-		protected virtual bool RegexMatchCase { get; } = false;
+		protected virtual bool RegexMatchCase => false;
 
 		private readonly RegexOptions _regexOptions;
 		private readonly string[] _regexMatchPatterns;
@@ -42,7 +43,7 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHa
 			return canHandle;
 		}
 
-		public abstract void Invoke(SocketUserMessage message);
+		public abstract Task InvokeAsync(SocketUserMessage message);
 
 		protected IEnumerable<string> GetMatchedNumbers(string message)
 		{

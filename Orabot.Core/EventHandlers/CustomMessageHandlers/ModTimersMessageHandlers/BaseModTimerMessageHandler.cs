@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Discord.WebSocket;
 using Orabot.Core.Abstractions.EventHandlers;
 
@@ -17,9 +18,9 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.ModTimersMessageHandle
 			return _modIdentifiers.Any(x => words.Contains(x)) && _keywords.Any(x => words.Contains(x)) && message.Content.Contains('?');
 		}
 
-		public void Invoke(SocketUserMessage message)
+		public async Task InvokeAsync(SocketUserMessage message)
 		{
-			message.Channel.SendMessageAsync("Timer reset. 7 months remaining.");
+			await message.Channel.SendMessageAsync("Timer reset. 7 months remaining.");
 		}
 	}
 }

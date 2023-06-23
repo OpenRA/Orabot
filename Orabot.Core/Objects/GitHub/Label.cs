@@ -1,10 +1,10 @@
-﻿using RestSharp.Deserializers;
+﻿using System.Text.Json.Serialization;
 
 namespace Orabot.Core.Objects.GitHub
 {
 	internal class Label
 	{
-		[DeserializeAs(Name = "name")]
+		[JsonPropertyName("name")]
 		public string Name { get; set; }
 	}
 }

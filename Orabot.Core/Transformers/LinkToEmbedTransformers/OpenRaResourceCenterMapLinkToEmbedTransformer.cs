@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Discord;
 using Orabot.Core.Objects.OpenRaResourceCenter;
 using RestSharp;
@@ -18,46 +19,41 @@ namespace Orabot.Core.Transformers.LinkToEmbedTransformers
 		public OpenRaResourceCenterMapLinkToEmbedTransformer(IRestClient restClient)
 		{
 			_restClient = restClient;
-			restClient.BaseUrl = new Uri(BaseUrl);
 		}
 
-		internal Embed CreateEmbed(string mapUid)
+		internal async Task<Embed> CreateEmbed(string mapUid)
 		{
-			var request = new RestRequest(ApiMapInfoByUidTemplate, Method.GET);
+			var request = new RestRequest($"{BaseUrl}/{ApiMapInfoByUidTemplate}");
 			request.AddUrlSegment("uid", mapUid);
 
-			var response = _restClient.Execute<List<MapInfo>>(request);
-			var mapInfo = response.Data?.FirstOrDefault();
+			var response = await _restClient.GetAsync<List<MapInfo>>(request);
+			var mapInfo = response?.FirstOrDefault();
 			if (mapInfo?.Title == null || mapInfo.Author == null)
-			{
 				return null;
-			}
 
-			return CreateEmbedInner(mapInfo);
+			return await CreateEmbedInner(mapInfo);
 		}
 
-		internal Embed CreateEmbed(int number)
+		internal async Task<Embed> CreateEmbed(int number)
 		{
-			var request = new RestRequest(ApiMapInfoByNumberTemplate, Method.GET);
+			var request = new RestRequest($"{BaseUrl}/{ApiMapInfoByNumberTemplate}");
 			request.AddUrlSegment("number", number);
 
-			var response = _restClient.Execute<List<MapInfo>>(request);
-			var mapInfo = response.Data?.FirstOrDefault();
+			var response = await _restClient.GetAsync<List<MapInfo>>(request);
+			var mapInfo = response?.FirstOrDefault();
 			if (mapInfo?.Title == null || mapInfo.Author == null)
-			{
 				return null;
-			}
 
-			return CreateEmbedInner(mapInfo);
+			return await CreateEmbedInner(mapInfo);
 		}
 
 		#region Private methods
 
-		private Embed CreateEmbedInner(MapInfo mapInfo)
+		private async Task<Embed> CreateEmbedInner(MapInfo mapInfo)
 		{
 			var bounds = mapInfo.Bounds.Split(',').Select(int.Parse).ToArray();
 			var size = $"{bounds[2]}x{bounds[3]}";
-			var color = GetColor($"mod_{mapInfo.GameMod}");
+			var color = await GetColor($"mod_{mapInfo.GameMod}");
 			var number = mapInfo.Id;
 
 			var url = $"{BaseUrl}/maps/{number}";
@@ -86,17 +82,15 @@ namespace Orabot.Core.Transformers.LinkToEmbedTransformers
 			return embed.Build();
 		}
 
-		private Color? GetColor(string modIdentifier)
+		private async Task<Color?> GetColor(string modIdentifier)
 		{
 			var stylesheetLink = $"{BaseUrl}/static/style003.css";
 
-			var request = new RestRequest(stylesheetLink, Method.GET);
-			var response = _restClient.Execute(request);
+			var request = new RestRequest(stylesheetLink);
+			var response = await _restClient.GetAsync(request);
 
-			if (!response.Content.Contains(modIdentifier))
-			{
+			if (response.Content == null || !response.Content.Contains(modIdentifier))
 				return null;
-			}
 
 			var hexColor = response.Content.Substring(response.Content.IndexOf(modIdentifier, StringComparison.Ordinal));
 			hexColor = hexColor.Substring(hexColor.IndexOf('#'));
