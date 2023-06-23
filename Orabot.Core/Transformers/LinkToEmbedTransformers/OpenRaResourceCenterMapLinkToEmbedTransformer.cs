@@ -28,8 +28,6 @@ namespace Orabot.Core.Transformers.LinkToEmbedTransformers
 
 			var response = await _restClient.GetAsync<List<MapInfo>>(request);
 			var mapInfo = response?.FirstOrDefault();
-			if (mapInfo?.Title == null || mapInfo.Author == null)
-				return null;
 
 			return await CreateEmbedInner(mapInfo);
 		}
@@ -41,9 +39,12 @@ namespace Orabot.Core.Transformers.LinkToEmbedTransformers
 
 			var response = await _restClient.GetAsync<List<MapInfo>>(request);
 			var mapInfo = response?.FirstOrDefault();
-			if (mapInfo?.Title == null || mapInfo.Author == null)
-				return null;
 
+			return await CreateEmbedInner(mapInfo);
+		}
+
+		internal async Task<Embed> CreateEmbed(MapInfo mapInfo)
+		{
 			return await CreateEmbedInner(mapInfo);
 		}
 
@@ -51,6 +52,9 @@ namespace Orabot.Core.Transformers.LinkToEmbedTransformers
 
 		private async Task<Embed> CreateEmbedInner(MapInfo mapInfo)
 		{
+			if (mapInfo?.Title == null || mapInfo.Author == null)
+				return null;
+
 			var bounds = mapInfo.Bounds.Split(',').Select(int.Parse).ToArray();
 			var size = $"{bounds[2]}x{bounds[3]}";
 			var color = await GetColor($"mod_{mapInfo.GameMod}");

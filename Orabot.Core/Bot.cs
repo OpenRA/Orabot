@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Orabot.Core.Abstractions;
 using Orabot.Core.Abstractions.EventHandlers;
 using Orabot.Core.TypeReaders;
 
@@ -14,6 +16,8 @@ namespace Orabot.Core
 	{
 		private readonly IServiceProvider _serviceProvider;
 		private readonly string _discordBotToken;
+		private readonly CancellationTokenSource _cancellationTokenSource;
+		private readonly CancellationToken _cancellationToken;
 
 		private readonly DiscordSocketClient _client;
 		private readonly CommandService _commands;
@@ -32,6 +36,9 @@ namespace Orabot.Core
 			_logEventHandler = _serviceProvider.GetService<ILogEventHandler>();
 			_messageEventHandler = _serviceProvider.GetService<IMessageEventHandler>();
 			_reactionEventHandler = _serviceProvider.GetService<IReactionEventHandler>();
+
+			_cancellationTokenSource = new CancellationTokenSource();
+			_cancellationToken = _cancellationTokenSource.Token;
 		}
 
 		public async Task RunAsync()
@@ -41,6 +48,8 @@ namespace Orabot.Core
 
 			await _client.LoginAsync(TokenType.Bot, _discordBotToken);
 			await _client.StartAsync();
+
+			StartLongRunningServices();
 
 			Console.ReadLine();
 
@@ -53,6 +62,7 @@ namespace Orabot.Core
 
 		public void Dispose()
 		{
+			_cancellationTokenSource.Cancel();
 			((IDisposable)_commands)?.Dispose();
 			_client?.Dispose();
 		}
@@ -71,15 +81,18 @@ namespace Orabot.Core
 		{
 			var typeReaders = _serviceProvider.GetServices<BaseTypeReader>();
 			foreach (var typeReader in typeReaders)
-			{
 				_commands.AddTypeReader(typeReader.SupportedType, typeReader);
-			}
 
 			var modules = _serviceProvider.GetServices<ModuleBase<SocketCommandContext>>();
 			foreach (var module in modules)
-			{
 				await _commands.AddModuleAsync(module.GetType(), _serviceProvider);
-			}
+		}
+
+		private void StartLongRunningServices()
+		{
+			var services = _serviceProvider.GetServices<ILongRunningService>();
+			foreach (var service in services)
+				Task.Run(() => service.ExecuteAsync(_cancellationToken));
 		}
 
 		#endregion
