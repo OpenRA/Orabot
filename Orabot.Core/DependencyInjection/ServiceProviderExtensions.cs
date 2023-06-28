@@ -18,6 +18,12 @@ using Orabot.Core.Transformers.Replays.ReplayDataToEmbedTransformers;
 using Orabot.Core.Transformers.Replays.ReplayToReplayDataTransformers;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.Converters;
+using Orabot.Core.Abstractions;
+using Orabot.Core.WatcherServices;
+using Refit;
+using Orabot.Core.Integrations.ResourceCenter;
+using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace Orabot.Core.DependencyInjection
 {
@@ -75,6 +81,29 @@ namespace Orabot.Core.DependencyInjection
 					.WithTypeConverter(new DateTimeConverter(DateTimeKind.Utc, CultureInfo.InvariantCulture, false, "yyyy-MM-dd HH-mm-ss"))
 					.Build()
 			);
+		}
+
+		public static IServiceCollection AddLongRunningServices(this IServiceCollection serviceCollection)
+		{
+			return serviceCollection
+				.AddSingleton<ILongRunningService, ResourceCenterMapWatcherService>();
+		}
+
+		public static IServiceCollection AddResourceCenterIntegration(this IServiceCollection serviceCollection)
+		{
+			var serializerOptions = new JsonSerializerOptions();
+			serializerOptions.Converters.Add(new CustomDateTimeConverter());
+
+			var settings = new RefitSettings
+			{
+				ContentSerializer = new SystemTextJsonContentSerializer(serializerOptions)
+			};
+
+			serviceCollection
+				.AddRefitClient<IMapsApi>(settings)
+				.ConfigureHttpClient(c => c.BaseAddress = new Uri("https://resource.openra.net"));
+
+			return serviceCollection;
 		}
 	}
 }

@@ -38,6 +38,7 @@ namespace Orabot.Hosts.ConsoleHost
 				.AddSingleton<ModuleBase<SocketCommandContext>, RoleManagementModule>()
 				.AddSingleton<QuotingService>()
 				.AddDefaultTransformers()
+				.AddLongRunningServices()
 				.AddSingleton<IRestClient>(_ =>
 				{
 					var serializationOptions = new JsonSerializerOptions();
@@ -47,6 +48,7 @@ namespace Orabot.Hosts.ConsoleHost
 					   new RestClientOptions(),
 					   configureSerialization: s => s.UseSystemTextJson(serializationOptions));
 				})
+				.AddResourceCenterIntegration()
 				.AddYamlDeserializer()
 				.BuildServiceProvider();
 

@@ -107,5 +107,8 @@ namespace Orabot.Core.Objects.OpenRaResourceCenter
 
 		[JsonPropertyName("map_type")]
 		public string MapType { get; set; }
+
+		[JsonPropertyName("uploader")]
+		public string Uploader { get; set; }
 	}
 }
