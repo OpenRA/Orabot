@@ -1,18 +1,17 @@
 ﻿using Discord;
+using HtmlAgilityPack;
 using Microsoft.Extensions.Configuration;
-using RestSharp;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Orabot.Core.Transformers.DocumentationToEmbedTransformers
 {
 	public class TraitToEmbedTransformer
 	{
-		private readonly IRestClient _restClient;
 		private readonly string _openRaIconUrl;
 
-		public TraitToEmbedTransformer(IRestClient restClient, IConfiguration configuration)
+		public TraitToEmbedTransformer(IConfiguration configuration)
 		{
-			_restClient = restClient;
 			_openRaIconUrl = configuration["OpenRaFaviconUrl"];
 		}
 
@@ -21,32 +20,33 @@ namespace Orabot.Core.Transformers.DocumentationToEmbedTransformers
 			if (string.IsNullOrWhiteSpace(pageUrl))
 				return null;
 
-			var hasName = !string.IsNullOrWhiteSpace(traitName);
-			if (hasName)
-				hasName = await CheckTraitExists(pageUrl, traitName);
-
-			var targetUrl = pageUrl + (hasName ? $"#{traitName.ToLower()}" : string.Empty);
+			var (traitExists, traitDescription) = await TryGetTraitInfo(pageUrl, traitName);
+			var targetUrl = pageUrl + (traitExists ? $"#{traitName.ToLower()}" : string.Empty);
 			var embedBuilder = new EmbedBuilder
 			{
 				Author = new EmbedAuthorBuilder
 				{
-					Name = "OpenRA Traits page" + (hasName ? $", trait {traitName}" : string.Empty),
+					Name = "OpenRA Traits page" + (traitExists ? $", trait {traitName}" : string.Empty),
 					Url = targetUrl,
 					IconUrl = _openRaIconUrl
 				},
 				Title = targetUrl,
 				Url = targetUrl,
-				Description = "This documentation is aimed at modders. It displays all traits with default values and developer commentary."
+				Description = traitDescription
 			};
 
 			return embedBuilder.Build();
 		}
 
-		private async Task<bool> CheckTraitExists(string pageUrl, string traitName)
+		private async Task<(bool TraitExists, string Description)> TryGetTraitInfo(string pageUrl, string traitName)
 		{
-			var request = new RestRequest(pageUrl);
-			var response = await _restClient.GetAsync(request);
-			return response.Content?.Contains($"<a href=\"#{traitName.ToLower()}\"") ?? false;
+			if (string.IsNullOrWhiteSpace(pageUrl) || string.IsNullOrWhiteSpace(traitName))
+				return (false, null);
+
+			var web = new HtmlWeb();
+			var doc = await web.LoadFromWebAsync(pageUrl);
+			var node = doc.DocumentNode.Descendants("h3").FirstOrDefault(x => x.Attributes["id"].Value == traitName.ToLower());
+			return node == null ? (false, null) : (true, node.NextSibling.NextSibling.InnerText);
 		}
 	}
 }
