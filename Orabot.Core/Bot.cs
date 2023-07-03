@@ -49,8 +49,6 @@ namespace Orabot.Core
 			await _client.LoginAsync(TokenType.Bot, _discordBotToken);
 			await _client.StartAsync();
 
-			StartLongRunningServices();
-
 			Console.ReadLine();
 
 			await _client.LogoutAsync();
@@ -75,6 +73,7 @@ namespace Orabot.Core
 			_client.ReactionAdded += _reactionEventHandler.HandleReactionAddedAsync;
 			_client.ReactionRemoved += _reactionEventHandler.HandleReactionRemovedAsync;
 			_client.MessageReceived += _messageEventHandler.HandleMessageReceivedAsync;
+			_client.Ready += OnReady;
 		}
 
 		private async Task RegisterCommandModules()
@@ -93,6 +92,31 @@ namespace Orabot.Core
 			var services = _serviceProvider.GetServices<ILongRunningService>();
 			foreach (var service in services)
 				Task.Run(() => service.ExecuteAsync(_cancellationToken));
+		}
+
+		private async Task OnReady()
+		{
+			await RegisterSlashCommands();
+			StartLongRunningServices();
+		}
+
+		private async Task RegisterSlashCommands()
+		{
+			// Uncomment to delete existing commands:
+			var globalCommands = await _client.GetGlobalApplicationCommandsAsync();
+			foreach (var guild in _client.Guilds)
+			{
+				var guildCommands = await guild.GetApplicationCommandsAsync();
+				//foreach (var guildCommand in guildCommands)
+				//	await guildCommand.DeleteAsync();
+			}
+
+			var commandBuilders = SlashCommands.CommandBuilders;
+
+			// Uncomment to register commands:
+			//foreach (var guild in _client.Guilds)
+			//	foreach (var command in commandBuilders)
+			//		await guild.CreateApplicationCommandAsync(command.Build());
 		}
 
 		#endregion
