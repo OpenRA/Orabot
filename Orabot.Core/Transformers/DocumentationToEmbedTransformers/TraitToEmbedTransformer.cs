@@ -8,17 +8,29 @@ namespace Orabot.Core.Transformers.DocumentationToEmbedTransformers
 {
 	public class TraitToEmbedTransformer
 	{
+		private readonly string _traitsReleasePageUrl;
+		private readonly string _traitsPlaytestPageUrl;
+		private readonly string _traitsDevelopmentPageUrl;
 		private readonly string _openRaIconUrl;
 
 		public TraitToEmbedTransformer(IConfiguration configuration)
 		{
+			var traitsPages = configuration.GetRequiredSection("Traits");
+			_traitsReleasePageUrl = traitsPages["ReleasePageUrl"];
+			_traitsPlaytestPageUrl = traitsPages["PlaytestPageUrl"];
+			_traitsDevelopmentPageUrl = traitsPages["DevelopmentPageUrl"];
+
 			_openRaIconUrl = configuration["OpenRaFaviconUrl"];
 		}
 
-		internal async Task<Embed> CreateEmbed(string pageUrl, string traitName)
+		internal async Task<Embed> CreateEmbed(string traitName, string version)
 		{
-			if (string.IsNullOrWhiteSpace(pageUrl))
-				return null;
+			string pageUrl = version switch
+			{
+				"playtest" => _traitsPlaytestPageUrl,
+				"development" => _traitsDevelopmentPageUrl,
+				_ => _traitsReleasePageUrl,
+			};
 
 			var (traitExists, traitDescription) = await TryGetTraitInfo(pageUrl, traitName);
 			var targetUrl = pageUrl + (traitExists ? $"#{traitName.ToLower()}" : string.Empty);

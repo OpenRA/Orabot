@@ -1,23 +1,15 @@
 ﻿using System.Threading.Tasks;
 using Discord.Commands;
-using Microsoft.Extensions.Configuration;
 using Orabot.Core.Transformers.DocumentationToEmbedTransformers;
 
 namespace Orabot.Core.Modules
 {
 	public class OpenRaTraitsModule : ModuleBase<SocketCommandContext>
 	{
-		private readonly string _traitsReleasePageUrl;
-		private readonly string _traitsPlaytestPageUrl;
-		private readonly string _traitsDevelopmentPageUrl;
 		private readonly TraitToEmbedTransformer _traitToEmbedTransformer;
 
-		public OpenRaTraitsModule(TraitToEmbedTransformer traitToEmbedTransformer, IConfiguration configuration)
+		public OpenRaTraitsModule(TraitToEmbedTransformer traitToEmbedTransformer)
 		{
-			var traitsPages = configuration.GetRequiredSection("Traits");
-			_traitsReleasePageUrl = traitsPages["ReleasePageUrl"];
-			_traitsPlaytestPageUrl = traitsPages["PlaytestPageUrl"];
-			_traitsDevelopmentPageUrl = traitsPages["DevelopmentPageUrl"];
 			_traitToEmbedTransformer = traitToEmbedTransformer;
 		}
 
@@ -25,7 +17,7 @@ namespace Orabot.Core.Modules
 		[Summary("Provides a link to the OpenRA Traits documentation page. Can be used with an optional trait name to link directly.")]
 		public async Task Traits(string traitName = null)
 		{
-			var embed = await _traitToEmbedTransformer.CreateEmbed(_traitsReleasePageUrl, traitName);
+			var embed = await _traitToEmbedTransformer.CreateEmbed(traitName, "release");
 			if (embed != null)
 				await ReplyAsync("", false, embed);
 		}
@@ -34,7 +26,7 @@ namespace Orabot.Core.Modules
 		[Summary("Provides a link to the OpenRA playtest Traits documentation page. Can be used with an optional trait name to link directly.")]
 		public async Task TraitsPt(string traitName = null)
 		{
-			var embed = await _traitToEmbedTransformer.CreateEmbed(_traitsPlaytestPageUrl, traitName);
+			var embed = await _traitToEmbedTransformer.CreateEmbed(traitName, "playtest");
 			if (embed != null)
 				await ReplyAsync("", false, embed);
 		}
@@ -43,14 +35,9 @@ namespace Orabot.Core.Modules
 		[Summary("Provides a link to the OpenRA development Traits documentation page. Can be used with an optional trait name to link directly.")]
 		public async Task TraitsDev(string traitName = null)
 		{
-			var embed = await _traitToEmbedTransformer.CreateEmbed(_traitsDevelopmentPageUrl, traitName);
+			var embed = await _traitToEmbedTransformer.CreateEmbed(traitName, "development");
 			if (embed != null)
 				await ReplyAsync("", false, embed);
 		}
-
-		#region Private methods
-
-
-		#endregion
 	}
 }
