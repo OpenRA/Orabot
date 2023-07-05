@@ -72,6 +72,7 @@ namespace Orabot.Core.DependencyInjection
 				.AddSingleton<AttachmentReplayMetadataTransformer>()
 				.AddSingleton<TraitToEmbedTransformer>()
 				.AddSingleton<WeaponToEmbedTransformer>()
+				.AddSingleton<LuaTableToEmbedTransformer>()
 				.AddSingleton<ReplayMetadataToEmbedTransformer>();
 		}
 

@@ -1,36 +1,23 @@
 ﻿using System.Threading.Tasks;
-using Discord;
 using Discord.Commands;
-using Microsoft.Extensions.Configuration;
-using RestSharp;
+using Orabot.Core.Transformers.DocumentationToEmbedTransformers;
 
 namespace Orabot.Core.Modules
 {
 	public class OpenRaLuaApiModule : ModuleBase<SocketCommandContext>
 	{
-		private readonly IRestClient _restClient;
-		private readonly string _openRaIconUrl;
-		private readonly string _luaReleasePageUrl;
-		private readonly string _luaPlaytestPageUrl;
-		private readonly string _luaDevelopmentPageUrl;
+		private readonly LuaTableToEmbedTransformer _luaTableToEmbedTransformer;
 
-		public OpenRaLuaApiModule(IConfiguration configuration, IRestClient restClient)
+		public OpenRaLuaApiModule(LuaTableToEmbedTransformer luaTableToEmbedTransformer)
 		{
-			_restClient = restClient;
-
-			_openRaIconUrl = configuration["OpenRaFaviconUrl"];
-
-			var traitsPages = configuration.GetRequiredSection("Lua");
-			_luaReleasePageUrl = traitsPages["ReleasePageUrl"];
-			_luaPlaytestPageUrl = traitsPages["PlaytestPageUrl"];
-			_luaDevelopmentPageUrl = traitsPages["DevelopmentPageUrl"];
+			_luaTableToEmbedTransformer = luaTableToEmbedTransformer;
 		}
 
 		[Command("lua")]
 		[Summary("Provides a link to the OpenRA Lua API documentation page. Can be used with an optional table name to link directly.")]
 		public async Task LuaApi(string tableName = null)
 		{
-			var embed = await BuildLuaApiPageEmbed(_luaReleasePageUrl, tableName);
+			var embed = await _luaTableToEmbedTransformer.CreateEmbed(tableName, "release");
 			if (embed != null)
 				await ReplyAsync("", false, embed);
 		}
@@ -39,7 +26,7 @@ namespace Orabot.Core.Modules
 		[Summary("Provides a link to the OpenRA playtest Lua API documentation page. Can be used with an optional table name to link directly.")]
 		public async Task LuaApiPt(string tableName = null)
 		{
-			var embed = await BuildLuaApiPageEmbed(_luaPlaytestPageUrl, tableName);
+			var embed = await _luaTableToEmbedTransformer.CreateEmbed(tableName, "playtest");
 			if (embed != null)
 				await ReplyAsync("", false, embed);
 		}
@@ -48,46 +35,9 @@ namespace Orabot.Core.Modules
 		[Summary("Provides a link to the OpenRA development Lua API documentation page. Can be used with an optional table name to link directly.")]
 		public async Task LuaApiDev(string tableName = null)
 		{
-			var embed = await BuildLuaApiPageEmbed(_luaDevelopmentPageUrl, tableName);
+			var embed = await _luaTableToEmbedTransformer.CreateEmbed(tableName, "development");
 			if (embed != null)
 				await ReplyAsync("", false, embed);
 		}
-
-		#region Private methods
-
-		private async Task<bool> CheckTableExists(string pageUrl, string tableName)
-		{
-			var request = new RestRequest(pageUrl);
-			var response = await _restClient.GetAsync(request);
-			return response.Content?.Contains($"<a href=\"#{tableName.ToLower()}\"") ?? false;
-		}
-
-		private async Task<Embed> BuildLuaApiPageEmbed(string pageUrl, string tableName)
-		{
-			if (string.IsNullOrWhiteSpace(pageUrl))
-				return null;
-
-			var hasName = !string.IsNullOrWhiteSpace(tableName);
-			if (hasName)
-				hasName = await CheckTableExists(pageUrl, tableName);
-
-			var targetUrl = pageUrl + (hasName ? $"#{tableName.ToLower()}" : string.Empty);
-			var embedBuilder = new EmbedBuilder
-			{
-				Author = new EmbedAuthorBuilder
-				{
-					Name = "OpenRA Lua API page" + (hasName ? $", table {tableName}" : string.Empty),
-					Url = targetUrl,
-					IconUrl = _openRaIconUrl
-				},
-				Title = targetUrl,
-				Url = targetUrl,
-				Description = "This documentation is aimed at scripted map creators."
-			};
-
-			return embedBuilder.Build();
-		}
-
-		#endregion
 	}
 }
