@@ -25,6 +25,7 @@ namespace Orabot.Core
 		private readonly ILogEventHandler _logEventHandler;
 		private readonly IMessageEventHandler _messageEventHandler;
 		private readonly IReactionEventHandler _reactionEventHandler;
+		private readonly ISlashCommandEventHandler _slashCommandHandler;
 
 		public Bot(IServiceProvider serviceProvider)
 		{
@@ -36,6 +37,7 @@ namespace Orabot.Core
 			_logEventHandler = _serviceProvider.GetService<ILogEventHandler>();
 			_messageEventHandler = _serviceProvider.GetService<IMessageEventHandler>();
 			_reactionEventHandler = _serviceProvider.GetService<IReactionEventHandler>();
+			_slashCommandHandler = _serviceProvider.GetService<ISlashCommandEventHandler>();
 
 			_cancellationTokenSource = new CancellationTokenSource();
 			_cancellationToken = _cancellationTokenSource.Token;
@@ -74,6 +76,7 @@ namespace Orabot.Core
 			_client.ReactionRemoved += _reactionEventHandler.HandleReactionRemovedAsync;
 			_client.MessageReceived += _messageEventHandler.HandleMessageReceivedAsync;
 			_client.Ready += OnReady;
+			_client.SlashCommandExecuted += _slashCommandHandler.HandleSlashCommandAsync;
 		}
 
 		private async Task RegisterCommandModules()

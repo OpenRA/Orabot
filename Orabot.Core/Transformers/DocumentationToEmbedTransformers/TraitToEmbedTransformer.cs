@@ -44,7 +44,7 @@ namespace Orabot.Core.Transformers.DocumentationToEmbedTransformers
 				},
 				Title = targetUrl,
 				Url = targetUrl,
-				Description = traitDescription
+				Description = traitDescription ?? "This documentation is aimed at modders. It displays all traits with default values and developer commentary."
 			};
 
 			return embedBuilder.Build();

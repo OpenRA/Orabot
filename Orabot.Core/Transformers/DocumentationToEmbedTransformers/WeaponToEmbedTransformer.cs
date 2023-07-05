@@ -44,7 +44,7 @@ namespace Orabot.Core.Transformers.DocumentationToEmbedTransformers
 				},
 				Title = targetUrl,
 				Url = targetUrl,
-				Description = weaponDescription
+				Description = weaponDescription ?? "This documentation is aimed at modders. It displays a template for weapon definitions as well as its contained types (warheads and projectiles) with default values and developer commentary."
 			};
 
 			return embedBuilder.Build();

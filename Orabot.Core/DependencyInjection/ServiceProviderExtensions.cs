@@ -13,6 +13,7 @@ using Orabot.Core.EventHandlers.CustomMessageHandlers.ModTimersMessageHandlers;
 using Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers;
 using Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers.GitHubIssueNumberMessageHandlers;
 using Orabot.Core.EventHandlers.CustomMessageHandlers.SpecificTextMessageHandlers;
+using Orabot.Core.EventHandlers.SlashCommandHandlers;
 using Orabot.Core.Integrations.ResourceCenter;
 using Orabot.Core.Transformers.AttachmentToMessageTransformers;
 using Orabot.Core.Transformers.DocumentationToEmbedTransformers;
@@ -43,7 +44,8 @@ namespace Orabot.Core.DependencyInjection
 			return serviceCollection
 				.AddSingleton<ILogEventHandler, LogEventHandler>()
 				.AddSingleton<IMessageEventHandler, MessageEventHandler>()
-				.AddSingleton<IReactionEventHandler, RoleAssignmentReactionEventHandler>();
+				.AddSingleton<IReactionEventHandler, RoleAssignmentReactionEventHandler>()
+				.AddSingleton<ISlashCommandEventHandler, SlashCommandEventHandler>();
 		}
 
 		public static IServiceCollection AddDefaultCustomMessageHandlers(this IServiceCollection serviceCollection)
@@ -62,6 +64,14 @@ namespace Orabot.Core.DependencyInjection
 				.AddSingleton<ICustomMessageHandler, BaseCommandMessageHandler>()
 				.AddSingleton<ICustomMessageHandler, BaseModTimerMessageHandler>()
 				.AddSingleton<ICustomMessageHandler, StackTraceMessageHandler>();
+		}
+
+		public static IServiceCollection AddDefaultSlashCommandHandlers(this IServiceCollection serviceCollection)
+		{
+			return serviceCollection
+				.AddSingleton<ISlashCommandHandler, LuaDocumentationCommandHandler>()
+				.AddSingleton<ISlashCommandHandler, TraitDocumentationCommandHandler>()
+				.AddSingleton<ISlashCommandHandler, WeaponDocumentationCommandHandler>();
 		}
 
 		public static IServiceCollection AddDefaultTransformers(this IServiceCollection serviceCollection)

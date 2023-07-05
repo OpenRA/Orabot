@@ -29,6 +29,7 @@ namespace Orabot.Hosts.ConsoleHost
 				.AddSingleton<BaseTypeReader, DiscordMessageIdentifierTypeReader>()
 				.AddDefaultEventHandlerServices()
 				.AddDefaultCustomMessageHandlers()
+				.AddDefaultSlashCommandHandlers()
 				.AddSingleton<ModuleBase<SocketCommandContext>, GeneralModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, OpenRaGeneralModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, OpenRaLuaApiModule>()

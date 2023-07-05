@@ -32,7 +32,7 @@ namespace Orabot.Core.Transformers.DocumentationToEmbedTransformers
 				_ => _luaReleasePageUrl,
 			};
 
-			var (tableExists, tableDescription) = await TryGetTableInfo(pageUrl, tableName);
+			var (tableExists, _) = await TryGetTableInfo(pageUrl, tableName);
 			var targetUrl = pageUrl + (tableExists ? $"#{tableName.ToLower()}" : string.Empty);
 			var embedBuilder = new EmbedBuilder
 			{
@@ -44,7 +44,7 @@ namespace Orabot.Core.Transformers.DocumentationToEmbedTransformers
 				},
 				Title = targetUrl,
 				Url = targetUrl,
-				Description = tableDescription
+				Description = "This documentation is aimed at scripted map creators."
 			};
 
 			return embedBuilder.Build();
