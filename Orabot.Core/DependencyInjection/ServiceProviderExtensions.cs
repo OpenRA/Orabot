@@ -71,6 +71,7 @@ namespace Orabot.Core.DependencyInjection
 				.AddSingleton<OpenRaResourceCenterMapLinkToEmbedTransformer>()
 				.AddSingleton<AttachmentReplayMetadataTransformer>()
 				.AddSingleton<TraitToEmbedTransformer>()
+				.AddSingleton<WeaponToEmbedTransformer>()
 				.AddSingleton<ReplayMetadataToEmbedTransformer>();
 		}
 
