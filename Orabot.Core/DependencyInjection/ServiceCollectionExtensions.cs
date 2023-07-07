@@ -69,6 +69,7 @@ namespace Orabot.Core.DependencyInjection
 		public static IServiceCollection AddDefaultSlashCommandHandlers(this IServiceCollection serviceCollection)
 		{
 			return serviceCollection
+				.AddSingleton<ISlashCommandHandler, OpenRaInformationCommandHandler>()
 				.AddSingleton<ISlashCommandHandler, LuaDocumentationCommandHandler>()
 				.AddSingleton<ISlashCommandHandler, TraitDocumentationCommandHandler>()
 				.AddSingleton<ISlashCommandHandler, WeaponDocumentationCommandHandler>()

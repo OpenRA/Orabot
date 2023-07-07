@@ -31,7 +31,6 @@ namespace Orabot.Hosts.ConsoleHost
 				.AddDefaultCustomMessageHandlers()
 				.AddDefaultSlashCommandHandlers()
 				.AddSingleton<ModuleBase<SocketCommandContext>, GeneralModule>()
-				.AddSingleton<ModuleBase<SocketCommandContext>, OpenRaGeneralModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, QuoteModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, RoleManagementModule>()
 				.AddSingleton<QuotingService>()

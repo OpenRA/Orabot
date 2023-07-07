@@ -28,6 +28,48 @@ namespace Orabot.Core
 		{
 			new SlashCommandBuilder
 			{
+				Name = "supportdir",
+				Description = "Prints information about the game's support directory with default paths on each supported OS.",
+				IsDMEnabled = true,
+				IsNsfw = false
+			},
+			new SlashCommandBuilder
+			{
+				Name = "academy",
+				Description = "Prints information about the OpenRA Academy.",
+				IsDMEnabled = true,
+				IsNsfw = false
+			},
+			new SlashCommandBuilder
+			{
+				Name = "book",
+				Description = "Prints information about the OpenRA Book.",
+				IsDMEnabled = true,
+				IsNsfw = false
+			},
+			new SlashCommandBuilder
+			{
+				Name = "sdk",
+				Description = "Prints information about the OpenRA ModSDK.",
+				IsDMEnabled = true,
+				IsNsfw = false
+			},
+			new SlashCommandBuilder
+			{
+				Name = "utility",
+				Description = "Prints information about the OpenRA Utility.",
+				IsDMEnabled = true,
+				IsNsfw = false
+			},
+			new SlashCommandBuilder
+			{
+				Name = "orabot",
+				Description = "Prints information about Orabot.",
+				IsDMEnabled = true,
+				IsNsfw = false
+			},
+			new SlashCommandBuilder
+			{
 				Name = "lua",
 				Description = "Provides a link to the OpenRA Lua API documentation page.",
 				IsDMEnabled = true,
