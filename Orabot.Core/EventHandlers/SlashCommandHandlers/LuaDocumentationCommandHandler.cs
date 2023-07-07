@@ -19,10 +19,10 @@ namespace Orabot.Core.EventHandlers.SlashCommandHandlers
 
 		public async Task InvokeAsync(SocketSlashCommand command)
 		{
-			var tableName = (string)command.Data.Options.FirstOrDefault(x => x.Name == "table-name")?.Value;
+			var name = (string)command.Data.Options.FirstOrDefault(x => x.Name == "name")?.Value;
 			var version = (string)command.Data.Options.FirstOrDefault(x => x.Name == "version")?.Value ?? "release";
 
-			var embed = await _luaTableToEmbedTransformer.CreateEmbed(tableName, version);
+			var embed = await _luaTableToEmbedTransformer.CreateEmbed(name, version);
 			if (embed != null)
 				await command.RespondAsync(embed: embed);
 		}

@@ -19,10 +19,10 @@ namespace Orabot.Core.EventHandlers.SlashCommandHandlers
 
 		public async Task InvokeAsync(SocketSlashCommand command)
 		{
-			var weaponName = (string)command.Data.Options.FirstOrDefault(x => x.Name == "weapon-name")?.Value;
+			var name = (string)command.Data.Options.FirstOrDefault(x => x.Name == "name")?.Value;
 			var version = (string)command.Data.Options.FirstOrDefault(x => x.Name == "version")?.Value ?? "release";
 
-			var embed = await _weaponToEmbedTransformer.CreateEmbed(weaponName, version);
+			var embed = await _weaponToEmbedTransformer.CreateEmbed(name, version);
 			if (embed != null)
 				await command.RespondAsync(embed: embed);
 		}

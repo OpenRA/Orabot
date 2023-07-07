@@ -6,23 +6,23 @@ using System.Threading.Tasks;
 
 namespace Orabot.Core.EventHandlers.SlashCommandHandlers
 {
-	internal class TraitDocumentationCommandHandler : ISlashCommandHandler
+	internal class SpriteSequenceDocumentationCommandHandler : ISlashCommandHandler
 	{
-		private readonly TraitToEmbedTransformer _traitToEmbedTransformer;
+		readonly SpriteSequenceToEmbedTransformer _spriteSequenceToEmbedTransformer;
 
-		public TraitDocumentationCommandHandler(TraitToEmbedTransformer traitToEmbedTransformer)
+		public SpriteSequenceDocumentationCommandHandler(SpriteSequenceToEmbedTransformer spriteSequenceToEmbedTransformer)
 		{
-			_traitToEmbedTransformer = traitToEmbedTransformer;
+			_spriteSequenceToEmbedTransformer = spriteSequenceToEmbedTransformer;
 		}
 
-		public bool CanHandle(SocketSlashCommand command) => command.CommandName == "traits";
+		public bool CanHandle(SocketSlashCommand command) => command.CommandName == "sprite-sequences";
 
 		public async Task InvokeAsync(SocketSlashCommand command)
 		{
 			var name = (string)command.Data.Options.FirstOrDefault(x => x.Name == "name")?.Value;
 			var version = (string)command.Data.Options.FirstOrDefault(x => x.Name == "version")?.Value ?? "release";
 
-			var embed = await _traitToEmbedTransformer.CreateEmbed(name, version);
+			var embed = await _spriteSequenceToEmbedTransformer.CreateEmbed(name, version);
 			if (embed != null)
 				await command.RespondAsync(embed: embed);
 		}

@@ -33,7 +33,7 @@ namespace Orabot.Core
 				IsDMEnabled = true,
 				IsNsfw = false
 			}
-				.AddOption("table-name", ApplicationCommandOptionType.String, "The name of the Lua table to link to", isAutocomplete: true)
+				.AddOption("name", ApplicationCommandOptionType.String, "The name of the Lua table to link to.", isAutocomplete: true)
 				.AddOption("version",
 					ApplicationCommandOptionType.String,
 					"Which documentation version to link to? Defaults to release.",
@@ -45,7 +45,7 @@ namespace Orabot.Core
 				IsDMEnabled = true,
 				IsNsfw = false
 			}
-				.AddOption("trait-name", ApplicationCommandOptionType.String, "The name of the trait to link to", isAutocomplete: true)
+				.AddOption("name", ApplicationCommandOptionType.String, "The name of the trait to link to.", isAutocomplete: true)
 				.AddOption("version",
 					ApplicationCommandOptionType.String,
 					"Which documentation version to link to? Defaults to release.",
@@ -57,7 +57,19 @@ namespace Orabot.Core
 				IsDMEnabled = true,
 				IsNsfw = false
 			}
-				.AddOption("weapon-name", ApplicationCommandOptionType.String, "The name of the weapon (Warhead or Projectile) to link to", isAutocomplete: true)
+				.AddOption("name", ApplicationCommandOptionType.String, "The name of the weapon (Warhead or Projectile) to link to.", isAutocomplete: true)
+				.AddOption("version",
+					ApplicationCommandOptionType.String,
+					"Which documentation version to link to? Defaults to release.",
+					choices: documentationVersionChoices),
+			new SlashCommandBuilder
+			{
+				Name = "sprite-sequences",
+				Description = "Provides a link to the OpenRA Sprite Sequences documentation page.",
+				IsDMEnabled = true,
+				IsNsfw = false
+			}
+				.AddOption("name", ApplicationCommandOptionType.String, "The name of the sprite sequence type to link to.", isAutocomplete: true)
 				.AddOption("version",
 					ApplicationCommandOptionType.String,
 					"Which documentation version to link to? Defaults to release.",

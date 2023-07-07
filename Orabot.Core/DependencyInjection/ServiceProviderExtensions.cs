@@ -71,7 +71,8 @@ namespace Orabot.Core.DependencyInjection
 			return serviceCollection
 				.AddSingleton<ISlashCommandHandler, LuaDocumentationCommandHandler>()
 				.AddSingleton<ISlashCommandHandler, TraitDocumentationCommandHandler>()
-				.AddSingleton<ISlashCommandHandler, WeaponDocumentationCommandHandler>();
+				.AddSingleton<ISlashCommandHandler, WeaponDocumentationCommandHandler>()
+				.AddSingleton<ISlashCommandHandler, SpriteSequenceDocumentationCommandHandler>();
 		}
 
 		public static IServiceCollection AddDefaultTransformers(this IServiceCollection serviceCollection)
@@ -83,6 +84,7 @@ namespace Orabot.Core.DependencyInjection
 				.AddSingleton<TraitToEmbedTransformer>()
 				.AddSingleton<WeaponToEmbedTransformer>()
 				.AddSingleton<LuaTableToEmbedTransformer>()
+				.AddSingleton<SpriteSequenceToEmbedTransformer>()
 				.AddSingleton<ReplayMetadataToEmbedTransformer>();
 		}
 
