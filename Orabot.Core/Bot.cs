@@ -106,17 +106,16 @@ namespace Orabot.Core
 		private async Task RegisterSlashCommands()
 		{
 			// Uncomment to delete existing commands:
-			var globalCommands = await _client.GetGlobalApplicationCommandsAsync();
-			foreach (var guild in _client.Guilds)
-			{
-				var guildCommands = await guild.GetApplicationCommandsAsync();
-				//foreach (var guildCommand in guildCommands)
-				//	await guildCommand.DeleteAsync();
-			}
+			//var globalCommands = await _client.GetGlobalApplicationCommandsAsync();
+			//foreach (var guild in _client.Guilds)
+			//{
+			//	var guildCommands = await guild.GetApplicationCommandsAsync();
+			//	foreach (var guildCommand in guildCommands)
+			//		await guildCommand.DeleteAsync();
+			//}
 
-			var commandBuilders = SlashCommands.CommandBuilders;
-
-			// Uncomment to register commands:
+			//// Uncomment to register commands:
+			//var commandBuilders = SlashCommands.CommandBuilders;
 			//foreach (var guild in _client.Guilds)
 			//	foreach (var command in commandBuilders)
 			//		await guild.CreateApplicationCommandAsync(command.Build());
