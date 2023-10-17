@@ -25,6 +25,7 @@ using Orabot.Core.LongRunningServices;
 using Refit;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.Converters;
+using Orabot.Core.Integrations.DocsWebsite;
 
 namespace Orabot.Core.DependencyInjection
 {
@@ -102,7 +103,23 @@ namespace Orabot.Core.DependencyInjection
 		public static IServiceCollection AddLongRunningServices(this IServiceCollection serviceCollection)
 		{
 			return serviceCollection
+				.AddSingleton<ILongRunningService, DocsCachingService>()
 				.AddSingleton<ILongRunningService, ResourceCenterMapWatcherService>();
+		}
+
+		public static IServiceCollection AddDocumentationWebsiteIntegration(this IServiceCollection serviceCollection)
+		{
+			var serializerOptions = new JsonSerializerOptions();
+			var settings = new RefitSettings
+			{
+				ContentSerializer = new SystemTextJsonContentSerializer(serializerOptions)
+			};
+
+			serviceCollection
+				.AddRefitClient<IDocsApi>(settings)
+				.ConfigureHttpClient(c => c.BaseAddress = new Uri("https://docs.openra.net/en/"));
+
+			return serviceCollection;
 		}
 
 		public static IServiceCollection AddResourceCenterIntegration(this IServiceCollection serviceCollection)

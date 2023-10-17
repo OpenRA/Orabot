@@ -45,6 +45,7 @@ namespace Orabot.Hosts.ConsoleHost
 					   new RestClientOptions(),
 					   configureSerialization: s => s.UseSystemTextJson(serializationOptions));
 				})
+				.AddDocumentationWebsiteIntegration()
 				.AddResourceCenterIntegration()
 				.AddYamlDeserializer()
 				.BuildServiceProvider();
