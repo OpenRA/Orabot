@@ -21,7 +21,7 @@ using Orabot.Core.Transformers.DocumentationToEmbedTransformers;
 using Orabot.Core.Transformers.LinkToEmbedTransformers;
 using Orabot.Core.Transformers.Replays.ReplayDataToEmbedTransformers;
 using Orabot.Core.Transformers.Replays.ReplayToReplayDataTransformers;
-using Orabot.Core.WatcherServices;
+using Orabot.Core.LongRunningServices;
 using Refit;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.Converters;

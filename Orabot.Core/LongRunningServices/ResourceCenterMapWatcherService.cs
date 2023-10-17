@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Orabot.Core.WatcherServices
+namespace Orabot.Core.LongRunningServices
 {
 	internal class ResourceCenterMapWatcherService : ILongRunningService
 	{
