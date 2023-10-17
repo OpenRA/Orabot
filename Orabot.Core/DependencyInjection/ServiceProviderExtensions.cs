@@ -3,6 +3,7 @@ using System.IO;
 using System.Globalization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Orabot.Core.Abstractions;
 using Orabot.Core.Abstractions.EventHandlers;
 using Orabot.Core.EventHandlers;
 using Orabot.Core.EventHandlers.CustomMessageHandlers.AttachmentMessageHandlers;
@@ -12,17 +13,17 @@ using Orabot.Core.EventHandlers.CustomMessageHandlers.ModTimersMessageHandlers;
 using Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers;
 using Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers.GitHubIssueNumberMessageHandlers;
 using Orabot.Core.EventHandlers.CustomMessageHandlers.SpecificTextMessageHandlers;
+using Orabot.Core.EventHandlers.SlashCommandHandlers;
+using Orabot.Core.Integrations.ResourceCenter;
 using Orabot.Core.Transformers.AttachmentToMessageTransformers;
+using Orabot.Core.Transformers.DocumentationToEmbedTransformers;
 using Orabot.Core.Transformers.LinkToEmbedTransformers;
 using Orabot.Core.Transformers.Replays.ReplayDataToEmbedTransformers;
 using Orabot.Core.Transformers.Replays.ReplayToReplayDataTransformers;
+using Orabot.Core.WatcherServices;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.Converters;
-using Orabot.Core.Abstractions;
-using Orabot.Core.WatcherServices;
 using Refit;
-using Orabot.Core.Integrations.ResourceCenter;
-using Newtonsoft.Json;
 using System.Text.Json;
 
 namespace Orabot.Core.DependencyInjection
@@ -43,7 +44,8 @@ namespace Orabot.Core.DependencyInjection
 			return serviceCollection
 				.AddSingleton<ILogEventHandler, LogEventHandler>()
 				.AddSingleton<IMessageEventHandler, MessageEventHandler>()
-				.AddSingleton<IReactionEventHandler, RoleAssignmentReactionEventHandler>();
+				.AddSingleton<IReactionEventHandler, RoleAssignmentReactionEventHandler>()
+				.AddSingleton<ISlashCommandEventHandler, SlashCommandEventHandler>();
 		}
 
 		public static IServiceCollection AddDefaultCustomMessageHandlers(this IServiceCollection serviceCollection)
@@ -64,12 +66,23 @@ namespace Orabot.Core.DependencyInjection
 				.AddSingleton<ICustomMessageHandler, StackTraceMessageHandler>();
 		}
 
+		public static IServiceCollection AddDefaultSlashCommandHandlers(this IServiceCollection serviceCollection)
+		{
+			return serviceCollection
+				.AddSingleton<ISlashCommandHandler, LuaDocumentationCommandHandler>()
+				.AddSingleton<ISlashCommandHandler, TraitDocumentationCommandHandler>()
+				.AddSingleton<ISlashCommandHandler, WeaponDocumentationCommandHandler>();
+		}
+
 		public static IServiceCollection AddDefaultTransformers(this IServiceCollection serviceCollection)
 		{
 			return serviceCollection
 				.AddSingleton<AttachmentLogFileToMessageTransformer>()
 				.AddSingleton<OpenRaResourceCenterMapLinkToEmbedTransformer>()
 				.AddSingleton<AttachmentReplayMetadataTransformer>()
+				.AddSingleton<TraitToEmbedTransformer>()
+				.AddSingleton<WeaponToEmbedTransformer>()
+				.AddSingleton<LuaTableToEmbedTransformer>()
 				.AddSingleton<ReplayMetadataToEmbedTransformer>();
 		}
 
