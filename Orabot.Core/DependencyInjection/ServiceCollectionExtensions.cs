@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Globalization;
+using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Orabot.Core.Abstractions;
@@ -21,14 +22,13 @@ using Orabot.Core.Transformers.LinkToEmbedTransformers;
 using Orabot.Core.Transformers.Replays.ReplayDataToEmbedTransformers;
 using Orabot.Core.Transformers.Replays.ReplayToReplayDataTransformers;
 using Orabot.Core.WatcherServices;
+using Refit;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.Converters;
-using Refit;
-using System.Text.Json;
 
 namespace Orabot.Core.DependencyInjection
 {
-	public static class ServiceProviderExtensions
+	public static class ServiceCollectionExtensions
 	{
 		public static IServiceCollection AddAppSettingsConfiguration(this IServiceCollection serviceCollection)
 		{
@@ -69,9 +69,11 @@ namespace Orabot.Core.DependencyInjection
 		public static IServiceCollection AddDefaultSlashCommandHandlers(this IServiceCollection serviceCollection)
 		{
 			return serviceCollection
+				.AddSingleton<ISlashCommandHandler, OpenRaInformationCommandHandler>()
 				.AddSingleton<ISlashCommandHandler, LuaDocumentationCommandHandler>()
 				.AddSingleton<ISlashCommandHandler, TraitDocumentationCommandHandler>()
-				.AddSingleton<ISlashCommandHandler, WeaponDocumentationCommandHandler>();
+				.AddSingleton<ISlashCommandHandler, WeaponDocumentationCommandHandler>()
+				.AddSingleton<ISlashCommandHandler, SpriteSequenceDocumentationCommandHandler>();
 		}
 
 		public static IServiceCollection AddDefaultTransformers(this IServiceCollection serviceCollection)
@@ -83,6 +85,7 @@ namespace Orabot.Core.DependencyInjection
 				.AddSingleton<TraitToEmbedTransformer>()
 				.AddSingleton<WeaponToEmbedTransformer>()
 				.AddSingleton<LuaTableToEmbedTransformer>()
+				.AddSingleton<SpriteSequenceToEmbedTransformer>()
 				.AddSingleton<ReplayMetadataToEmbedTransformer>();
 		}
 
