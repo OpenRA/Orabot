@@ -56,17 +56,17 @@ namespace Orabot.Core.LongRunningServices
 			var response = await _docsApi.GetSearchIndex(version);
 			return new ParsedDocs
 			{
-				Traits = PrepareEntries(response.Docs, "traits/#"),
-				Weapons = PrepareEntries(response.Docs, "weapons/#"),
-				SpriteSequences = PrepareEntries(response.Docs, "sprite-sequences/#"),
-				Lua = PrepareEntries(response.Docs, "lua/#")
+				Traits = PrepareEntries(response.Docs, "traits"),
+				Weapons = PrepareEntries(response.Docs, "weapons"),
+				SpriteSequences = PrepareEntries(response.Docs, "sprite-sequences"),
+				Lua = PrepareEntries(response.Docs, "lua")
 			};
 		}
 
-		public static IReadOnlyDictionary<string, DocsEntry> PrepareEntries(DocsEntry[] docs, string filter)
+		public static IReadOnlyDictionary<string, DocsEntry> PrepareEntries(DocsEntry[] docs, string prefix)
 		{
 			return docs
-				.Where(x => x.Location.StartsWith(filter))
+				.Where(x => x.Location.StartsWith($"{prefix}/#") && x.Location != $"{prefix}/#{prefix}")
 				.DistinctBy(x => x.Title)
 				.ToDictionary(x => x.Title, y => y);
 		}
