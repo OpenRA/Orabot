@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Orabot.Core.LongRunningServices
 {
-	internal class DocsCachingService : ILongRunningService
+	public class DocsCachingService : ILongRunningService
 	{
 		private readonly int ScanInterval;
 		private readonly IDocsApi _docsApi;

@@ -30,6 +30,7 @@ namespace Orabot.Hosts.ConsoleHost
 				.AddDefaultEventHandlerServices()
 				.AddDefaultCustomMessageHandlers()
 				.AddDefaultSlashCommandHandlers()
+				.AddDefaultAutocompletionHandlers()
 				.AddSingleton<ModuleBase<SocketCommandContext>, GeneralModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, QuoteModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, RoleManagementModule>()
