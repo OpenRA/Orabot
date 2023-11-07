@@ -12,7 +12,8 @@ namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHa
 
 		protected override Dictionary<string, int> MinimumHandledNumberPerKeyword { get; } = new Dictionary<string, int>
 		{
-			{ "web", 0 }
+			{ "web", 0 },
+			{ "OpenRAWebsiteV3", 0 }
 		};
 
 		public OpenRaWebGitHubIssueNumberMessageHandler(IRestClient restClient, IConfiguration configuration) : base(restClient, configuration) { }
