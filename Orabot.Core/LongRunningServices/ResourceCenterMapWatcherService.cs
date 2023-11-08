@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Orabot.Core.WatcherServices
+namespace Orabot.Core.LongRunningServices
 {
 	internal class ResourceCenterMapWatcherService : ILongRunningService
 	{
@@ -46,7 +46,7 @@ namespace Orabot.Core.WatcherServices
 			{
 				try
 				{
-					Console.WriteLine($"Checking resource center for new maps... {DateTime.Now}");
+					Console.WriteLine($"{DateTime.Now} Checking resource center for new maps...");
 
 					var response = await _mapsApi.GetMaps();
 					var maps = response.Values;

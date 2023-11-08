@@ -26,6 +26,7 @@ namespace Orabot.Core
 		private readonly IMessageEventHandler _messageEventHandler;
 		private readonly IReactionEventHandler _reactionEventHandler;
 		private readonly ISlashCommandEventHandler _slashCommandHandler;
+		private readonly IAutocompleteEventHandler _autocompleteCommandHandler;
 
 		public Bot(IServiceProvider serviceProvider)
 		{
@@ -38,6 +39,7 @@ namespace Orabot.Core
 			_messageEventHandler = _serviceProvider.GetService<IMessageEventHandler>();
 			_reactionEventHandler = _serviceProvider.GetService<IReactionEventHandler>();
 			_slashCommandHandler = _serviceProvider.GetService<ISlashCommandEventHandler>();
+			_autocompleteCommandHandler = _serviceProvider.GetService<IAutocompleteEventHandler>();
 
 			_cancellationTokenSource = new CancellationTokenSource();
 			_cancellationToken = _cancellationTokenSource.Token;
@@ -75,8 +77,9 @@ namespace Orabot.Core
 			_client.ReactionAdded += _reactionEventHandler.HandleReactionAddedAsync;
 			_client.ReactionRemoved += _reactionEventHandler.HandleReactionRemovedAsync;
 			_client.MessageReceived += _messageEventHandler.HandleMessageReceivedAsync;
-			_client.Ready += OnReady;
 			_client.SlashCommandExecuted += _slashCommandHandler.HandleSlashCommandAsync;
+			_client.AutocompleteExecuted += _autocompleteCommandHandler.HandleAutocompleteAsync;
+			_client.Ready += OnReady;
 		}
 
 		private async Task RegisterCommandModules()

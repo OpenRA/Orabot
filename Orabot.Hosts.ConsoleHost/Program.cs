@@ -30,6 +30,7 @@ namespace Orabot.Hosts.ConsoleHost
 				.AddDefaultEventHandlerServices()
 				.AddDefaultCustomMessageHandlers()
 				.AddDefaultSlashCommandHandlers()
+				.AddDefaultAutocompletionHandlers()
 				.AddSingleton<ModuleBase<SocketCommandContext>, GeneralModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, QuoteModule>()
 				.AddSingleton<ModuleBase<SocketCommandContext>, RoleManagementModule>()
@@ -45,6 +46,7 @@ namespace Orabot.Hosts.ConsoleHost
 					   new RestClientOptions(),
 					   configureSerialization: s => s.UseSystemTextJson(serializationOptions));
 				})
+				.AddDocumentationWebsiteIntegration()
 				.AddResourceCenterIntegration()
 				.AddYamlDeserializer()
 				.BuildServiceProvider();

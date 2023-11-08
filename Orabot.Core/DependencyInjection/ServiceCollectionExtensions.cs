@@ -21,10 +21,13 @@ using Orabot.Core.Transformers.DocumentationToEmbedTransformers;
 using Orabot.Core.Transformers.LinkToEmbedTransformers;
 using Orabot.Core.Transformers.Replays.ReplayDataToEmbedTransformers;
 using Orabot.Core.Transformers.Replays.ReplayToReplayDataTransformers;
-using Orabot.Core.WatcherServices;
+using Orabot.Core.LongRunningServices;
 using Refit;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.Converters;
+using Orabot.Core.Integrations.DocsWebsite;
+using System.Linq;
+using Orabot.Core.EventHandlers.SlashCommandHandlers.AutocompleteHandlers;
 
 namespace Orabot.Core.DependencyInjection
 {
@@ -45,7 +48,8 @@ namespace Orabot.Core.DependencyInjection
 				.AddSingleton<ILogEventHandler, LogEventHandler>()
 				.AddSingleton<IMessageEventHandler, MessageEventHandler>()
 				.AddSingleton<IReactionEventHandler, RoleAssignmentReactionEventHandler>()
-				.AddSingleton<ISlashCommandEventHandler, SlashCommandEventHandler>();
+				.AddSingleton<ISlashCommandEventHandler, SlashCommandEventHandler>()
+				.AddSingleton<IAutocompleteEventHandler, AutocompleteEventHandler>();
 		}
 
 		public static IServiceCollection AddDefaultCustomMessageHandlers(this IServiceCollection serviceCollection)
@@ -69,11 +73,21 @@ namespace Orabot.Core.DependencyInjection
 		public static IServiceCollection AddDefaultSlashCommandHandlers(this IServiceCollection serviceCollection)
 		{
 			return serviceCollection
+				.AddSingleton(provider => provider.GetServices<ILongRunningService>().Single(x => x is DocsCachingService) as DocsCachingService)
 				.AddSingleton<ISlashCommandHandler, OpenRaInformationCommandHandler>()
 				.AddSingleton<ISlashCommandHandler, LuaDocumentationCommandHandler>()
 				.AddSingleton<ISlashCommandHandler, TraitDocumentationCommandHandler>()
 				.AddSingleton<ISlashCommandHandler, WeaponDocumentationCommandHandler>()
 				.AddSingleton<ISlashCommandHandler, SpriteSequenceDocumentationCommandHandler>();
+		}
+
+		public static IServiceCollection AddDefaultAutocompletionHandlers(this IServiceCollection serviceCollection)
+		{
+			return serviceCollection
+				.AddSingleton<IAutocompleteHandler, LuaTableNamesAutocompleteHandler>()
+				.AddSingleton<IAutocompleteHandler, SpriteSequenceNamesAutocompleteHandler>()
+				.AddSingleton<IAutocompleteHandler, TraitNamesAutocompleteHandler>()
+				.AddSingleton<IAutocompleteHandler, WeaponNamesAutocompleteHandler>();
 		}
 
 		public static IServiceCollection AddDefaultTransformers(this IServiceCollection serviceCollection)
@@ -102,7 +116,23 @@ namespace Orabot.Core.DependencyInjection
 		public static IServiceCollection AddLongRunningServices(this IServiceCollection serviceCollection)
 		{
 			return serviceCollection
+				.AddSingleton<ILongRunningService, DocsCachingService>()
 				.AddSingleton<ILongRunningService, ResourceCenterMapWatcherService>();
+		}
+
+		public static IServiceCollection AddDocumentationWebsiteIntegration(this IServiceCollection serviceCollection)
+		{
+			var serializerOptions = new JsonSerializerOptions();
+			var settings = new RefitSettings
+			{
+				ContentSerializer = new SystemTextJsonContentSerializer(serializerOptions)
+			};
+
+			serviceCollection
+				.AddRefitClient<IDocsApi>(settings)
+				.ConfigureHttpClient(c => c.BaseAddress = new Uri("https://docs.openra.net/en/"));
+
+			return serviceCollection;
 		}
 
 		public static IServiceCollection AddResourceCenterIntegration(this IServiceCollection serviceCollection)
