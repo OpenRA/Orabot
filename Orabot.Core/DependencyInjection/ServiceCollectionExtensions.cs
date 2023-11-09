@@ -39,6 +39,7 @@ namespace Orabot.Core.DependencyInjection
 				.AddSingleton<IConfiguration>(provider => new ConfigurationBuilder()
 						.SetBasePath(Directory.GetCurrentDirectory())
 						.AddJsonFile("appsettings.json")
+						.AddUserSecrets("245384e8-58dc-45d7-b441-5c63468071e4")
 						.Build());
 		}
 
