@@ -27,6 +27,7 @@ namespace Orabot.Core
 		private readonly IReactionEventHandler _reactionEventHandler;
 		private readonly ISlashCommandEventHandler _slashCommandHandler;
 		private readonly IAutocompleteEventHandler _autocompleteCommandHandler;
+		private bool _longRunningServicesStarted = false;
 
 		public Bot(IServiceProvider serviceProvider)
 		{
@@ -95,6 +96,11 @@ namespace Orabot.Core
 
 		private void StartLongRunningServices()
 		{
+			if (_longRunningServicesStarted)
+				return;
+
+			_longRunningServicesStarted = true;
+
 			var services = _serviceProvider.GetServices<ILongRunningService>();
 			foreach (var service in services)
 				Task.Run(() => service.ExecuteAsync(_cancellationToken));
