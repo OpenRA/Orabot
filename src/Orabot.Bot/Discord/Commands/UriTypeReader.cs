@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Discord.Commands;
 
-namespace Orabot.Core.TypeReaders
+namespace Orabot.Bot.Discord.Commands
 {
     public class UriTypeReader : BaseTypeReader
     {

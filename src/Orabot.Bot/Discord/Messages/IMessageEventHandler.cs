@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Discord.WebSocket;
 
-namespace Orabot.Core.Abstractions.EventHandlers
+namespace Orabot.Bot.Discord.Messages
 {
 	public interface IMessageEventHandler
 	{

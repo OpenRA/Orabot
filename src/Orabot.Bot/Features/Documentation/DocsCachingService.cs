@@ -1,5 +1,5 @@
 ﻿using Orabot.Bot.Features.Documentation.Models;
-using Orabot.Core.Abstractions;
+using Orabot.Bot.Infrastructure.BackgroundWork;
 using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.Extensions.Configuration;

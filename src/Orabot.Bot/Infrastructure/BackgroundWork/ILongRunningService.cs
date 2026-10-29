@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace Orabot.Core.Abstractions
+namespace Orabot.Bot.Infrastructure.BackgroundWork
 {
 	public interface ILongRunningService
 	{

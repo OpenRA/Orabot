@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Orabot.Bot.Features.Maps.Models;
 using Orabot.Bot.Features.Maps.Rendering;
-using Orabot.Core.Abstractions;
+using Orabot.Bot.Infrastructure.BackgroundWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;

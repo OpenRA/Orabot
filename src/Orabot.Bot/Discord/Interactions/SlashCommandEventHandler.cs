@@ -1,11 +1,10 @@
 ﻿using Discord.WebSocket;
-using Orabot.Core.Abstractions.EventHandlers;
 using System.Collections.Generic;
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Orabot.Core.EventHandlers
+namespace Orabot.Bot.Discord.Interactions
 {
 	public class SlashCommandEventHandler : ISlashCommandEventHandler
 	{

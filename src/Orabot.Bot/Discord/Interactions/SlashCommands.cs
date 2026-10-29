@@ -1,7 +1,7 @@
 ﻿using Discord;
 using System.Collections.Generic;
 
-namespace Orabot.Core
+namespace Orabot.Bot.Discord.Interactions
 {
 	internal static class SlashCommands
 	{

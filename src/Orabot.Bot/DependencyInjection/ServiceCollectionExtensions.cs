@@ -4,6 +4,10 @@ using System.Globalization;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Orabot.Bot.Discord.Commands;
+using Orabot.Bot.Discord.Interactions;
+using Orabot.Bot.Discord.Logging;
+using Orabot.Bot.Discord.Messages;
 using Orabot.Bot.Features.Documentation;
 using Orabot.Bot.Features.Documentation.Autocomplete;
 using Orabot.Bot.Features.Documentation.Commands;
@@ -16,17 +20,14 @@ using Orabot.Bot.Features.Maps.Messages;
 using Orabot.Bot.Features.Maps.Rendering;
 using Orabot.Bot.Features.Replays;
 using Orabot.Bot.Features.Roles;
-using Orabot.Core;
-using Orabot.Core.Abstractions;
-using Orabot.Core.Abstractions.EventHandlers;
-using Orabot.Core.EventHandlers;
-using Orabot.Core.EventHandlers.CustomMessageHandlers.CommandMessageHandlers;
+using Orabot.Bot.Infrastructure.BackgroundWork;
+using Orabot.Bot.Infrastructure.Serialization;
 using Refit;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.Converters;
 using System.Linq;
 
-namespace Orabot.Core.DependencyInjection
+namespace Orabot.Bot.DependencyInjection
 {
 	public static class ServiceCollectionExtensions
 	{

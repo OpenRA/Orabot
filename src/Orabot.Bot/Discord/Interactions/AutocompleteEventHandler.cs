@@ -1,11 +1,10 @@
 ﻿using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
-using Orabot.Core.Abstractions.EventHandlers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Orabot.Core.EventHandlers
+namespace Orabot.Bot.Discord.Interactions
 {
 	public class AutocompleteEventHandler : IAutocompleteEventHandler
 	{
@@ -18,7 +17,7 @@ namespace Orabot.Core.EventHandlers
 
 		public async Task HandleAutocompleteAsync(SocketAutocompleteInteraction interaction)
 		{
-			if (interaction.HasResponded || interaction.Type != Discord.InteractionType.ApplicationCommandAutocomplete)
+			if (interaction.HasResponded || interaction.Type != global::Discord.InteractionType.ApplicationCommandAutocomplete)
 				return;
 			
 			Parallel.ForEach(_autocompleteHandlers, handler =>

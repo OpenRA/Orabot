@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
-using Orabot.Core.Abstractions.EventHandlers;
+using Orabot.Bot.Discord.Messages;
 
-namespace Orabot.Core.EventHandlers.CustomMessageHandlers.CommandMessageHandlers
+namespace Orabot.Bot.Discord.Commands
 {
 	internal class BaseCommandMessageHandler : ICustomMessageHandler
 	{

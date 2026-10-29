@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Discord.WebSocket;
-using Orabot.Core.EventHandlers.CustomMessageHandlers.AttachmentMessageHandlers;
+using Orabot.Bot.Discord.Messages;
 
 namespace Orabot.Bot.Features.Replays
 {

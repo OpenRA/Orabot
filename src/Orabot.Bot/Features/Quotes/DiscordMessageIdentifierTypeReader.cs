@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Discord.Commands;
-using Orabot.Core.TypeReaders;
+using Orabot.Bot.Discord.Commands;
 
 namespace Orabot.Bot.Features.Quotes
 {

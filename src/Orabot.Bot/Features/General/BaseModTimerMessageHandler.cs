@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Discord.WebSocket;
-using Orabot.Core.Abstractions.EventHandlers;
+using Orabot.Bot.Discord.Messages;
 
 namespace Orabot.Bot.Features.General
 {

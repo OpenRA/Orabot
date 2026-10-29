@@ -1,7 +1,7 @@
 ﻿using Discord.WebSocket;
+using Orabot.Bot.Discord.Interactions;
 using Orabot.Bot.Features.Documentation;
 using Orabot.Bot.Features.Documentation.Models;
-using Orabot.Core.Abstractions.EventHandlers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

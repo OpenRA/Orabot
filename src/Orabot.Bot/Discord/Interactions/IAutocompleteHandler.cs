@@ -1,7 +1,7 @@
 ﻿using Discord.WebSocket;
 using System.Threading.Tasks;
 
-namespace Orabot.Core.Abstractions.EventHandlers
+namespace Orabot.Bot.Discord.Interactions
 {
 	public interface IAutocompleteHandler
 	{

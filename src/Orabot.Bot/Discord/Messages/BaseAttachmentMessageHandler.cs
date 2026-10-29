@@ -1,9 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Discord.WebSocket;
-using Orabot.Core.Abstractions.EventHandlers;
 
-namespace Orabot.Core.EventHandlers.CustomMessageHandlers.AttachmentMessageHandlers
+namespace Orabot.Bot.Discord.Messages
 {
 	internal abstract class BaseAttachmentMessageHandler : ICustomMessageHandler
 	{

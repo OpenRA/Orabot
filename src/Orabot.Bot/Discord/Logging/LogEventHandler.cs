@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Discord;
-using Orabot.Core.Abstractions.EventHandlers;
 
-namespace Orabot.Core.EventHandlers
+namespace Orabot.Bot.Discord.Logging
 {
 	internal class LogEventHandler : ILogEventHandler
 	{

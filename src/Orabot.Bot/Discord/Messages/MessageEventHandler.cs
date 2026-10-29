@@ -4,10 +4,9 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
-using Orabot.Core;
-using Orabot.Core.Abstractions.EventHandlers;
+using Orabot.Bot.Discord;
 
-namespace Orabot.Core.EventHandlers
+namespace Orabot.Bot.Discord.Messages
 {
 	internal class MessageEventHandler : IMessageEventHandler
 	{

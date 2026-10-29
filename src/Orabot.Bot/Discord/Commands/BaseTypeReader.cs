@@ -1,7 +1,7 @@
 ﻿using System;
 using Discord.Commands;
 
-namespace Orabot.Core.TypeReaders
+namespace Orabot.Bot.Discord.Commands
 {
     public abstract class BaseTypeReader : TypeReader
     {

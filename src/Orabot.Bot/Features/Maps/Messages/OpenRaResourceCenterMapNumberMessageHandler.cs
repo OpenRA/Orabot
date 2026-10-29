@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Discord.WebSocket;
+using Orabot.Bot.Discord.Messages;
 using Orabot.Bot.Features.Maps.Rendering;
-using Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers;
 
 namespace Orabot.Bot.Features.Maps.Messages
 {

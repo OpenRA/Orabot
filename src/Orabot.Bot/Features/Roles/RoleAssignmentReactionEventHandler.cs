@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
-using Orabot.Core.Abstractions.EventHandlers;
+using Orabot.Bot.Discord.Messages;
 
 namespace Orabot.Bot.Features.Roles
 {

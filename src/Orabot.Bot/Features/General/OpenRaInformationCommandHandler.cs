@@ -1,6 +1,6 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using Orabot.Core.Abstractions.EventHandlers;
+using Orabot.Bot.Discord.Interactions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

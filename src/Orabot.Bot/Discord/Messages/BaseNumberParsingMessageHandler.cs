@@ -3,9 +3,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Discord.WebSocket;
-using Orabot.Core.Abstractions.EventHandlers;
 
-namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers
+namespace Orabot.Bot.Discord.Messages
 {
 	internal abstract class BaseNumberParsingMessageHandler : ICustomMessageHandler
 	{

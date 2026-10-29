@@ -25,7 +25,7 @@ namespace Orabot.Bot.Features.Replays
 			_yamlDeserializer = yamlDeserializer;
 		}
 
-		internal ReplayMetadata GetMetadata(Discord.Attachment attachment)
+		internal ReplayMetadata GetMetadata(global::Discord.Attachment attachment)
 		{
 			var filePath = Path.Combine(_replayStorageFolder, $"{Guid.NewGuid()}_{attachment.Filename}");
 

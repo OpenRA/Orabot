@@ -6,11 +6,13 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Orabot.Core.Abstractions;
-using Orabot.Core.Abstractions.EventHandlers;
-using Orabot.Core.TypeReaders;
+using Orabot.Bot.Discord.Commands;
+using Orabot.Bot.Discord.Interactions;
+using Orabot.Bot.Discord.Logging;
+using Orabot.Bot.Discord.Messages;
+using Orabot.Bot.Infrastructure.BackgroundWork;
 
-namespace Orabot.Core
+namespace Orabot.Bot.Discord
 {
 	public class Bot : IDisposable
 	{

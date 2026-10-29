@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
+using Orabot.Bot.Discord.Messages;
 using Orabot.Bot.Features.GitHubReferences.Models;
-using Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers;
 using RestSharp;
 
 namespace Orabot.Bot.Features.GitHubReferences.Messages

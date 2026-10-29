@@ -1,14 +1,14 @@
-﻿using BotRuntime = Orabot.Core.Bot;
+﻿using BotRuntime = Orabot.Bot.Discord.Bot;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
+using Orabot.Bot.DependencyInjection;
+using Orabot.Bot.Discord.Commands;
 using Orabot.Bot.Features.General;
 using Orabot.Bot.Features.Quotes;
 using Orabot.Bot.Features.Roles;
-using Orabot.Core;
-using Orabot.Core.DependencyInjection;
-using Orabot.Core.TypeReaders;
+using Orabot.Bot.Infrastructure.Serialization;
 using RestSharp;
 using RestSharp.Serializers.Json;
 using System.Text.Json;
