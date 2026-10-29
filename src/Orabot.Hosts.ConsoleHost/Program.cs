@@ -1,4 +1,5 @@
-﻿using Discord;
+﻿using BotRuntime = Orabot.Core.Bot;
+using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,7 +52,7 @@ namespace Orabot.Hosts.ConsoleHost
 				.AddYamlDeserializer()
 				.BuildServiceProvider();
 
-			using var bot = new Bot(serviceProvider);
+			using var bot = new BotRuntime(serviceProvider);
 			await bot.RunAsync();
 		}
     }

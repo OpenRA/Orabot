@@ -4,6 +4,10 @@ using System.Globalization;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Orabot.Bot.Features.Documentation;
+using Orabot.Bot.Features.Documentation.Autocomplete;
+using Orabot.Bot.Features.Documentation.Commands;
+using Orabot.Bot.Features.Documentation.Rendering;
 using Orabot.Core.Abstractions;
 using Orabot.Core.Abstractions.EventHandlers;
 using Orabot.Core.EventHandlers;
@@ -16,18 +20,15 @@ using Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandle
 using Orabot.Core.EventHandlers.CustomMessageHandlers.SpecificTextMessageHandlers;
 using Orabot.Core.EventHandlers.SlashCommandHandlers;
 using Orabot.Core.Integrations.ResourceCenter;
+using Orabot.Core.LongRunningServices;
 using Orabot.Core.Transformers.AttachmentToMessageTransformers;
-using Orabot.Core.Transformers.DocumentationToEmbedTransformers;
 using Orabot.Core.Transformers.LinkToEmbedTransformers;
 using Orabot.Core.Transformers.Replays.ReplayDataToEmbedTransformers;
 using Orabot.Core.Transformers.Replays.ReplayToReplayDataTransformers;
-using Orabot.Core.LongRunningServices;
 using Refit;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.Converters;
-using Orabot.Core.Integrations.DocsWebsite;
 using System.Linq;
-using Orabot.Core.EventHandlers.SlashCommandHandlers.AutocompleteHandlers;
 
 namespace Orabot.Core.DependencyInjection
 {

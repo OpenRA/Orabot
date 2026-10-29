@@ -1,8 +1,8 @@
-﻿using Orabot.Core.Objects.DocsWebsite;
+﻿using Orabot.Bot.Features.Documentation.Models;
 using Refit;
 using System.Threading.Tasks;
 
-namespace Orabot.Core.Integrations.DocsWebsite
+namespace Orabot.Bot.Features.Documentation
 {
 	public interface IDocsApi
 	{

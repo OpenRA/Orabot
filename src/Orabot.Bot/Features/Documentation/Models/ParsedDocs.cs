@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Orabot.Core.Objects.DocsWebsite
+namespace Orabot.Bot.Features.Documentation.Models
 {
 	public class ParsedDocs
 	{

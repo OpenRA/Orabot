@@ -1,14 +1,13 @@
-﻿using Orabot.Core.Abstractions;
+﻿using Orabot.Bot.Features.Documentation.Models;
+using Orabot.Core.Abstractions;
 using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.Extensions.Configuration;
-using Orabot.Core.Integrations.DocsWebsite;
 using System;
 using System.Collections.Generic;
-using Orabot.Core.Objects.DocsWebsite;
 using System.Linq;
 
-namespace Orabot.Core.LongRunningServices
+namespace Orabot.Bot.Features.Documentation
 {
 	public class DocsCachingService : ILongRunningService
 	{

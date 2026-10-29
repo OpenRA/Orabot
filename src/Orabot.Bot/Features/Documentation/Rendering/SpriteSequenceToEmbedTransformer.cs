@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
-namespace Orabot.Core.Transformers.DocumentationToEmbedTransformers
+namespace Orabot.Bot.Features.Documentation.Rendering
 {
 	public class SpriteSequenceToEmbedTransformer : BaseDocumentationEmbedTransformer
 	{

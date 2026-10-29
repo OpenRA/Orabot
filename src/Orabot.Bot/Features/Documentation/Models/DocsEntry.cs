@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Orabot.Core.Objects.DocsWebsite
+namespace Orabot.Bot.Features.Documentation.Models
 {
 	public class DocsEntry
 	{

@@ -1,12 +1,12 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using Orabot.Core.LongRunningServices;
-using Orabot.Core.Objects.DocsWebsite;
+using Orabot.Bot.Features.Documentation;
+using Orabot.Bot.Features.Documentation.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Orabot.Core.EventHandlers.SlashCommandHandlers.AutocompleteHandlers
+namespace Orabot.Bot.Features.Documentation.Autocomplete
 {
 	public abstract class BaseDocumentationAutocompleteHandler
 	{

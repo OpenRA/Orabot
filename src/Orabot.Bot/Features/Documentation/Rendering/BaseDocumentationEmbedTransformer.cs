@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Orabot.Core.Transformers.DocumentationToEmbedTransformers
+namespace Orabot.Bot.Features.Documentation.Rendering
 {
 	public abstract class BaseDocumentationEmbedTransformer
 	{

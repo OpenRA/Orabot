@@ -1,10 +1,10 @@
 ﻿using Discord.WebSocket;
+using Orabot.Bot.Features.Documentation.Rendering;
 using Orabot.Core.Abstractions.EventHandlers;
-using Orabot.Core.Transformers.DocumentationToEmbedTransformers;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Orabot.Core.EventHandlers.SlashCommandHandlers
+namespace Orabot.Bot.Features.Documentation.Commands
 {
 	internal class TraitDocumentationCommandHandler : ISlashCommandHandler
 	{

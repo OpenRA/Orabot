@@ -1,12 +1,13 @@
 ﻿using Discord.WebSocket;
-using Orabot.Core.LongRunningServices;
-using Orabot.Core.Objects.DocsWebsite;
+using Orabot.Bot.Features.Documentation;
+using Orabot.Bot.Features.Documentation.Models;
+using Orabot.Core.Abstractions.EventHandlers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Orabot.Core.EventHandlers.SlashCommandHandlers.AutocompleteHandlers
+namespace Orabot.Bot.Features.Documentation.Autocomplete
 {
-	public class LuaTableNamesAutocompleteHandler : BaseDocumentationAutocompleteHandler, Abstractions.EventHandlers.IAutocompleteHandler
+	public class LuaTableNamesAutocompleteHandler : BaseDocumentationAutocompleteHandler, IAutocompleteHandler
 	{
 		public LuaTableNamesAutocompleteHandler(DocsCachingService docsCachingService)
 			: base(docsCachingService) { }
