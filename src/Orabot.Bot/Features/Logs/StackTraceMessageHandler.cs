@@ -2,9 +2,8 @@
 using System.Threading.Tasks;
 using Discord.WebSocket;
 using Orabot.Core.Abstractions.EventHandlers;
-using Orabot.Core.Transformers.AttachmentToMessageTransformers;
 
-namespace Orabot.Core.EventHandlers.CustomMessageHandlers.SpecificTextMessageHandlers
+namespace Orabot.Bot.Features.Logs
 {
 	internal class StackTraceMessageHandler : ICustomMessageHandler
 	{

@@ -6,10 +6,10 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Configuration;
-using Orabot.Core.Objects.OpenRaReplay;
+using Orabot.Bot.Features.Replays.Models;
 using YamlDotNet.Serialization;
 
-namespace Orabot.Core.Transformers.Replays.ReplayToReplayDataTransformers
+namespace Orabot.Bot.Features.Replays
 {
 	internal class AttachmentReplayMetadataTransformer
 	{

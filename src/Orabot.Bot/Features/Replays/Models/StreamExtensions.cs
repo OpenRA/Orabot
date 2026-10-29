@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace Orabot.Core.Objects.OpenRaReplay
+namespace Orabot.Bot.Features.Replays.Models
 {
 	public static class StreamExtensions
 	{

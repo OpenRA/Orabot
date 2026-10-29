@@ -1,10 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Discord.WebSocket;
-using Orabot.Core.Transformers.Replays.ReplayDataToEmbedTransformers;
-using Orabot.Core.Transformers.Replays.ReplayToReplayDataTransformers;
+using Orabot.Core.EventHandlers.CustomMessageHandlers.AttachmentMessageHandlers;
 
-namespace Orabot.Core.EventHandlers.CustomMessageHandlers.AttachmentMessageHandlers
+namespace Orabot.Bot.Features.Replays
 {
 	internal class ReplayFileAttachmentMessageHandler : BaseAttachmentMessageHandler
 	{

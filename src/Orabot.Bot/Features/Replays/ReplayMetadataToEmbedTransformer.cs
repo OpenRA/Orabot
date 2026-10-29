@@ -3,9 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Orabot.Bot.Features.Maps.Rendering;
-using Orabot.Core.Objects.OpenRaReplay;
+using Orabot.Bot.Features.Replays.Models;
 
-namespace Orabot.Core.Transformers.Replays.ReplayDataToEmbedTransformers
+namespace Orabot.Bot.Features.Replays
 {
 	internal class ReplayMetadataToEmbedTransformer
 	{

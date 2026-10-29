@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Discord.WebSocket;
-using Orabot.Core.Transformers.AttachmentToMessageTransformers;
+using Orabot.Core.EventHandlers.CustomMessageHandlers.AttachmentMessageHandlers;
 
-namespace Orabot.Core.EventHandlers.CustomMessageHandlers.AttachmentMessageHandlers
+namespace Orabot.Bot.Features.Logs
 {
 	internal class LogFileAttachmentMessageHandler : BaseAttachmentMessageHandler
 	{

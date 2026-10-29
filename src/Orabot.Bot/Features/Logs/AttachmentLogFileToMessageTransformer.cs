@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using Microsoft.Extensions.Configuration;
 
-namespace Orabot.Core.Transformers.AttachmentToMessageTransformers
+namespace Orabot.Bot.Features.Logs
 {
 	internal class AttachmentLogFileToMessageTransformer
 	{

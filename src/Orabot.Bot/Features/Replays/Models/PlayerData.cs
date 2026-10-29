@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Orabot.Core.Objects.OpenRaReplay
+namespace Orabot.Bot.Features.Replays.Models
 {
 	// Copied from OpenRA.Game.GameInformation.Player.
 	public class PlayerData
