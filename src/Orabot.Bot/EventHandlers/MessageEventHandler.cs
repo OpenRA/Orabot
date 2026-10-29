@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
+using Orabot.Core;
 using Orabot.Core.Abstractions.EventHandlers;
 
 namespace Orabot.Core.EventHandlers

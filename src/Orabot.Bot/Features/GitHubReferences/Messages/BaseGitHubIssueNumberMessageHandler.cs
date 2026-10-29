@@ -4,10 +4,11 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
-using Orabot.Core.Objects.GitHub;
+using Orabot.Bot.Features.GitHubReferences.Models;
+using Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers;
 using RestSharp;
 
-namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers.GitHubIssueNumberMessageHandlers
+namespace Orabot.Bot.Features.GitHubReferences.Messages
 {
 	internal abstract class BaseGitHubIssueNumberMessageHandler : BaseNumberParsingMessageHandler
 	{

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using RestSharp;
 
-namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers.GitHubIssueNumberMessageHandlers
+namespace Orabot.Bot.Features.GitHubReferences.Messages
 {
 	internal class OrabotGitHubIssueNumberMessageHandler : BaseGitHubIssueNumberMessageHandler
 	{

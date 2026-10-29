@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Orabot.Core.Objects.GitHub
+namespace Orabot.Bot.Features.GitHubReferences.Models
 {
 	internal class Label
 	{
