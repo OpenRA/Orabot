@@ -1,9 +1,12 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Globalization;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Orabot.Bot.Discord;
+using Orabot.Bot.Infrastructure.Configuration;
 using Orabot.Bot.Discord.Commands;
 using Orabot.Bot.Discord.Interactions;
 using Orabot.Bot.Discord.Logging;
@@ -31,6 +34,39 @@ namespace Orabot.Bot.DependencyInjection
 {
 	public static class ServiceCollectionExtensions
 	{
+		public static IServiceCollection AddOrabotOptions(this IServiceCollection services, IConfiguration configuration)
+		{
+			services.AddOptions<DiscordBotOptions>()
+				.Configure(options =>
+				{
+					options.BotToken = configuration["BotToken"];
+					options.MessageCacheSize = ReadInt<DiscordBotOptions>(configuration, "MessageCacheSize", 100);
+				})
+				.Validate(options => !string.IsNullOrWhiteSpace(options.BotToken), "BotToken must be configured.")
+				.Validate(options => options.MessageCacheSize >= 0 && options.MessageCacheSize <= 10000,
+					"MessageCacheSize must be between 0 and 10000.")
+				.ValidateOnStart();
+			services.AddOptions<DocumentationCacheOptions>()
+				.Configure(options => options.ScanInterval = ReadInt<DocumentationCacheOptions>(configuration,
+					"DocsSearchIndex:ScanInterval", 300000))
+				.Validate(options => options.ScanInterval > 0, "DocsSearchIndex:ScanInterval must be positive milliseconds.")
+				.ValidateOnStart();
+			services.AddOptions<MapAnnouncerOptions>()
+				.Configure(options =>
+				{
+					options.ServerName = configuration["MapAnnouncer:ServerName"];
+					options.ChannelName = configuration["MapAnnouncer:ChannelName"];
+					options.ScanInterval = ReadInt<MapAnnouncerOptions>(configuration, "MapAnnouncer:ScanInterval", 60000);
+				})
+				.Validate(options => !string.IsNullOrWhiteSpace(options.ServerName), "MapAnnouncer:ServerName must be configured.")
+				.Validate(options => !string.IsNullOrWhiteSpace(options.ChannelName), "MapAnnouncer:ChannelName must be configured.")
+				.Validate(options => options.ScanInterval > 0, "MapAnnouncer:ScanInterval must be positive milliseconds.")
+				.ValidateOnStart();
+			services.AddSingleton<IValidateOptions<LegacyFeatureOptions>, LegacyFeatureOptionsValidator>();
+			services.AddOptions<LegacyFeatureOptions>().Bind(configuration).ValidateOnStart();
+			return services;
+		}
+
 		public static IServiceCollection AddAppSettingsConfiguration(this IServiceCollection serviceCollection)
 		{
 			return serviceCollection
@@ -150,5 +186,16 @@ namespace Orabot.Bot.DependencyInjection
 
 			return serviceCollection;
 		}
+		private static int ReadInt<TOptions>(IConfiguration configuration, string key, int defaultValue)
+		{
+			var value = configuration[key];
+			if (value == null)
+				return defaultValue;
+			if (int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var result))
+				return result;
+			throw new OptionsValidationException(Options.DefaultName, typeof(TOptions),
+				new[] { key + " must be a 32-bit integer." });
+		}
+
 	}
 }
