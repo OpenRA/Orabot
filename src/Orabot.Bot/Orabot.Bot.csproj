@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Orabot.Core.Abstractions\Orabot.Core.Abstractions.csproj" />
+    <PackageReference Include="Discord.Net.WebSocket" Version="3.11.0" />
   </ItemGroup>
 
 </Project>

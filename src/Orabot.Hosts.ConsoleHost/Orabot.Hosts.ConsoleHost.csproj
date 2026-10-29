@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Orabot.Core\Orabot.Core.csproj" />
+    <ProjectReference Include="..\Orabot.Bot\Orabot.Bot.csproj" />
   </ItemGroup>
 
   <ItemGroup>
