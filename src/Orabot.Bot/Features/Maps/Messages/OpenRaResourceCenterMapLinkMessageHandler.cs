@@ -1,8 +1,8 @@
 ﻿using Discord.WebSocket;
-using Orabot.Core.Transformers.LinkToEmbedTransformers;
+using Orabot.Bot.Features.Maps.Rendering;
 using System.Threading.Tasks;
 
-namespace Orabot.Core.EventHandlers.CustomMessageHandlers.LinkParsingMessageHandlers
+namespace Orabot.Bot.Features.Maps.Messages
 {
 	internal class OpenRaResourceCenterMapLinkMessageHandler : BaseLinkParsingMessageHandler
 	{

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Orabot.Core.Objects.OpenRaResourceCenter
+namespace Orabot.Bot.Features.Maps.Models
 {
 	public class MapInfo
 	{

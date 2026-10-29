@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Discord.WebSocket;
 using Orabot.Core.Abstractions.EventHandlers;
 
-namespace Orabot.Core.EventHandlers.CustomMessageHandlers.LinkParsingMessageHandlers
+namespace Orabot.Bot.Features.Maps.Messages
 {
 	internal abstract class BaseLinkParsingMessageHandler : ICustomMessageHandler
 	{

@@ -1,16 +1,15 @@
 ﻿using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
+using Orabot.Bot.Features.Maps.Models;
+using Orabot.Bot.Features.Maps.Rendering;
 using Orabot.Core.Abstractions;
-using Orabot.Core.Integrations.ResourceCenter;
-using Orabot.Core.Objects.OpenRaResourceCenter;
-using Orabot.Core.Transformers.LinkToEmbedTransformers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Orabot.Core.LongRunningServices
+namespace Orabot.Bot.Features.Maps
 {
 	internal class ResourceCenterMapWatcherService : ILongRunningService
 	{

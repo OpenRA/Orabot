@@ -1,9 +1,9 @@
-﻿using Orabot.Core.Objects.OpenRaResourceCenter;
+﻿using Orabot.Bot.Features.Maps.Models;
 using Refit;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Orabot.Core.Integrations.ResourceCenter
+namespace Orabot.Bot.Features.Maps
 {
 	public interface IMapsApi
 	{

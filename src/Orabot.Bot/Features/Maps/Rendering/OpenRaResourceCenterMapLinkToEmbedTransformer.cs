@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
-using Orabot.Core.Objects.OpenRaResourceCenter;
+using Orabot.Bot.Features.Maps.Models;
 using RestSharp;
 
-namespace Orabot.Core.Transformers.LinkToEmbedTransformers
+namespace Orabot.Bot.Features.Maps.Rendering
 {
 	internal class OpenRaResourceCenterMapLinkToEmbedTransformer
 	{

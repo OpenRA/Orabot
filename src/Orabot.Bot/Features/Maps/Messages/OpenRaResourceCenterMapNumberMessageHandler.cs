@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Discord.WebSocket;
-using Orabot.Core.Transformers.LinkToEmbedTransformers;
+using Orabot.Bot.Features.Maps.Rendering;
+using Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers;
 
-namespace Orabot.Core.EventHandlers.CustomMessageHandlers.NumberParsingMessageHandlers
+namespace Orabot.Bot.Features.Maps.Messages
 {
 	internal class OpenRaResourceCenterMapNumberMessageHandler : BaseNumberParsingMessageHandler
 	{
