@@ -6,7 +6,7 @@ using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Orabot.Core.Abstractions.EventHandlers;
 
-namespace Orabot.Core.EventHandlers
+namespace Orabot.Bot.Features.Roles
 {
 
 	internal class RoleAssignmentReactionEventHandler : IReactionEventHandler

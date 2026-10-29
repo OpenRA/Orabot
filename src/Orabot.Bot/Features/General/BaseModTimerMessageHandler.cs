@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Discord.WebSocket;
 using Orabot.Core.Abstractions.EventHandlers;
 
-namespace Orabot.Core.EventHandlers.CustomMessageHandlers.ModTimersMessageHandlers
+namespace Orabot.Bot.Features.General
 {
 	internal class BaseModTimerMessageHandler : ICustomMessageHandler
 	{

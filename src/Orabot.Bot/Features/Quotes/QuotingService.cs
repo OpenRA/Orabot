@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 
-namespace Orabot.Core.Services
+namespace Orabot.Bot.Features.Quotes
 {
 	public class QuotingService
 	{

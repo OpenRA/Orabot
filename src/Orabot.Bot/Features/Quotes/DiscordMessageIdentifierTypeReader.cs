@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Discord.Commands;
-using Orabot.Core.Objects;
+using Orabot.Core.TypeReaders;
 
-namespace Orabot.Core.TypeReaders
+namespace Orabot.Bot.Features.Quotes
 {
     public class DiscordMessageIdentifierTypeReader : BaseTypeReader
     {

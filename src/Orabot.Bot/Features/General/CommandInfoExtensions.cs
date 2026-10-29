@@ -1,6 +1,6 @@
 ﻿using Discord.Commands;
 
-namespace Orabot.Core.Extensions
+namespace Orabot.Bot.Features.General
 {
 	public static class CommandInfoExtensions
 	{

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Orabot.Core.EventHandlers.SlashCommandHandlers
+namespace Orabot.Bot.Features.General
 {
 	internal class OpenRaInformationCommandHandler : ISlashCommandHandler
 	{

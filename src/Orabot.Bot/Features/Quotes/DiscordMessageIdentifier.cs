@@ -1,4 +1,4 @@
-﻿namespace Orabot.Core.Objects
+﻿namespace Orabot.Bot.Features.Quotes
 {
 	public class DiscordMessageIdentifier
 	{

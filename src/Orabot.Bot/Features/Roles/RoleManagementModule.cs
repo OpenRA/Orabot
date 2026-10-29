@@ -5,7 +5,7 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 
-namespace Orabot.Core.Modules
+namespace Orabot.Bot.Features.Roles
 {
 	public class RoleManagementModule : ModuleBase<SocketCommandContext>
 	{

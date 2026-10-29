@@ -6,10 +6,8 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
-using Orabot.Core.Objects;
-using Orabot.Core.Services;
 
-namespace Orabot.Core.Modules
+namespace Orabot.Bot.Features.Quotes
 {
 	public class QuoteModule : ModuleBase<SocketCommandContext>
 	{

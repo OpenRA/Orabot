@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
-using Orabot.Core.Extensions;
+using Orabot.Bot.Features.Quotes;
 
-namespace Orabot.Core.Modules
+namespace Orabot.Bot.Features.General
 {
 	public class GeneralModule : ModuleBase<SocketCommandContext>
 	{
