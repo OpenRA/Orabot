@@ -11,6 +11,12 @@ using Xunit;
 
 namespace Orabot.Tests.Configuration
 {
+	/// <summary>
+	/// Tests the temporary startup-validation bridge for feature settings still read through
+	/// <see cref="IConfiguration"/>. Synthetic settings cover compatibility and key-only errors
+	/// without exposing private values. These cases move to feature-specific option tests as
+	/// their owning features are migrated and the legacy bridge is removed.
+	/// </summary>
 	public sealed class LegacyFeatureOptionsTests
 	{
 		readonly LegacyFeatureOptionsValidator validator = new();
