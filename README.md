@@ -39,17 +39,17 @@ New feature code belongs with its owning slice. Shared infrastructure supports m
 
 ## Build and test
 
-The projects target **.NET 10** and use **Discord.Net 3.20.2**. `global.json` selects a stable .NET 10 SDK, allowing later installed feature bands and servicing patches. Running the framework-dependent console output requires the .NET 10 runtime.
+The projects target **.NET 10** and use **Discord.Net 3.20.2**. Use a .NET 10 SDK to build the solution. Running the framework-dependent console output requires the .NET 10 runtime.
 
 From the repository root:
 
 ```powershell
-dotnet restore Orabot.sln --locked-mode
+dotnet restore Orabot.sln
 dotnet build Orabot.sln --configuration Release --no-restore
 dotnet test Orabot.sln --configuration Release --no-build --no-restore
 ```
 
-Package lock files record production and test dependencies. Intentional package changes require updating the affected locks. NuGet auditing includes transitive dependencies.
+Package references and versions are declared in the project files. NuGet auditing includes transitive dependencies.
 
 Tests use synthetic configuration, fake APIs, fake time and an offline connection seam. They do not log into Discord or read the operator's User Secrets store.
 
