@@ -7,7 +7,7 @@ Orabot is an OpenRA community Discord bot, hosted as a Windows console applicati
 The application is a single-process modular monolith organized into vertical feature slices.
 
 ```text
-Orabot.sln
+Orabot.slnx
 src/
   Orabot.Hosts.ConsoleHost/   Console entry point, configuration and host lifetime
   Orabot.Bot/
@@ -44,9 +44,9 @@ The projects target **.NET 10** and use **Discord.Net 3.20.2**. Use a .NET 10 SD
 From the repository root:
 
 ```powershell
-dotnet restore Orabot.sln
-dotnet build Orabot.sln --configuration Release --no-restore
-dotnet test Orabot.sln --configuration Release --no-build --no-restore
+dotnet restore Orabot.slnx
+dotnet build Orabot.slnx --configuration Release --no-restore
+dotnet test Orabot.slnx --configuration Release --no-build --no-restore
 ```
 
 Package references and versions are declared in the project files. NuGet auditing includes transitive dependencies.
@@ -103,3 +103,7 @@ The socket client subscribes explicitly to guild/message/reaction events and Mes
 Prefix commands and custom slash/autocomplete dispatch remain in place. Slash-command publication is still disabled during normal startup. Existing discarded event-handler tasks, quote async operations and attachment processing are subsequent interaction/feature work.
 
 The next stage introduces `InteractionService`, documentation command modules and explicit command publication. Remaining prefix commands then migrate to slash commands, followed by the operational finish and test-guild rollout verification.
+
+### Temporary configuration bridge
+
+`LegacyFeatureOptions` and its validator pre-validate settings that older feature constructors still read through `IConfiguration`. As each feature adopts its own typed options, move its validation and test cases into that feature and remove its entries from this bridge. Remove the bridge and its test class after the final legacy consumer is migrated. The explicit validation before hosted-service construction can then be reviewed for removal; ordinary startup validation remains.
